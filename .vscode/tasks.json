@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cargo",
+			"command": "build",
+			"label": "pre_debug_build",
+			"presentation": {
+				"reveal": "never",
+				"echo": false,
+				"clear": true,
+				"showReuseMessage": false,
+				"panel": "dedicated"
+			}
+		},
+	]
+}
