@@ -1,6 +1,7 @@
-use std::fs;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
-fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<&str>) -> usize {
+fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<String>) -> usize {
     map.iter()
         .step_by(slope_y)
         .enumerate()
@@ -9,12 +10,13 @@ fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<&str>) -> usize {
 }
 
 pub fn calc() -> (usize, usize) {
-    let map = fs::read_to_string("./inputs/day1.txt")
-        .unwrap()
+    let map = BufReader::new(File::open("./inputs/day3.txt").unwrap())
         .lines()
+        .filter_map(|l| l.ok())
         .collect::<Vec<_>>();
 
     let p1 = tree_count(3, 1, &map);
+
     let p2 = tree_count(1, 1, &map)
         * tree_count(3, 1, &map)
         * tree_count(5, 1, &map)

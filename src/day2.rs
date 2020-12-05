@@ -33,11 +33,12 @@ fn pass_p2(pass: &PasswordProto) -> bool {
 }
 
 pub fn calc() -> (usize, usize) {
-    let passwords = fs::read_to_string("./inputs/day1.txt")
+    let passwords = fs::read_to_string("./inputs/day2.txt")
         .unwrap()
         .lines()
         .map(PasswordProto::new)
-        .collect::<Vec<_>>();
+        .collect::<Vec<PasswordProto>>();
+
     (
         passwords.iter().filter(|p| pass_p1(p)).count(),
         passwords.iter().filter(|p| pass_p2(p)).count(),
