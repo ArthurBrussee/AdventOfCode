@@ -1,31 +1,30 @@
 use std::{collections::HashSet, fs};
 
 fn seat(seat_str: &str) -> (u32, u32) {
-    let mut lower_row = 0;
-    let mut upper_row = 127;
+    let row = seat_str[0..7]
+        .chars()
+        .fold((0u32, 127u32), |(lower_row, upper_row), c| {
+            let mid = (lower_row + upper_row) / 2;
+            match c {
+                'F' => (lower_row, mid),
+                'B' => (mid + 1, upper_row),
+                _ => unreachable!(),
+            }
+        })
+        .0;
 
-    seat_str[0..7].chars().for_each(|c| {
-        let mid = (lower_row + upper_row) / 2;
-        match c {
-            'F' => upper_row = mid,
-            'B' => lower_row = mid + 1,
-            _ => unreachable!(),
-        }
-    });
-
-    let mut lower_column = 0;
-    let mut upper_column = 7;
-
-    seat_str[7..10].chars().for_each(|c| {
-        let mid = (lower_column + upper_column) / 2;
-        match c {
-            'L' => upper_column = mid,
-            'R' => lower_column = mid + 1,
-            _ => unreachable!(),
-        }
-    });
-
-    (lower_row, lower_column)
+    let column = seat_str[7..10]
+        .chars()
+        .fold((0u32, 7u32), |(lower_column, upper_column), c| {
+            let mid = (lower_column + upper_column) / 2;
+            match c {
+                'L' => (lower_column, mid),
+                'R' => (mid + 1, upper_column),
+                _ => unreachable!(),
+            }
+        })
+        .0;
+    (row, column)
 }
 
 fn seat_id(seat: (u32, u32)) -> u32 {
@@ -42,8 +41,8 @@ pub fn calc() -> (u32, u32) {
     let max_seat_id = *seat_ids.iter().max().unwrap();
 
     let my_seat = (0..=max_seat_id)
-        .filter(|id| id > &0 && !seat_ids.contains(id))
-        .find(|id| seat_ids.contains(&(id - 1)) && seat_ids.contains(&(id + 1)))
+        .filter(|id| id > &0 && !seat_ids.contains(&id))
+        .find(|id| [id - 1, id + 1].iter().all(|nid| seat_ids.contains(nid)))
         .unwrap();
 
     (max_seat_id, my_seat)
