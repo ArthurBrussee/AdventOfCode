@@ -1,4 +1,4 @@
-use crate::lib;
+use std::fs;
 
 struct PasswordProto {
     lower: usize,
@@ -8,7 +8,7 @@ struct PasswordProto {
 }
 
 impl PasswordProto {
-    fn new(line: String) -> Self {
+    fn new(line: &str) -> Self {
         let dash_index = line.find('-').unwrap();
         let colon_index = line.find(':').unwrap();
 
@@ -32,16 +32,14 @@ fn pass_p2(pass: &PasswordProto) -> bool {
     valid1 ^ valid2
 }
 
-pub fn part1() -> usize {
-    lib::file_lines("./inputs/day2.txt")
+pub fn calc() -> (usize, usize) {
+    let passwords = fs::read_to_string("./inputs/day1.txt")
+        .unwrap()
+        .lines()
         .map(PasswordProto::new)
-        .filter(pass_p1)
-        .count()
-}
-
-pub fn part2() -> usize {
-    lib::file_lines("./inputs/day2.txt")
-        .map(PasswordProto::new)
-        .filter(pass_p2)
-        .count()
+        .collect::<Vec<_>>();
+    (
+        passwords.iter().filter(|p| pass_p1(p)).count(),
+        passwords.iter().filter(|p| pass_p2(p)).count(),
+    )
 }

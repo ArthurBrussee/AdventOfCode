@@ -66,19 +66,17 @@ impl Passport {
     }
 }
 
-pub fn part1() -> usize {
-    fs::read_to_string("./inputs/day4.txt")
+pub fn calc() -> (usize, usize) {
+    let passports = fs::read_to_string("./inputs/day4.txt")
         .expect("Can't find input file.")
         .split("\n\n")
         .filter_map(Passport::parse)
-        .count()
-}
-
-pub fn part2() -> usize {
-    fs::read_to_string("./inputs/day4.txt")
-        .expect("Can't find input file.")
-        .split("\n\n")
-        .filter_map(Passport::parse)
-        .filter(|p| Passport::is_valid_parsed(p))
-        .count()
+        .collect::<Vec<_>>();
+    (
+        passports.len(),
+        passports
+            .iter()
+            .filter(|p| Passport::is_valid_parsed(p))
+            .count(),
+    )
 }

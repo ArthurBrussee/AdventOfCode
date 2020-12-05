@@ -1,6 +1,6 @@
-use crate::lib;
+use std::fs;
 
-fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<String>) -> usize {
+fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<&str>) -> usize {
     map.iter()
         .step_by(slope_y)
         .enumerate()
@@ -8,17 +8,18 @@ fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<String>) -> usize {
         .count()
 }
 
-pub fn part1() -> usize {
-    let map: Vec<String> = lib::file_lines("./inputs/day3.txt").collect();
-    tree_count(3, 1, &map)
-}
+pub fn calc() -> (usize, usize) {
+    let map = fs::read_to_string("./inputs/day1.txt")
+        .unwrap()
+        .lines()
+        .collect::<Vec<_>>();
 
-pub fn part2() -> usize {
-    let map: Vec<String> = lib::file_lines("./inputs/day3.txt").collect();
-
-    tree_count(1, 1, &map)
+    let p1 = tree_count(3, 1, &map);
+    let p2 = tree_count(1, 1, &map)
         * tree_count(3, 1, &map)
         * tree_count(5, 1, &map)
         * tree_count(7, 1, &map)
-        * tree_count(1, 2, &map)
+        * tree_count(1, 2, &map);
+
+    (p1, p2)
 }
