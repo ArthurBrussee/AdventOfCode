@@ -1,8 +1,8 @@
 use crate::lib;
 use std::collections::HashSet;
 
-pub fn part1() -> u32 {
-    let map: HashSet<u32> = lib::file_lines("./inputs/day1.txt")
+pub fn part1() -> i32 {
+    let map: HashSet<i32> = lib::file_lines("./inputs/day1.txt")
         .map(|it| it.parse().unwrap())
         .collect();
 
@@ -16,8 +16,8 @@ pub fn part1() -> u32 {
     panic!("Puzzle has no solution!");
 }
 
-pub fn part2() -> u32 {
-    let map: HashSet<u32> = lib::file_lines("./inputs/day1.txt")
+pub fn part2() -> i32 {
+    let map: HashSet<i32> = lib::file_lines("./inputs/day1.txt")
         .map(|it| it.parse().unwrap())
         .collect();
 
