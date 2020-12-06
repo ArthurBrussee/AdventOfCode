@@ -7,10 +7,7 @@ pub fn calc() -> (u32, u32) {
         .map(|str| {
             let (mask_or, mask_and) = str
                 .split_whitespace()
-                .map(|s| {
-                    s.chars()
-                        .fold(0u32, |acc, c| acc | 1 << (c as u8 - 'a' as u8))
-                })
+                .map(|s| s.bytes().fold(0u32, |acc, c| acc | 1 << (c - b'a')))
                 .fold((0u32, std::u32::MAX), |(count_or, count_and), c| {
                     (count_or | c, count_and & c)
                 });
