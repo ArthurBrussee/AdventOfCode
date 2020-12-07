@@ -24,7 +24,7 @@ fn count_inner(rules: &RuleBook, root: &str) -> usize {
 }
 
 pub fn calc() -> (usize, usize) {
-    fn parse_rulebook(format: &str) -> (String, Vec<(String, usize)>) {
+    fn parse_bagrule(format: &str) -> (String, Vec<(String, usize)>) {
         let bag_name = |name: &str| name[0..name.find("bag").unwrap() - 1].to_string();
         let parts = format.split(" contain ").collect::<Vec<_>>();
         let bags = parts[1]
@@ -42,12 +42,14 @@ pub fn calc() -> (usize, usize) {
     let rulebook: RuleBook = fs::read_to_string("./inputs/day7.txt")
         .unwrap()
         .lines()
-        .map(parse_rulebook)
+        .map(parse_bagrule)
         .collect();
 
+    let mut memoize = HashMap::new();
     let p1 = rulebook
         .keys()
-        .filter(|bag| contains(&rulebook, bag, "shiny gold", &mut HashMap::new()))
+        .filter(|bag| contains(&rulebook, bag, "shiny gold", &mut memoize))
         .count();
-    (p1, count_inner(&rulebook, "shiny gold"))
+    let p2 = count_inner(&rulebook, "shiny gold");
+    (p1, p2)
 }
