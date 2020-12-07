@@ -1,89 +1,53 @@
 use std::collections::HashMap;
 use std::fs;
 
-struct BagHold {
-    name: String,
-    count: usize,
-}
+type RuleBook = HashMap<String, Vec<(String, usize)>>;
+type BagCache = HashMap<(String, String), bool>;
 
-struct BagRules {
-    rules: HashMap<String, Vec<BagHold>>,
-}
-
-fn bag_name(name: &str) -> String {
-    name.replace("bags", "")
-        .replace("bag", "")
-        .trim()
-        .to_string()
-}
-
-fn parse_bagrule(format: &str) -> (String, Vec<BagHold>) {
-    let parts = format.split(" contain ").collect::<Vec<_>>();
-
-    let bags = parts[1]
-        .strip_suffix(".")
-        .unwrap()
-        .split(",")
-        .filter_map(|l| {
-            let l = l.trim();
-            if !l.starts_with("no other") {
-                Some(BagHold {
-                    count: l[0..1].parse().unwrap(),
-                    name: bag_name(&l[2..]),
-                })
-            } else {
-                None
-            }
-        })
-        .collect();
-
-    (bag_name(parts[0]), bags)
-}
-
-impl BagRules {
-    fn contains(
-        &self,
-        root: &str,
-        search: &str,
-        memoize: &mut HashMap<(String, String), bool>,
-    ) -> bool {
-        let cache = (root.to_string(), search.to_string());
-        match memoize.get(&cache) {
-            Some(ret) => *ret,
-            None => {
-                let contains = self.rules[root]
-                    .iter()
-                    .any(|bag| bag.name == search || self.contains(&bag.name, search, memoize));
-
-                memoize.insert(cache, contains);
-                contains
-            }
-        }
+fn contains(rules: &RuleBook, bag: &str, search: &str, memoize: &mut BagCache) -> bool {
+    let cache = (bag.to_string(), search.to_string());
+    if let Some(ret) = memoize.get(&(cache)) {
+        return *ret;
     }
+    let contains = rules[bag]
+        .iter()
+        .any(|bag| bag.0 == search || contains(rules, &bag.0, search, memoize));
+    memoize.insert(cache, contains);
+    contains
+}
 
-    fn count_inner(&self, root: &str) -> usize {
-        self.rules[root].iter().fold(0, |acc, bag| {
-            acc + bag.count * (1 + self.count_inner(&bag.name))
-        })
-    }
+fn count_inner(rules: &RuleBook, root: &str) -> usize {
+    rules[root]
+        .iter()
+        .map(|bag| bag.1 * (1 + count_inner(rules, &bag.0)))
+        .sum()
 }
 
 pub fn calc() -> (usize, usize) {
-    let bag_rule = BagRules {
-        rules: fs::read_to_string("./inputs/day7.txt")
-            .unwrap()
-            .lines()
-            .map(|l| parse_bagrule(l))
-            .collect(),
-    };
+    fn parse_rulebook(format: &str) -> (String, Vec<(String, usize)>) {
+        let bag_name = |name: &str| name[0..name.find("bag").unwrap() - 1].to_string();
+        let parts = format.split(" contain ").collect::<Vec<_>>();
+        let bags = parts[1]
+            .split(", ")
+            .filter_map(|l| {
+                if !l.starts_with("no other bags") {
+                    Some((bag_name(&l[2..]), l[0..1].parse().unwrap()))
+                } else {
+                    None
+                }
+            })
+            .collect();
+        (bag_name(parts[0]), bags)
+    }
+    let rulebook: RuleBook = fs::read_to_string("./inputs/day7.txt")
+        .unwrap()
+        .lines()
+        .map(parse_rulebook)
+        .collect();
 
-    let mut memoize: HashMap<(String, String), bool> = HashMap::new();
-
-    let contains_gold = bag_rule
-        .rules
+    let p1 = rulebook
         .keys()
-        .filter(|bag| bag_rule.contains(bag, "shiny gold", &mut memoize))
+        .filter(|bag| contains(&rulebook, bag, "shiny gold", &mut HashMap::new()))
         .count();
-    let bags_in_gold = bag_rule.count_inner("shiny gold");
-    (contains_gold, bags_in_gold)
+    (p1, count_inner(&rulebook, "shiny gold"))
 }
