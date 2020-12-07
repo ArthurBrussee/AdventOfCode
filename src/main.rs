@@ -7,6 +7,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 
 fn print_solution(day: impl Display, solution: (impl Display, impl Display), start: Instant) {
     let ms = start.elapsed().as_secs_f64() * 1000.0;
@@ -35,6 +36,9 @@ fn main() {
 
     let now = Instant::now();
     print_solution(6, day6::calc(), now);
+
+    let now = Instant::now();
+    print_solution(7, day7::calc(), now);
 
     println!(
         "Done with AOC! Took {:.2}ms",
