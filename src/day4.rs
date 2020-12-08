@@ -69,6 +69,7 @@ impl Passport {
 pub fn calc() -> (usize, usize) {
     let passports = fs::read_to_string("./inputs/day4.txt")
         .expect("Can't find input file.")
+        .replace("\r\n", "\n")
         .split("\n\n")
         .filter_map(Passport::parse)
         .collect::<Vec<_>>();
