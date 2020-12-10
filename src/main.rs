@@ -2,6 +2,7 @@ use std::fmt::Display;
 use std::time::Instant;
 
 mod day1;
+mod day10;
 mod day2;
 mod day3;
 mod day4;
@@ -47,6 +48,9 @@ fn main() {
 
     let now = Instant::now();
     print_solution(9, day9::calc(), now);
+
+    let now = Instant::now();
+    print_solution(10, day10::calc(), now);
 
     println!(
         "Done with AOC! Took {:.2}ms",
