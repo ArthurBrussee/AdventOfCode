@@ -4,6 +4,7 @@ use std::time::Instant;
 mod day1;
 mod day10;
 mod day11;
+mod day12;
 mod day2;
 mod day3;
 mod day4;
@@ -55,6 +56,9 @@ fn main() {
 
     let now = Instant::now();
     print_solution(11, day11::calc(), now);
+
+    let now = Instant::now();
+    print_solution(12, day12::calc(), now);
 
     println!(
         "Done with AOC! Took {:.2}ms",
