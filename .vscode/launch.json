@@ -5,19 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(Windows) Debug",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "target/debug/advent_2020.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "preLaunchTask": "pre_debug_build",
-        },
-        {
-            "name": "(OSX) Launch",
+            "name": "Debug",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/advent_2020",
