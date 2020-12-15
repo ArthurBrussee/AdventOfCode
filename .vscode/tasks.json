@@ -13,5 +13,17 @@
 				"panel": "dedicated"
 			}
 		},
+		{
+			"type": "cargo",
+			"command": "build --release",
+			"label": "pre_release_build",
+			"presentation": {
+				"reveal": "never",
+				"echo": false,
+				"clear": true,
+				"showReuseMessage": false,
+				"panel": "dedicated"
+			}
+		},
 	]
 }

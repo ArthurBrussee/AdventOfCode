@@ -12,6 +12,15 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "pre_debug_build",
+        },
+        {
+            "name": "Release",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/target/release/advent_2020",
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "pre_release_build",
         }
     ]
 }
