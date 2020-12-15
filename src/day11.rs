@@ -31,9 +31,9 @@ impl Board {
         }
     }
 
-    fn get_tile(&self, x: i32, y: i32) -> Option<Tile> {
+    fn get_tile(&self, x: i32, y: i32) -> Option<&Tile> {
         if x >= 0 && x < self.width && y >= 0 && y < self.height {
-            Some(self.tiles[(x + y * self.width) as usize])
+            Some(&self.tiles[(x + y * self.width) as usize])
         } else {
             None
         }
@@ -46,29 +46,28 @@ fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
 
     loop {
         let mut change = false;
-        for (i, &tile) in board.tiles.iter().enumerate() {
-            let mut tile = tile;
-            if tile == Tile::Floor {
+        for (i, tile) in board.tiles.iter().enumerate() {
+            let i = i as i32;
+            if tile == &Tile::Floor {
                 continue;
             }
-            let x = (i % board.width as usize) as i32;
-            let y = (i / board.width as usize) as i32;
+            let x = i % board.width;
+            let y = i / board.width;
 
             let mut count = 0;
-            for dx in -1..=1 {
-                for dy in -1..=1 {
+            for dy in -1..=1 {
+                for dx in -1..=1 {
                     if dx == 0 && dy == 0 {
                         continue;
                     }
                     let occ_neighbour = if !cast {
-                        board.get_tile(x + dx, y + dy) == Some(Tile::Occupied)
+                        board.get_tile(x + dx, y + dy) == Some(&Tile::Occupied)
                     } else {
                         let mut l = 1;
                         loop {
                             match board.get_tile(x + dx * l, y + dy * l) {
                                 Some(Tile::Occupied) => break true,
-                                Some(Tile::EmptySeat) => break false,
-                                None => break false,
+                                Some(Tile::EmptySeat) | None => break false,
                                 Some(_) => {}
                             }
                             l += 1;
@@ -82,16 +81,15 @@ fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
 
             match (tile, count) {
                 (Tile::EmptySeat, 0) => {
-                    tile = Tile::Occupied;
+                    new_board.tiles[i as usize] = Tile::Occupied;
                     change = true;
                 }
                 (Tile::Occupied, c) if c >= overcrowd => {
-                    tile = Tile::EmptySeat;
+                    new_board.tiles[i as usize] = Tile::EmptySeat;
                     change = true;
                 }
-                _ => {}
+                _ => new_board.tiles[i as usize] = *tile,
             }
-            new_board.tiles[i] = tile;
         }
         if !change {
             break board.tiles.iter().filter(|&x| x == &Tile::Occupied).count();
