@@ -60,48 +60,32 @@ pub fn calc() -> (u64, u64) {
         .collect::<Vec<_>>();
 
     let solution = {
+        let mut solution_cur = vec![0; valid_tickets[0].len()];
+
         let mut possible_set: Vec<Vec<usize>> = (0..valid_tickets[0].len())
-            .map(|_| (0..constraints.len()).collect())
-            .collect();
-        let mut solution_cur = vec![None; valid_tickets[0].len()];
+            .map(|ind| {
+                (0..constraints.len())
+                    .filter(|constraint_ind| {
+                        let constraint = &constraints[*constraint_ind];
 
-        while solution_cur.iter().any(|x| x.is_none()) {
-            let mut solved_any = false;
-
-            for (ind, remaining) in possible_set.iter_mut().enumerate() {
-                remaining.retain(|constraint_ind| {
-                    let constraint = &constraints[*constraint_ind];
-
-                    valid_tickets.iter().all(|ticket| {
-                        let ticket_num = ticket[ind];
-                        constraint.min.contains(&ticket_num) || constraint.max.contains(&ticket_num)
+                        valid_tickets.iter().all(|ticket| {
+                            let ticket_num = ticket[ind];
+                            constraint.min.contains(&ticket_num)
+                                || constraint.max.contains(&ticket_num)
+                        })
                     })
-                });
+                    .collect()
+            })
+            .collect();
 
-                if remaining.len() == 1 {
-                    solved_any = true;
+        while let Some(i) = possible_set.iter().position(|s| s.len() == 1) {
+            let s = possible_set[i][0];
+            for remaining in possible_set.iter_mut() {
+                if let Some(j) = remaining.iter().position(|&x| x == s) {
+                    remaining.swap_remove(j);
                 }
             }
-
-            while solved_any {
-                solved_any = false;
-
-                for ind in 0..possible_set.len() {
-                    let set = &possible_set[ind];
-
-                    if set.len() == 1 {
-                        let s = set[0];
-                        for remaining in possible_set.iter_mut() {
-                            remaining.retain(|&r| r != s);
-
-                            if remaining.len() == 1 {
-                                solved_any = true;
-                            }
-                        }
-                        solution_cur[ind] = Some(s);
-                    }
-                }
-            }
+            solution_cur[i] = s;
         }
         solution_cur
     };
@@ -126,7 +110,7 @@ pub fn calc() -> (u64, u64) {
         .iter()
         .enumerate()
         .map(|(ind, val)| {
-            let index = solution[ind].unwrap();
+            let index = solution[ind];
             (&constraints[index].name, val)
         })
         .filter_map(|(name, val)| {
