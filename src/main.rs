@@ -8,6 +8,7 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
 mod day2;
 mod day3;
 mod day4;
@@ -71,6 +72,9 @@ fn main() {
 
     let now = Instant::now();
     print_solution(15, day15::calc(), now);
+
+    let now = Instant::now();
+    print_solution(16, day16::calc(), now);
 
     println!(
         "Done with AOC! Took {:.2}ms",
