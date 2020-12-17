@@ -33,62 +33,90 @@ impl Board {
 
     fn get_tile(&self, x: i32, y: i32) -> Option<&Tile> {
         if x >= 0 && x < self.width && y >= 0 && y < self.height {
-            Some(&self.tiles[(x + y * self.width) as usize])
+            Some(&self.tiles[self.index(x, y)])
         } else {
             None
         }
     }
+
+    fn index(&self, x: i32, y: i32) -> usize {
+        return (x + y * self.width) as usize;
+    }
 }
 
 fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
+    let mut seats = Vec::new();
+
+    for (i, tile) in board.tiles.iter().enumerate() {
+        if tile == &Tile::Floor {
+            continue;
+        }
+        let x = (i as i32) % board.width;
+        let y = (i as i32) / board.width;
+
+        let mut neighbours: Vec<u32> = Vec::new();
+
+        for dy in -1..=1 {
+            for dx in -1..=1 {
+                if dx == 0 && dy == 0 {
+                    continue;
+                }
+                if !cast {
+                    if matches!(
+                        board.get_tile(x + dx, y + dy),
+                        Some(Tile::EmptySeat) | Some(Tile::Occupied)
+                    ) {
+                        neighbours.push(board.index(x + dx, y + dy) as u32);
+                    }
+                } else {
+                    let mut l = 1;
+                    loop {
+                        let xx = x + dx * l;
+                        let yy = y + dy * l;
+                        match board.get_tile(xx, yy) {
+                            Some(Tile::Occupied) | Some(Tile::EmptySeat) => {
+                                neighbours.push(board.index(xx, yy) as u32);
+                                break;
+                            }
+                            Some(Tile::Floor) => {}
+                            None => break,
+                        }
+                        l += 1;
+                    }
+                }
+            }
+        }
+        seats.push((i as u32, neighbours));
+    }
+
     let mut board = board.clone();
     let mut new_board = board.clone();
-
     loop {
         let mut change = false;
-        for (i, tile) in board.tiles.iter().enumerate() {
-            let i = i as i32;
-            if tile == &Tile::Floor {
-                continue;
-            }
-            let x = i % board.width;
-            let y = i / board.width;
+        for (i, neighbours) in &seats {
+            let tile = board.tiles[*i as usize];
 
-            let mut count = 0;
-            for dy in -1..=1 {
-                for dx in -1..=1 {
-                    if dx == 0 && dy == 0 {
-                        continue;
-                    }
-                    let occ_neighbour = if !cast {
-                        board.get_tile(x + dx, y + dy) == Some(&Tile::Occupied)
-                    } else {
-                        let mut l = 1;
-                        loop {
-                            match board.get_tile(x + dx * l, y + dy * l) {
-                                Some(Tile::Occupied) => break true,
-                                Some(Tile::EmptySeat) | None => break false,
-                                Some(_) => {}
-                            }
-                            l += 1;
-                        }
-                    };
-                    if occ_neighbour {
-                        count += 1;
-                    }
-                }
-            }
+            let new_board_tile = &mut new_board.tiles[*i as usize];
 
-            match (tile, count) {
-                (Tile::EmptySeat, 0) => {
-                    new_board.tiles[i as usize] = Tile::Occupied;
-                    change = true;
-                }
-                (Tile::Occupied, c) if c >= overcrowd => {
-                    new_board.tiles[i as usize] = Tile::EmptySeat;
-                    change = true;
-                }
-                _ => new_board.tiles[i as usize] = *tile,
+            if tile == Tile::EmptySeat
+                && !neighbours
+                    .iter()
+                    .any(|&n| board.tiles[n as usize] == Tile::Occupied)
+            {
+                *new_board_tile = Tile::Occupied;
+                change = true;
+            } else if tile == Tile::Occupied
+                && neighbours.len() >= overcrowd
+                && neighbours
+                    .iter()
+                    .filter(|&n| board.tiles[*n as usize] == Tile::Occupied)
+                    .count()
+                    >= overcrowd
+            {
+                *new_board_tile = Tile::EmptySeat;
+                change = true;
+            } else {
+                *new_board_tile = tile;
             }
         }
         if !change {
