@@ -10,6 +10,7 @@ mod day14;
 mod day15;
 mod day16;
 mod day17;
+mod day18;
 mod day2;
 mod day3;
 mod day4;
@@ -59,8 +60,8 @@ fn main() {
     let now = Instant::now();
     print_solution(10, day10::calc(), now);
 
-    //let now = Instant::now();
-    //print_solution(11, day11::calc(), now);
+    let now = Instant::now();
+    print_solution(11, day11::calc(), now);
 
     let now = Instant::now();
     print_solution(12, day12::calc(), now);
@@ -71,14 +72,17 @@ fn main() {
     let now = Instant::now();
     print_solution(14, day14::calc(), now);
 
-    //let now = Instant::now();
-    //print_solution(15, day15::calc(), now);
+    let now = Instant::now();
+    print_solution(15, day15::calc(), now);
 
     let now = Instant::now();
     print_solution(16, day16::calc(), now);
 
     let now = Instant::now();
     print_solution(17, day17::calc(), now);
+
+    let now = Instant::now();
+    print_solution(18, day18::calc(), now);
 
     println!(
         "Done with AOC! Took {:.2}ms",
