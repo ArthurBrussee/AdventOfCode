@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Day 19",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/target/debug/advent_2020",
+            "args": [
+                "--day19"
+            ],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "pre_debug_build",
+        },
+        {
             "name": "Debug",
             "type": "lldb",
             "request": "launch",
