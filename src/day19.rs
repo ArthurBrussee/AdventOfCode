@@ -1,81 +1,97 @@
 use std::collections::HashMap;
 use std::fs;
 
-#[derive(PartialEq, Eq, Hash, Clone, Copy, Debug)]
-enum Token {
-    Number(u32),
-    Times,
-    Plus,
-    OpenParen,
-    CloseParen,
+#[derive(Clone)]
+enum Rule {
+    Leaf(u32),
+    Match(Vec<Vec<u32>>),
 }
 
-pub fn calc() -> (u64, u64) {
-    let file_str = fs::read_to_string("./inputs/day18.txt").expect("Can't find input file.");
-    let tokens = file_str.lines().map(|l| tokenize(l)).collect::<Vec<_>>();
-    let p1 = tokens.iter().map(|l| evaluate(l, 1, 1)).sum();
-    let p2 = tokens.iter().map(|l| evaluate(l, 2, 1)).sum();
-    (p1, p2)
+#[derive(Hash, PartialEq, Eq, Clone, Copy)]
+struct Message<'a> {
+    val: &'a [u32],
 }
 
-fn tokenize(s: &str) -> Vec<Token> {
-    s.replace(" ", "")
-        .chars()
-        .map(|s| match s {
-            '*' => Token::Times,
-            '+' => Token::Plus,
-            '(' => Token::OpenParen,
-            ')' => Token::CloseParen,
-            _ => Token::Number(s.to_string().parse().unwrap()),
+fn strip_prexix<'a>(
+    message: Message<'a>,
+    rule: &Rule,
+    rules: &HashMap<u32, Rule>,
+) -> Vec<Message<'a>> {
+    match rule {
+        Rule::Leaf(leaf) => match message.val {
+            [start, val @ ..] if start == leaf => vec![Message { val }],
+            _ => return vec![],
+        },
+        Rule::Match(branches) => {
+            return branches
+                .iter()
+                .flat_map(|branch| {
+                    branch.iter().fold(vec![message], |cur, r| {
+                        cur.iter()
+                            .flat_map(|m| strip_prexix(*m, &rules[&r], rules))
+                            .collect()
+                    })
+                })
+                .collect();
+        }
+    }
+}
+
+pub fn calc() -> (usize, usize) {
+    let test_str = fs::read_to_string("./inputs/day19.txt").unwrap();
+    let mut input_parts = test_str.split("\n\n");
+    let mut char_rules = HashMap::<char, u32>::new();
+    let rules = input_parts
+        .next()
+        .unwrap()
+        .lines()
+        .map(|str| {
+            let mut parts = str.split(':');
+            let num = parts.next().unwrap().parse().unwrap();
+            let rule_parts = parts.next().unwrap();
+
+            if rule_parts.contains("\"") {
+                let ch = rule_parts.trim().replace("\"", "").chars().next().unwrap();
+                char_rules.insert(ch, num);
+                (num, Rule::Leaf(num))
+            } else {
+                let rules = rule_parts.trim().split("|");
+
+                let matches = rules
+                    .map(|r| r.trim().split(" ").map(|n| n.parse().unwrap()).collect())
+                    .collect::<Vec<Vec<u32>>>();
+                (num, Rule::Match(matches))
+            }
         })
-        .collect()
-}
+        .collect::<HashMap<_, _>>();
 
-fn evaluate(tokens: &Vec<Token>, prec_add: i32, prec_times: i32) -> u64 {
-    let mut prec = HashMap::<Token, i32>::new();
-    prec.insert(Token::Times, prec_times);
-    prec.insert(Token::Plus, prec_add);
-    prec.insert(Token::OpenParen, i32::MIN);
+    let messages_vecs = input_parts
+        .next()
+        .unwrap()
+        .lines()
+        .map(|l| l.chars().map(|c| char_rules[&c]).collect::<Vec<u32>>())
+        .collect::<Vec<_>>();
 
-    let mut op_stack = Vec::new();
-    let mut postfix = Vec::new();
+    let p1 = messages_vecs
+        .iter()
+        .filter(|val| {
+            strip_prexix(Message { val }, &rules[&0], &rules)
+                .iter()
+                .any(|r| r.val.len() == 0)
+        })
+        .count();
 
-    for token in tokens {
-        match token {
-            Token::Number(_) => postfix.push(*token),
-            Token::OpenParen => op_stack.push(*token),
-            Token::CloseParen => loop {
-                let top_token = op_stack.pop().unwrap();
-                if top_token == Token::OpenParen {
-                    break;
-                }
-                postfix.push(top_token);
-            },
-            Token::Plus | Token::Times => {
-                while !op_stack.is_empty() && prec[op_stack.last().unwrap()] >= prec[token] {
-                    postfix.push(op_stack.pop().unwrap());
-                }
-                op_stack.push(*token)
-            }
-        }
-    }
+    let mut new_rules = rules.clone();
+    new_rules.insert(8, Rule::Match(vec![vec![42], vec![42, 8]]));
+    new_rules.insert(11, Rule::Match(vec![vec![42, 31], vec![42, 11, 31]]));
 
-    postfix.extend(op_stack.iter().rev());
-
-    let mut vm = Vec::<u64>::new();
-    for token in postfix {
-        match token {
-            Token::Number(num) => vm.push(num as u64),
-            Token::Plus => {
-                let (left, right) = (vm.pop().unwrap(), vm.pop().unwrap());
-                vm.push(left + right);
-            }
-            Token::Times => {
-                let (left, right) = (vm.pop().unwrap(), vm.pop().unwrap());
-                vm.push(left * right);
-            }
-            _ => unreachable!(),
-        }
-    }
-    vm[0]
+    let p2 = messages_vecs
+        .iter()
+        .filter(|val| {
+            strip_prexix(Message { val }, &new_rules[&0], &new_rules)
+                .iter()
+                .any(|r| r.val.len() == 0)
+        })
+        .count();
+    (p1, p2)
 }
