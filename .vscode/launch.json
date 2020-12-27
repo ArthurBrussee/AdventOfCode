@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Day 21",
+            "name": "Debug Day 22",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/advent_2020",
             "args": [
-                "--day21"
+                "--day22"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "pre_debug_build",
