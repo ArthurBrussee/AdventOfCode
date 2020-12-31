@@ -108,7 +108,7 @@ pub fn calc() -> (u64, usize) {
         .unwrap()
         .split("\n\n")
         .map(|tile| {
-            let mut board_iter = tile.splitn(2, "\n");
+            let mut board_iter = tile.splitn(2, "\r\n");
             let id = board_iter
                 .next()
                 .and_then(|f| f.strip_prefix("Tile "))

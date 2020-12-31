@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::fs;
 
 #[derive(Clone)]
@@ -16,21 +16,24 @@ fn strip_prexix<'a>(
     message: Message<'a>,
     rule: &Rule,
     rules: &HashMap<u32, Rule>,
-) -> Vec<Message<'a>> {
+) -> HashSet<Message<'a>> {
     match rule {
         Rule::Leaf(leaf) => match message.val {
-            [start, val @ ..] if start == leaf => vec![Message { val }],
-            _ => return vec![],
+            [start, val @ ..] if start == leaf => [Message { val }].iter().map(|&x| x).collect(),
+            _ => return HashSet::new(),
         },
         Rule::Match(branches) => {
             return branches
                 .iter()
                 .flat_map(|branch| {
-                    branch.iter().fold(vec![message], |cur, r| {
-                        cur.iter()
-                            .flat_map(|m| strip_prexix(*m, &rules[&r], rules))
-                            .collect()
-                    })
+                    branch.iter().fold(
+                        [message].iter().map(|&x| x).collect::<HashSet<_>>(),
+                        |cur, r| {
+                            cur.iter()
+                                .flat_map(|m| strip_prexix(*m, &rules[&r], rules))
+                                .collect()
+                        },
+                    )
                 })
                 .collect();
         }
@@ -39,7 +42,7 @@ fn strip_prexix<'a>(
 
 pub fn calc() -> (usize, usize) {
     let test_str = fs::read_to_string("./inputs/day19.txt").unwrap();
-    let mut input_parts = test_str.split("\n\n");
+    let mut input_parts = test_str.split("\r\n\r\n");
     let mut char_rules = HashMap::<char, u32>::new();
     let rules = input_parts
         .next()
