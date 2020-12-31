@@ -20,7 +20,7 @@
                 }
             },
             "args": [
-                "--day24"
+                "--day25"
             ],
             "cwd": "${workspaceFolder}",
         },
@@ -41,7 +41,7 @@
                 }
             },
             "args": [
-                "--day23"
+                "--day25"
             ],
             "cwd": "${workspaceFolder}",
         },
