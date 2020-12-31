@@ -18,6 +18,7 @@ mod day20;
 mod day21;
 mod day22;
 mod day23;
+mod day24;
 mod day3;
 mod day4;
 mod day5;
@@ -77,6 +78,7 @@ fn main() {
         || run_solution(21, day21::calc),
         || run_solution(22, day22::calc),
         || run_solution(23, day23::calc),
+        || run_solution(24, day24::calc),
     ];
 
     for d in days {
