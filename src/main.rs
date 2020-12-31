@@ -17,6 +17,7 @@ mod day2;
 mod day20;
 mod day21;
 mod day22;
+mod day23;
 mod day3;
 mod day4;
 mod day5;
@@ -37,6 +38,8 @@ where
 }
 
 fn main() {
+    println!("");
+    println!("");
     println!("AOC 2020!");
 
     let mut days = env::args()
@@ -73,6 +76,7 @@ fn main() {
         || run_solution(20, day20::calc),
         || run_solution(21, day21::calc),
         || run_solution(22, day22::calc),
+        || run_solution(23, day23::calc),
     ];
 
     for d in days {

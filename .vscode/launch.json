@@ -5,33 +5,64 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Day 22",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceRoot}/target/debug/advent_2020",
-            "args": [
-                "--day22"
-            ],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "pre_debug_build",
-        },
-        {
             "name": "Debug",
-            "type": "lldb",
-            "request": "launch",
-            "program": "${workspaceRoot}/target/debug/advent_2020",
-            "args": [],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "pre_debug_build",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=advent_2020",
+                    "--package=advent_2020"
+                ],
+                "filter": {
+                    "name": "advent_2020",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--day23"
+            ],
+            "cwd": "${workspaceFolder}",
         },
         {
-            "name": "Release",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceRoot}/target/release/advent_2020",
+            "name": "Release",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=advent_2020",
+                    "--package=advent_2020",
+                    "--release",
+                ],
+                "filter": {
+                    "name": "advent_2020",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--day23"
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Tests",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=advent_2020",
+                    "--package=advent_2020"
+                ],
+                "filter": {
+                    "name": "advent_2020",
+                    "kind": "bin"
+                }
+            },
             "args": [],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "pre_release_build",
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
