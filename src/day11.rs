@@ -15,7 +15,7 @@ struct Board {
 }
 
 impl Board {
-    fn new(str: &String) -> Board {
+    fn new(str: &str) -> Board {
         Board {
             tiles: str
                 .chars()
@@ -40,7 +40,7 @@ impl Board {
     }
 
     fn index(&self, x: i32, y: i32) -> usize {
-        return (x + y * self.width) as usize;
+        (x + y * self.width) as usize
     }
 }
 

@@ -40,8 +40,6 @@ where
 }
 
 fn main() {
-    println!("");
-    println!("");
     println!("AOC 2020!");
 
     let mut days = env::args()
@@ -49,8 +47,8 @@ fn main() {
         .map(|r| r.parse::<usize>().unwrap() - 1)
         .collect::<Vec<_>>();
 
-    if days.len() == 0 {
-        days.extend(0..=25);
+    if days.is_empty() {
+        days.extend(0..25);
     }
 
     let start_run = Instant::now();
@@ -85,7 +83,7 @@ fn main() {
 
     for d in days {
         if let Some(f) = funcs.get(d) {
-            f();
+            f()
         }
     }
 

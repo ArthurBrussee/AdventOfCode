@@ -1,6 +1,6 @@
 use std::fs;
 
-fn crack(nums: &Vec<i64>, preamble: usize) -> Option<i64> {
+fn crack(nums: &[i64], preamble: usize) -> Option<i64> {
     for i in preamble..nums.len() {
         let mut found = false;
         'outer: for j in i - preamble..i {

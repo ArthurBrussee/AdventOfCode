@@ -7,7 +7,7 @@ enum Instruction {
     Jmp(i32),
 }
 
-fn execute_program(instructions: &Vec<Instruction>) -> (bool, i32) {
+fn execute_program(instructions: &[Instruction]) -> (bool, i32) {
     let mut ic: usize = 0;
     let mut acc: i32 = 0;
     let mut seen: Vec<bool> = instructions.iter().map(|_| false).collect();
@@ -37,7 +37,7 @@ pub fn calc() -> (i32, i32) {
         .expect("Can't find input file.")
         .lines()
         .map(|l| {
-            let mut parts = l.split(" ");
+            let mut parts = l.split(' ');
             let instr = parts.next().unwrap();
             let num = parts.next().and_then(|x| x.parse().ok()).unwrap();
             match instr {

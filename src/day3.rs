@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-fn tree_count(slope_x: usize, slope_y: usize, map: &Vec<String>) -> usize {
+fn tree_count(slope_x: usize, slope_y: usize, map: &[String]) -> usize {
     map.iter()
         .step_by(slope_y)
         .enumerate()

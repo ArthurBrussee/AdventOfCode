@@ -7,8 +7,7 @@ pub fn calc() -> (i32, i32) {
         .lines()
         .map(|it| it.parse().unwrap())
         .collect();
-
-    return (part1(&map), part2(&map));
+    (part1(&map), part2(&map))
 }
 
 pub fn part1(map: &HashSet<i32>) -> i32 {

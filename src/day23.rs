@@ -1,4 +1,4 @@
-fn cup_game(start: &Vec<u32>, steps: u32) -> Vec<u32> {
+fn cup_game(start: &[u32], steps: u32) -> Vec<u32> {
     let len = start.len();
 
     let mut cups = vec![0; len + 1];
@@ -48,7 +48,7 @@ pub fn calc() -> (String, u64) {
         p1 += &cur.to_string()
     }
 
-    let mut large_cups = base_cups.clone();
+    let mut large_cups = base_cups;
     large_cups.extend(10u32..=1_000_000);
 
     let cups_big = cup_game(&large_cups, 10_000_000);

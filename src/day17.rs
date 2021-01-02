@@ -1,24 +1,17 @@
 use std::collections::{HashMap, HashSet};
 
-#[derive(Clone, PartialEq, Copy)]
-enum Cube {
-    Inactive,
-    Active,
-}
-
-type EnergyGrid = HashMap<(i32, i32, i32, i32), Cube>;
+type EnergyGrid = HashMap<(i32, i32, i32, i32), bool>;
 
 fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
     let mut cur_cubes = cubes.clone();
 
     for _ in 0..6 {
         let mut check_keys = HashSet::new();
-        let mut commands: Vec<((i32, i32, i32, i32), Cube)> = Vec::new();
+        let mut commands: Vec<((i32, i32, i32, i32), bool)> = Vec::new();
 
-        for (x, y, z, w) in
-            cur_cubes
-                .iter()
-                .filter_map(|(k, v)| if v == &Cube::Active { Some(k) } else { None })
+        for (x, y, z, w) in cur_cubes
+            .iter()
+            .filter_map(|(k, &v)| if v { Some(k) } else { None })
         {
             for dw in -w_range..=w_range {
                 for dz in -1..=1 {
@@ -41,9 +34,7 @@ fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
                             if dx == 0 && dy == 0 && dz == 0 && dw == 0 {
                                 continue;
                             }
-                            if let Some(Cube::Active) =
-                                cur_cubes.get(&(x + dx, y + dy, z + dz, w + dw))
-                            {
+                            if let Some(true) = cur_cubes.get(&(x + dx, y + dy, z + dz, w + dw)) {
                                 active_neighbour_count += 1;
                             }
                         }
@@ -53,11 +44,11 @@ fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
 
             let index = (x, y, z, w);
 
-            let cube = cur_cubes.get(&index).unwrap_or(&Cube::Inactive);
-            if cube == &Cube::Active && !matches!(active_neighbour_count, 2..=3) {
-                commands.push((index, Cube::Inactive));
-            } else if cube == &Cube::Inactive && active_neighbour_count == 3 {
-                commands.push((index, Cube::Active));
+            let &cube = cur_cubes.get(&index).unwrap_or(&false);
+            if cube && !matches!(active_neighbour_count, 2..=3) {
+                commands.push((index, false));
+            } else if !cube && active_neighbour_count == 3 {
+                commands.push((index, true));
             }
         }
 
@@ -66,7 +57,7 @@ fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
         }
     }
 
-    cur_cubes.values().filter(|&&x| x == Cube::Active).count()
+    cur_cubes.values().filter(|&&x| x).count()
 }
 
 pub fn calc() -> (usize, usize) {
@@ -85,8 +76,8 @@ pub fn calc() -> (usize, usize) {
         .flat_map(|(y, line)| {
             line.bytes().enumerate().map(move |(x, c)| {
                 let cube = match c {
-                    b'.' => Cube::Inactive,
-                    b'#' => Cube::Active,
+                    b'.' => false,
+                    b'#' => true,
                     _ => unreachable!(),
                 };
                 ((x as i32 - 1, y as i32 - 1, 0, 0), cube)

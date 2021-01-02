@@ -30,8 +30,8 @@ pub fn calc() -> (usize, usize) {
         .lines()
         .map(|l| {
             let mut ret = Vec::new();
-            let mut left = l.clone();
-            while left.len() > 0 {
+            let mut left = l;
+            while !left.is_empty() {
                 if let Some(pre) = left.strip_prefix("e") {
                     ret.push(Command::East);
                     left = pre;
@@ -110,10 +110,8 @@ pub fn calc() -> (usize, usize) {
                 if neighbours == 2 {
                     tiles.insert(pos, false);
                 }
-            } else {
-                if neighbours == 0 || neighbours > 2 {
-                    tiles.insert(pos, true);
-                }
+            } else if neighbours == 0 || neighbours > 2 {
+                tiles.insert(pos, true);
             }
         }
     }

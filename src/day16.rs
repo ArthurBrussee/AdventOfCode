@@ -14,18 +14,18 @@ pub fn calc() -> (u64, u64) {
         .iter()
         .take(20)
         .map(|line| {
-            let mut splits = line.split(":");
+            let mut splits = line.split(':');
             let name = splits.next().unwrap();
             let mut ranges = splits.next().unwrap().split(" or ");
             let mut min_range = ranges
                 .next()
                 .unwrap()
-                .split("-")
+                .split('-')
                 .map(|x| x.trim().parse().unwrap());
             let mut max_range = ranges
                 .next()
                 .unwrap()
-                .split("-")
+                .split('-')
                 .map(|x| x.parse().unwrap());
 
             Condition {
@@ -45,7 +45,7 @@ pub fn calc() -> (u64, u64) {
     let other_tickets = lines
         .iter()
         .skip(25)
-        .map(|l| l.split(",").map(|x| x.parse().unwrap()).collect::<Vec<_>>())
+        .map(|l| l.split(',').map(|x| x.parse().unwrap()).collect::<Vec<_>>())
         .collect::<Vec<_>>();
 
     let valid_tickets = other_tickets
@@ -102,7 +102,7 @@ pub fn calc() -> (u64, u64) {
         .sum();
 
     let my_ticket = lines[22]
-        .split(",")
+        .split(',')
         .map(|x| x.parse().unwrap())
         .collect::<Vec<_>>();
 

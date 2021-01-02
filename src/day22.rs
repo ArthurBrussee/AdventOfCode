@@ -1,14 +1,9 @@
 use std::{
-    collections::{HashMap, HashSet, VecDeque},
+    collections::{HashSet, VecDeque},
     iter::FromIterator,
 };
 
-fn crab_game(
-    p1: &VecDeque<u8>,
-    p2: &VecDeque<u8>,
-    recurse: bool,
-    mem: &mut HashMap<(VecDeque<u8>, VecDeque<u8>), (u32, u32)>,
-) -> (u32, u32) {
+fn crab_game(p1: &VecDeque<u8>, p2: &VecDeque<u8>, recurse: bool) -> (u32, u32) {
     fn score(deck: &VecDeque<u8>) -> u32 {
         deck.iter()
             .rev()
@@ -20,15 +15,10 @@ fn crab_game(
     let mut p1 = p1.clone();
     let mut p2 = p2.clone();
 
-    if let Some(&(winner, score)) = mem.get(&(p1.clone(), p2.clone())) {
-        return (winner, score);
-    }
-
-    let mut rounds: HashSet<(VecDeque<u8>, VecDeque<u8>)> = HashSet::new();
+    let mut rounds: HashSet<VecDeque<u8>> = HashSet::new();
 
     let (winner, score) = loop {
-        let state = (p1.clone(), p2.clone());
-        if !rounds.insert(state) {
+        if !rounds.insert(p1.clone()) {
             return (0, score(&p1));
         }
 
@@ -36,9 +26,9 @@ fn crab_game(
         let p2_card = p2.pop_front().unwrap();
 
         let p1_wins = if recurse && p1_card <= p1.len() as u8 && p2_card <= p2.len() as u8 {
-            let p1_subdeck = VecDeque::from_iter(p1.iter().take(p1_card as usize).map(|&x| x));
-            let p2_subdeck = VecDeque::from_iter(p2.iter().take(p2_card as usize).map(|&x| x));
-            let (winner, _) = crab_game(&p1_subdeck, &p2_subdeck, recurse, mem);
+            let p1_subdeck = VecDeque::from_iter(p1.iter().take(p1_card as usize).copied());
+            let p2_subdeck = VecDeque::from_iter(p2.iter().take(p2_card as usize).copied());
+            let (winner, _) = crab_game(&p1_subdeck, &p2_subdeck, recurse);
             winner == 0
         } else {
             p1_card > p2_card
@@ -52,15 +42,13 @@ fn crab_game(
             p2.push_back(p1_card);
         }
 
-        if p1.len() == 0 {
+        if p1.is_empty() {
             break (1, score(&p2));
         }
-        if p2.len() == 0 {
+        if p2.is_empty() {
             break (0, score(&p1));
         }
     };
-
-    mem.insert((p1.clone(), p2.clone()), (winner, score));
     (winner, score)
 }
 
@@ -73,8 +61,7 @@ pub fn calc() -> (u32, u32) {
         31, 20,
     ]);
 
-    let (_, score_p1) = crab_game(&player1_deck, &player2_deck, false, &mut HashMap::new());
-    let (_, score_p2) = crab_game(&player1_deck, &player2_deck, true, &mut HashMap::new());
-
+    let (_, score_p1) = crab_game(&player1_deck, &player2_deck, false);
+    let (_, score_p2) = crab_game(&player1_deck, &player2_deck, true);
     (score_p1, score_p2)
 }

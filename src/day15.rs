@@ -1,4 +1,4 @@
-fn get_spoken_num(nums: &Vec<u32>, max_turn: u32) -> u32 {
+fn get_spoken_num(nums: &[u32], max_turn: u32) -> u32 {
     let mut last = 0;
     let mut last_turn = vec![0u32; max_turn as usize];
 

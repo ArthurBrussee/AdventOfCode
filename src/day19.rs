@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::fs;
 
 #[derive(Clone)]
@@ -16,27 +16,22 @@ fn strip_prexix<'a>(
     message: Message<'a>,
     rule: &Rule,
     rules: &HashMap<u32, Rule>,
-) -> HashSet<Message<'a>> {
+) -> Vec<Message<'a>> {
     match rule {
         Rule::Leaf(leaf) => match message.val {
-            [start, val @ ..] if start == leaf => [Message { val }].iter().map(|&x| x).collect(),
-            _ => return HashSet::new(),
+            [start, val @ ..] if start == leaf => vec![Message { val }],
+            _ => Vec::new(),
         },
-        Rule::Match(branches) => {
-            return branches
-                .iter()
-                .flat_map(|branch| {
-                    branch.iter().fold(
-                        [message].iter().map(|&x| x).collect::<HashSet<_>>(),
-                        |cur, r| {
-                            cur.iter()
-                                .flat_map(|m| strip_prexix(*m, &rules[&r], rules))
-                                .collect()
-                        },
-                    )
+        Rule::Match(branches) => branches
+            .iter()
+            .flat_map(|branch| {
+                branch.iter().fold(vec![message], |cur, r| {
+                    cur.iter()
+                        .flat_map(|m| strip_prexix(*m, &rules[&r], rules))
+                        .collect()
                 })
-                .collect();
-        }
+            })
+            .collect(),
     }
 }
 
@@ -53,15 +48,15 @@ pub fn calc() -> (usize, usize) {
             let num = parts.next().unwrap().parse().unwrap();
             let rule_parts = parts.next().unwrap();
 
-            if rule_parts.contains("\"") {
+            if rule_parts.contains('"') {
                 let ch = rule_parts.trim().replace("\"", "").chars().next().unwrap();
                 char_rules.insert(ch, num);
                 (num, Rule::Leaf(num))
             } else {
-                let rules = rule_parts.trim().split("|");
+                let rules = rule_parts.trim().split('|');
 
                 let matches = rules
-                    .map(|r| r.trim().split(" ").map(|n| n.parse().unwrap()).collect())
+                    .map(|r| r.trim().split(' ').map(|n| n.parse().unwrap()).collect())
                     .collect::<Vec<Vec<u32>>>();
                 (num, Rule::Match(matches))
             }
@@ -80,11 +75,11 @@ pub fn calc() -> (usize, usize) {
         .filter(|val| {
             strip_prexix(Message { val }, &rules[&0], &rules)
                 .iter()
-                .any(|r| r.val.len() == 0)
+                .any(|r| r.val.is_empty())
         })
         .count();
 
-    let mut new_rules = rules.clone();
+    let mut new_rules = rules;
     new_rules.insert(8, Rule::Match(vec![vec![42], vec![42, 8]]));
     new_rules.insert(11, Rule::Match(vec![vec![42, 31], vec![42, 11, 31]]));
 
@@ -93,7 +88,7 @@ pub fn calc() -> (usize, usize) {
         .filter(|val| {
             strip_prexix(Message { val }, &new_rules[&0], &new_rules)
                 .iter()
-                .any(|r| r.val.len() == 0)
+                .any(|r| r.val.is_empty())
         })
         .count();
     (p1, p2)

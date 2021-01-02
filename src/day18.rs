@@ -31,7 +31,7 @@ fn tokenize(s: &str) -> Vec<Token> {
         .collect()
 }
 
-fn evaluate(tokens: &Vec<Token>, prec_add: i32, prec_times: i32) -> u64 {
+fn evaluate(tokens: &[Token], prec_add: i32, prec_times: i32) -> u64 {
     let mut prec = HashMap::<Token, i32>::new();
     prec.insert(Token::Times, prec_times);
     prec.insert(Token::Plus, prec_add);

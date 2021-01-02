@@ -11,7 +11,7 @@ pub fn calc() -> (usize, String) {
 
     for line in input_str.lines() {
         let mut parts = line.split(" (contains ");
-        let food_list: HashSet<&str> = parts.next().unwrap().split(" ").collect();
+        let food_list: HashSet<&str> = parts.next().unwrap().split(' ').collect();
         let allergy_list = parts
             .next()
             .and_then(|f| f.strip_suffix(")"))
@@ -25,7 +25,7 @@ pub fn calc() -> (usize, String) {
                 *cur_potential = cur_potential
                     .intersection(&food_list)
                     .to_owned()
-                    .map(|&s| s)
+                    .copied()
                     .collect::<HashSet<&str>>();
             } else {
                 let mut set = HashSet::new();

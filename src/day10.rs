@@ -8,7 +8,7 @@ pub fn calc() -> (i64, i64) {
         .collect::<Vec<_>>();
 
     nums.push(0);
-    nums.sort();
+    nums.sort_unstable();
     let device = nums.last().unwrap() + 3;
     nums.push(device);
 
