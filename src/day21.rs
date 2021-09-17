@@ -14,7 +14,7 @@ pub fn calc() -> (usize, String) {
         let food_list: HashSet<&str> = parts.next().unwrap().split(' ').collect();
         let allergy_list = parts
             .next()
-            .and_then(|f| f.strip_suffix(")"))
+            .and_then(|f| f.strip_suffix(')'))
             .unwrap()
             .split(", ");
 
@@ -66,7 +66,7 @@ pub fn calc() -> (usize, String) {
         .map(|(&k, v)| (k, *v.iter().next().unwrap()))
         .collect();
 
-    allergen_tuples.sort_by(|a, b| a.0.cmp(&b.0));
+    allergen_tuples.sort_by(|a, b| a.0.cmp(b.0));
 
     let bad_list = allergen_tuples
         .iter()

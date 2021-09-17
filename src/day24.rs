@@ -32,7 +32,7 @@ pub fn calc() -> (usize, usize) {
             let mut ret = Vec::new();
             let mut left = l;
             while !left.is_empty() {
-                if let Some(pre) = left.strip_prefix("e") {
+                if let Some(pre) = left.strip_prefix('e') {
                     ret.push(Command::East);
                     left = pre;
                 }
@@ -44,7 +44,7 @@ pub fn calc() -> (usize, usize) {
                     ret.push(Command::SouthWest);
                     left = pre;
                 }
-                if let Some(pre) = left.strip_prefix("w") {
+                if let Some(pre) = left.strip_prefix('w') {
                     ret.push(Command::West);
                     left = pre;
                 }

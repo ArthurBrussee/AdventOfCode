@@ -27,7 +27,7 @@ fn strip_prexix<'a>(
             .flat_map(|branch| {
                 branch.iter().fold(vec![message], |cur, r| {
                     cur.iter()
-                        .flat_map(|m| strip_prexix(*m, &rules[&r], rules))
+                        .flat_map(|m| strip_prexix(*m, &rules[r], rules))
                         .collect()
                 })
             })

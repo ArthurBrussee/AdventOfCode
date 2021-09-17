@@ -41,7 +41,7 @@ pub fn calc() -> (u32, u32) {
     let max_seat_id = *seat_ids.iter().max().unwrap();
 
     let my_seat = (0..=max_seat_id)
-        .filter(|id| id > &0 && !seat_ids.contains(&id))
+        .filter(|id| id > &0 && !seat_ids.contains(id))
         .find(|id| [id - 1, id + 1].iter().all(|nid| seat_ids.contains(nid)))
         .unwrap();
 

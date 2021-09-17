@@ -112,7 +112,7 @@ pub fn calc() -> (u64, usize) {
             let id = board_iter
                 .next()
                 .and_then(|f| f.strip_prefix("Tile "))
-                .and_then(|f| f.strip_suffix(":"))
+                .and_then(|f| f.strip_suffix(':'))
                 .and_then(|f| f.parse().ok())
                 .unwrap();
             let rest_string = board_iter.next().unwrap();

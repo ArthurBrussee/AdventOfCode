@@ -14,7 +14,7 @@ impl Passport {
     fn parse(val: &str) -> Option<Passport> {
         let kv: HashMap<&str, &str> = val
             .split_whitespace()
-            .filter(|&f| f != "")
+            .filter(|&f| !f.is_empty())
             .map(|kv| {
                 let mut parts = kv.split(':');
                 (parts.next().unwrap(), parts.next().unwrap())
