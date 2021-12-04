@@ -25,7 +25,7 @@ fn offset(pos: (i32, i32), command: Command) -> (i32, i32) {
 }
 
 pub fn calc() -> (usize, usize) {
-    let instructions = fs::read_to_string("./inputs/day24.txt")
+    let instructions = fs::read_to_string("./solve_2020/inputs/day24.txt")
         .expect("Can't find input file.")
         .lines()
         .map(|l| {

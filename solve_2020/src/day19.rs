@@ -36,7 +36,7 @@ fn strip_prexix<'a>(
 }
 
 pub fn calc() -> (usize, usize) {
-    let test_str = fs::read_to_string("./inputs/day19.txt").unwrap();
+    let test_str = fs::read_to_string("./solve_2020/inputs/day19.txt").unwrap();
     let mut input_parts = test_str.split("\r\n\r\n");
     let mut char_rules = HashMap::<char, u32>::new();
     let rules = input_parts

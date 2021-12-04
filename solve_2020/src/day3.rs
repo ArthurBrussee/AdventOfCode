@@ -10,7 +10,7 @@ fn tree_count(slope_x: usize, slope_y: usize, map: &[String]) -> usize {
 }
 
 pub fn calc() -> (usize, usize) {
-    let map = BufReader::new(File::open("./inputs/day3.txt").unwrap())
+    let map = BufReader::new(File::open("./solve_2020/inputs/day3.txt").unwrap())
         .lines()
         .filter_map(|l| l.ok())
         .collect::<Vec<_>>();

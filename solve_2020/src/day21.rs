@@ -4,7 +4,7 @@ use std::{
 };
 
 pub fn calc() -> (usize, String) {
-    let input_str = fs::read_to_string("./inputs/day21.txt").unwrap();
+    let input_str = fs::read_to_string("./solve_2020/inputs/day21.txt").unwrap();
 
     let mut all_ingredients: Vec<&str> = Vec::new();
     let mut allergy_potential: HashMap<&str, HashSet<&str>> = HashMap::new();

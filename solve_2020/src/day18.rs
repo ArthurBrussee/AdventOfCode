@@ -11,8 +11,9 @@ enum Token {
 }
 
 pub fn calc() -> (u64, u64) {
-    let file_str = fs::read_to_string("./inputs/day18.txt").expect("Can't find input file.");
-    let tokens = file_str.lines().map(|l| tokenize(l)).collect::<Vec<_>>();
+    let file_str =
+        fs::read_to_string("./solve_2020/inputs/day18.txt").expect("Can't find input file.");
+    let tokens = file_str.lines().map(tokenize).collect::<Vec<_>>();
     let p1 = tokens.iter().map(|l| evaluate(l, 1, 1)).sum();
     let p2 = tokens.iter().map(|l| evaluate(l, 2, 1)).sum();
     (p1, p2)

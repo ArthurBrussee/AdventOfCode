@@ -17,7 +17,7 @@ fn rotate(dir: (f32, f32), angle: f32) -> (f32, f32) {
 }
 
 pub fn calc() -> (i32, i32) {
-    let instructions = fs::read_to_string("./inputs/day12.txt")
+    let instructions = fs::read_to_string("./solve_2020/inputs/day12.txt")
         .expect("Can't find input file.")
         .lines()
         .map(|l| {

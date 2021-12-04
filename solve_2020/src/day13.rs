@@ -5,7 +5,7 @@ fn modinv(time: u64, freq: u64) -> u64 {
 }
 
 pub fn calc() -> (u64, u64) {
-    let file = fs::read_to_string("./inputs/day13.txt").unwrap();
+    let file = fs::read_to_string("./solve_2020/inputs/day13.txt").unwrap();
     let mut lines = file.lines();
     let earliest = lines.next().and_then(|x| x.parse().ok()).unwrap();
     let busses = lines

@@ -33,7 +33,7 @@ fn pass_p2(pass: &PasswordProto) -> bool {
 }
 
 pub fn calc() -> (usize, usize) {
-    let passwords = fs::read_to_string("./inputs/day2.txt")
+    let passwords = fs::read_to_string("./solve_2020/inputs/day2.txt")
         .unwrap()
         .lines()
         .map(PasswordProto::new)

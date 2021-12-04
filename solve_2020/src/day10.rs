@@ -1,7 +1,7 @@
 use std::fs;
 
 pub fn calc() -> (i64, i64) {
-    let mut nums = fs::read_to_string("./inputs/day10.txt")
+    let mut nums = fs::read_to_string("./solve_2020/inputs/day10.txt")
         .expect("Can't find input file.")
         .lines()
         .map(|x| x.parse::<i64>().unwrap())

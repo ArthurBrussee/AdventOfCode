@@ -32,7 +32,7 @@ fn seat_id(seat: (u32, u32)) -> u32 {
 }
 
 pub fn calc() -> (u32, u32) {
-    let seat_ids = fs::read_to_string("./inputs/day5.txt")
+    let seat_ids = fs::read_to_string("./solve_2020/inputs/day5.txt")
         .unwrap()
         .lines()
         .map(|s| seat_id(seat(s)))

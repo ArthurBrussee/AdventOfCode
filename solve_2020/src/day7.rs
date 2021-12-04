@@ -39,7 +39,7 @@ pub fn calc() -> (usize, usize) {
             .collect();
         (bag_name(parts[0]), bags)
     }
-    let rulebook: RuleBook = fs::read_to_string("./inputs/day7.txt")
+    let rulebook: RuleBook = fs::read_to_string("./solve_2020/inputs/day7.txt")
         .unwrap()
         .lines()
         .map(parse_bagrule)

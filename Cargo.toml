@@ -1,8 +1,18 @@
 [package]
-name = "advent_2020"
-version = "0.1.0"
-authors = ["Arthur Brussee <arthur.brussee@gmail.com>"]
+name = "advent_of_code"
+version = "1.0.0"
 edition = "2021"
 
-[profile.dev]
-opt-level = 0
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+solve_2020 = { path = "./solve_2020" }
+solve_2021 = { path = "./solve_2021" }
+aoc_lib = { path = "./aoc_lib" }
+
+[workspace]
+members = [
+    "solve_2020",
+    "solve_2021",
+    "aoc_lib",
+]

@@ -20,7 +20,7 @@ fn crack(nums: &[i64], preamble: usize) -> Option<i64> {
 }
 
 pub fn calc() -> (i64, i64) {
-    let nums = fs::read_to_string("./inputs/day9.txt")
+    let nums = fs::read_to_string("./solve_2020/inputs/day9.txt")
         .expect("Can't find input file.")
         .lines()
         .map(|x| x.parse().unwrap())

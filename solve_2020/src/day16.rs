@@ -7,7 +7,8 @@ struct Condition {
 }
 
 pub fn calc() -> (u64, u64) {
-    let file_str = fs::read_to_string("./inputs/day16.txt").expect("Can't find input file.");
+    let file_str =
+        fs::read_to_string("./solve_2020/inputs/day16.txt").expect("Can't find input file.");
     let lines = file_str.lines().collect::<Vec<_>>();
 
     let constraints = lines

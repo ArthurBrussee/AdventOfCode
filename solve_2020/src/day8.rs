@@ -33,7 +33,7 @@ fn execute_program(instructions: &[Instruction]) -> (bool, i32) {
 }
 
 pub fn calc() -> (i32, i32) {
-    let instructions = fs::read_to_string("./inputs/day8.txt")
+    let instructions = fs::read_to_string("./solve_2020/inputs/day8.txt")
         .expect("Can't find input file.")
         .lines()
         .map(|l| {

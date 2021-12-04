@@ -104,7 +104,7 @@ fn fits(tile: &Tile, (x, y): (i32, i32), grid: &HashMap<(i32, i32), Tile>) -> bo
 }
 
 pub fn calc() -> (u64, usize) {
-    let tiles = fs::read_to_string("./inputs/day20.txt")
+    let tiles = fs::read_to_string("./solve_2020/inputs/day20.txt")
         .unwrap()
         .split("\n\n")
         .map(|tile| {

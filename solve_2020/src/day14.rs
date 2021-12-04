@@ -13,7 +13,7 @@ fn parse_addr(left: &str, right: &str) -> (usize, u64) {
 }
 
 pub fn calc() -> (u64, u64) {
-    let file = fs::read_to_string("./inputs/day14.txt").unwrap();
+    let file = fs::read_to_string("./solve_2020/inputs/day14.txt").unwrap();
 
     let mut mems: HashMap<usize, u64> = HashMap::new();
     let mut mask_or = 0;

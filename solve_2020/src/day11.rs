@@ -127,8 +127,9 @@ fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
 }
 
 pub fn calc() -> (usize, usize) {
-    let board =
-        Board::new(&fs::read_to_string("./inputs/day11.txt").expect("Can't find input file."));
+    let board = Board::new(
+        &fs::read_to_string("./solve_2020/inputs/day11.txt").expect("Can't find input file."),
+    );
     let p1 = simulate_to_equal(&board, 4, false);
     let p2 = simulate_to_equal(&board, 5, true);
     (p1, p2)
