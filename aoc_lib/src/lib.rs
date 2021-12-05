@@ -44,6 +44,17 @@ pub fn get_years_to_run() -> impl Iterator<Item = usize> {
     years.into_iter()
 }
 
+pub fn map_file_lines<T>(path: &str, func: fn(&str) -> T) -> Vec<T> {
+    map_lines(
+        &fs::read_to_string(path).expect("Failed to find file!"),
+        func,
+    )
+}
+
+pub fn map_lines<T>(str: &str, func: fn(&str) -> T) -> Vec<T> {
+    str.lines().map(func).collect()
+}
+
 pub fn parse_file_lines<T>(path: &str) -> Vec<T>
 where
     T: FromStr,
@@ -57,7 +68,5 @@ where
     T: FromStr,
     <T as std::str::FromStr>::Err: std::fmt::Debug,
 {
-    str.lines()
-        .map(|it| it.parse().expect("Failed to parse!"))
-        .collect()
+    map_lines(str, |it| it.parse().expect("Failed to parse!"))
 }

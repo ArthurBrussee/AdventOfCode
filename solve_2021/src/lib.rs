@@ -1,9 +1,12 @@
+#![feature(destructuring_assignment)]
+
 use std::time::Instant;
 
 use aoc_lib::run_solution;
 
 mod day1;
 mod day2;
+mod day3;
 
 pub fn run() {
     println!("AOC 2021!");
@@ -13,6 +16,7 @@ pub fn run() {
     let funcs = [
         || run_solution(1, day1::calc),
         || run_solution(2, day2::calc),
+        || run_solution(3, day3::calc),
     ];
 
     for f in aoc_lib::get_days_to_run().filter_map(|d| funcs.get(d)) {
