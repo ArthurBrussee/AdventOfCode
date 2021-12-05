@@ -8,7 +8,7 @@ fn calc_window_sum(nums: &[usize]) -> usize {
 }
 
 pub fn calc() -> (usize, usize) {
-    let inputs: Vec<usize> = aoc_lib::read_file_lines("./solve_2021/inputs/day1.txt");
+    let inputs: Vec<usize> = aoc_lib::parse_file_lines("./solve_2021/inputs/day1.txt");
 
     (calc_increasing(&inputs), calc_window_sum(&inputs))
 }
