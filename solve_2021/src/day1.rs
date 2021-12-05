@@ -1,3 +1,27 @@
+fn calc_increasing(nums: &[usize]) -> usize {
+    nums.windows(2).filter(|w| w[0] < w[1]).count()
+}
+
+fn calc_window_sum(nums: &[usize]) -> usize {
+    let windowed: Vec<usize> = nums.windows(3).map(|w| w.iter().sum()).collect();
+    calc_increasing(&windowed)
+}
+
 pub fn calc() -> (usize, usize) {
-    (0, 0)
+    let inputs: Vec<usize> = aoc_lib::read_file_lines("./solve_2021/inputs/day1.txt");
+
+    (calc_increasing(&inputs), calc_window_sum(&inputs))
+}
+
+#[test]
+fn test_p1() {
+    let inputs = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+    assert_eq!(calc_increasing(&inputs), 7)
+}
+
+#[test]
+fn test_p2() {
+    let inputs = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+    let sum = calc_window_sum(&inputs);
+    assert_eq!(sum, 5)
 }

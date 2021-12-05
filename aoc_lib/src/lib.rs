@@ -1,4 +1,10 @@
-use std::{env, fmt::Display, time::Instant};
+use std::{
+    env,
+    fmt::{Debug, Display},
+    fs,
+    str::FromStr,
+    time::Instant,
+};
 
 pub fn run_solution<T, V>(day: u32, calc: fn() -> (T, V))
 where
@@ -36,4 +42,16 @@ pub fn get_years_to_run() -> impl Iterator<Item = usize> {
     }
 
     years.into_iter()
+}
+
+pub fn read_file_lines<T>(path: &str) -> Vec<T>
+where
+    T: FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Debug,
+{
+    fs::read_to_string(path)
+        .unwrap()
+        .lines()
+        .map(|it| it.parse().expect("Failed to parse!"))
+        .collect()
 }

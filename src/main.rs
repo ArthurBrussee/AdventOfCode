@@ -1,3 +1,5 @@
+#![feature(array_windows)]
+
 fn main() {
     let years: Vec<usize> = aoc_lib::get_years_to_run().collect();
 
