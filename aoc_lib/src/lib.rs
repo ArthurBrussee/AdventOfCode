@@ -1,10 +1,4 @@
-use std::{
-    env,
-    fmt::{Debug, Display},
-    fs,
-    str::FromStr,
-    time::Instant,
-};
+use std::{env, fmt::Display, fs, str::FromStr, time::Instant};
 
 pub fn run_solution<T, V>(day: u32, calc: fn() -> (T, V))
 where
