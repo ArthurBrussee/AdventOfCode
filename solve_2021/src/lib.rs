@@ -1,5 +1,5 @@
 #![feature(destructuring_assignment)]
-#![feature(label_break_value)]
+#![feature(bool_to_option)]
 
 use std::time::Instant;
 
@@ -12,6 +12,8 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+
+mod day9;
 
 pub fn run() {
     println!("AOC 2021!");
@@ -26,6 +28,7 @@ pub fn run() {
         || run_solution(5, day5::calc),
         || run_solution(6, day6::calc),
         || run_solution(7, day7::calc),
+        || run_solution(9, day9::calc),
     ];
 
     for f in aoc_lib::get_days_to_run().filter_map(|d| funcs.get(d)) {
