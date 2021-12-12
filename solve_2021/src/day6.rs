@@ -35,11 +35,7 @@ pub fn calc(input: &str) -> (usize, usize) {
 
 #[test]
 fn test() {
-    let nums = [3, 4, 3, 1, 2];
-    let mut pop = create_pop(&nums);
-    for _ in 0..80 {
-        simulate_fish(&mut pop);
-    }
-
-    assert_eq!(pop.iter().sum::<usize>(), 5934);
+    let (p1, p2) = calc(&aoc_lib::read_file(2021, 6, true));
+    assert_eq!(p1, 5934);
+    assert_eq!(p2, 26984457539);
 }

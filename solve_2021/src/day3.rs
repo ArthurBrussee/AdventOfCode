@@ -69,7 +69,7 @@ fn calc_diagnostic(nums: &[u16]) -> u32 {
 }
 
 #[test]
-fn test_p1() {
+fn test() {
     let inputs = r#"00100
 11110
 10110
@@ -83,25 +83,7 @@ fn test_p1() {
 00010
 01010"#;
 
-    let nums = aoc_lib::map_lines(inputs, parse_bin);
-    assert_eq!(calc_power(&nums), 198)
-}
-
-#[test]
-fn test_p2() {
-    let inputs = r#"00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010"#;
-
-    let nums = aoc_lib::map_lines(inputs, parse_bin);
-    assert_eq!(calc_diagnostic(&nums), 230)
+    let (p1, p2) = calc(inputs);
+    assert_eq!(p1, 198);
+    assert_eq!(p2, 230);
 }

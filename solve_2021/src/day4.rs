@@ -124,11 +124,8 @@ pub fn calc(input: &str) -> (u32, u32) {
 }
 
 #[test]
-fn test_p1() {
-    // assert_eq!(calc().0, 4512);
-}
-
-#[test]
-fn test_p2() {
-    // assert_eq!(calc().1, 1924);
+fn test() {
+    let (p1, p2) = calc(&aoc_lib::read_file(2021, 4, true));
+    assert_eq!(p1, 4512);
+    assert_eq!(p2, 1924);
 }

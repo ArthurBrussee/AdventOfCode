@@ -94,18 +94,7 @@ pub fn calc(input: &str) -> (u32, usize) {
 
 #[test]
 fn test() {
-    let grid = parse_nums(
-        "2199943210
-3987894921
-9856789892
-8767896789
-9899965678",
-    );
-
-    let low_points = get_low_points(&grid);
-    let p1 = low_points
-        .iter()
-        .map(|(x, y)| grid.get(*x, *y).unwrap() as u32 + 1)
-        .sum::<u32>();
+    let (p1, p2) = calc(&aoc_lib::read_file(2021, 9, true));
     assert_eq!(p1, 15);
+    assert_eq!(p2, 1134);
 }

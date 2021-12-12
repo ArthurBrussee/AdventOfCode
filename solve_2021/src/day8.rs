@@ -65,7 +65,7 @@ pub fn calc(input: &str) -> (usize, usize) {
                 .map(|x| {
                     mapping
                         .iter()
-                        .position(|m| mutual_count(m, x) == x.len() as u8)
+                        .position(|m| m.len() == x.len() && mutual_count(m, x) == x.len() as u8)
                         .unwrap()
                 })
                 .rev()
@@ -76,4 +76,11 @@ pub fn calc(input: &str) -> (usize, usize) {
         .sum();
 
     (p1, p2)
+}
+
+#[test]
+fn test() {
+    let (p1, p2) = calc(&aoc_lib::read_file(2021, 8, true));
+    assert_eq!(p1, 26);
+    assert_eq!(p2, 61229);
 }

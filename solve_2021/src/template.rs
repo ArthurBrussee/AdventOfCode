@@ -1,11 +1,8 @@
 pub fn calc(input: &str) -> (usize, usize) {}
 
 #[test]
-fn test_p1() {
-    assert_eq!(calc.0, 1);
-}
-
-#[test]
-fn test_p2() {
-    assert_eq!(calc.1, 1);
+fn test() {
+    let (p1, p2) = calc(&aoc_lib::read_file(2021, 1, true));
+    assert_eq!(p1, 1);
+    assert_eq!(p2, 1);
 }

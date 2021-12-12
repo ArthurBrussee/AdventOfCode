@@ -22,7 +22,6 @@ pub fn calc(input: &str) -> (i32, i32) {
 #[test]
 fn test() {
     let nums = [16, 1, 2, 0, 4, 2, 7, 1, 2, 14];
-
     assert_eq!(min_fuel(&nums, |x| x.abs()), 37);
     assert_eq!(min_fuel(&nums, |x| sum_to(x.abs())), 168);
 }

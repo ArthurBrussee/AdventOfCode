@@ -1,5 +1,14 @@
 use std::{env, fmt::Display, fs, str::FromStr, time::Instant};
 
+pub fn read_file(year: u32, day: u32, test: bool) -> String {
+    let path = if test {
+        format!("./inputs/day{}_test.txt", day)
+    } else {
+        format!("./solve_{}/inputs/day{}.txt", year, day)
+    };
+    fs::read_to_string(&path).expect("Please include input file!")
+}
+
 pub fn run_solution<T, V>(year: u32, day: u32, calc: fn(&str) -> (T, V))
 where
     T: Display,
@@ -7,9 +16,7 @@ where
 {
     let now = Instant::now();
 
-    let path = format!("./solve_{}/inputs/day{}.txt", year, day);
-    let input = fs::read_to_string(&path).expect("Please include input file!");
-    let (p1, p2) = calc(&input);
+    let (p1, p2) = calc(&read_file(year, day, false));
     let ms = now.elapsed().as_secs_f64() * 1000.0;
     println!("Day {}, {:.2}ms: ({}, {})", day, ms, p1, p2);
 }
