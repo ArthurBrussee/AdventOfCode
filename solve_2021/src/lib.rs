@@ -6,6 +6,7 @@ use std::time::Instant;
 use aoc_lib::run_solution;
 
 mod day1;
+mod day10;
 mod day2;
 mod day3;
 mod day4;
@@ -30,6 +31,7 @@ pub fn run() {
         || run_solution(2021, 7, day7::calc),
         || run_solution(2021, 8, day8::calc),
         || run_solution(2021, 9, day9::calc),
+        || run_solution(2021, 10, day10::calc),
     ];
 
     for f in aoc_lib::get_days_to_run().filter_map(|d| funcs.get(d)) {
