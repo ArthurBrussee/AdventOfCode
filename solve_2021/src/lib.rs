@@ -12,7 +12,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
-
+mod day8;
 mod day9;
 
 pub fn run() {
@@ -28,6 +28,7 @@ pub fn run() {
         || run_solution(5, day5::calc),
         || run_solution(6, day6::calc),
         || run_solution(7, day7::calc),
+        || run_solution(8, day8::calc),
         || run_solution(9, day9::calc),
     ];
 

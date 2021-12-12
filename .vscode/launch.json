@@ -7,53 +7,93 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=advent_2020",
-                    "--package=advent_2020"
-                ],
-                "filter": {
-                    "name": "advent_2020",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}",
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Release",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=advent_2020",
-                    "--package=advent_2020",
-                    "--release",
-                ],
-                "filter": {
-                    "name": "advent_2020",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}",
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug Tests",
+            "name": "Debug unit tests in library 'solve_2020'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=advent_2020",
-                    "--package=advent_2020"
+                    "--lib",
+                    "--package=solve_2020"
                 ],
                 "filter": {
-                    "name": "advent_2020",
+                    "name": "solve_2020",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'aoc_lib'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=aoc_lib"
+                ],
+                "filter": {
+                    "name": "aoc_lib",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'solve_2021'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=solve_2021"
+                ],
+                "filter": {
+                    "name": "solve_2021",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'advent_of_code'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=advent_of_code",
+                    "--package=advent_of_code",
+                ],
+                "filter": {
+                    "name": "advent_of_code",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--year2021"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'advent_of_code'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=advent_of_code",
+                    "--package=advent_of_code"
+                ],
+                "filter": {
+                    "name": "advent_of_code",
                     "kind": "bin"
                 }
             },
