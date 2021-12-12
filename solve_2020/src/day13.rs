@@ -1,12 +1,9 @@
-use std::fs;
-
 fn modinv(time: u64, freq: u64) -> u64 {
     (freq - time % freq) % freq
 }
 
-pub fn calc() -> (u64, u64) {
-    let file = fs::read_to_string("./solve_2020/inputs/day13.txt").unwrap();
-    let mut lines = file.lines();
+pub fn calc(input: &str) -> (u64, u64) {
+    let mut lines = input.lines();
     let earliest = lines.next().and_then(|x| x.parse().ok()).unwrap();
     let busses = lines
         .next()

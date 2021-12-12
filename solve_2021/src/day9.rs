@@ -71,8 +71,8 @@ fn parse_nums(input: &str) -> Grid {
     }
 }
 
-pub fn calc() -> (u32, usize) {
-    let grid = parse_nums(&aoc_lib::read_file("./solve_2021/inputs/day9.txt"));
+pub fn calc(input: &str) -> (u32, usize) {
+    let grid = parse_nums(input);
 
     let low_points = get_low_points(&grid);
     let p1 = low_points

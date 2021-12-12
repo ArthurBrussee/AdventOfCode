@@ -1,4 +1,4 @@
-use std::{collections::HashSet, fs};
+use std::collections::HashSet;
 
 fn seat(seat_str: &str) -> (u32, u32) {
     let row = seat_str[0..7]
@@ -31,9 +31,8 @@ fn seat_id(seat: (u32, u32)) -> u32 {
     seat.0 * 8 + seat.1
 }
 
-pub fn calc() -> (u32, u32) {
-    let seat_ids = fs::read_to_string("./solve_2020/inputs/day5.txt")
-        .unwrap()
+pub fn calc(input: &str) -> (u32, u32) {
+    let seat_ids = input
         .lines()
         .map(|s| seat_id(seat(s)))
         .collect::<HashSet<_>>();

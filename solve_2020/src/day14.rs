@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::fs;
 
 fn parse_addr(left: &str, right: &str) -> (usize, u64) {
     let addr: usize = left
@@ -12,14 +11,12 @@ fn parse_addr(left: &str, right: &str) -> (usize, u64) {
     (addr, val)
 }
 
-pub fn calc() -> (u64, u64) {
-    let file = fs::read_to_string("./solve_2020/inputs/day14.txt").unwrap();
-
+pub fn calc(input: &str) -> (u64, u64) {
     let mut mems: HashMap<usize, u64> = HashMap::new();
     let mut mask_or = 0;
     let mut mask_and = 0;
 
-    for line in file.lines() {
+    for line in input.lines() {
         let parts = line.split(" = ").collect::<Vec<_>>();
         match parts[0] {
             "mask" => {
@@ -47,7 +44,7 @@ pub fn calc() -> (u64, u64) {
     let mut bitmasks: Vec<usize> = vec![];
     let mut mask_and = 0;
 
-    for line in file.lines() {
+    for line in input.lines() {
         let parts = line.split(" = ").collect::<Vec<_>>();
 
         match parts[0] {

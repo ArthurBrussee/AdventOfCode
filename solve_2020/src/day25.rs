@@ -10,7 +10,7 @@ fn transform(subject: usize, loop_size: usize) -> usize {
     cur
 }
 
-pub fn calc() -> (usize, usize) {
+pub fn calc(_: &str) -> (usize, usize) {
     let card_key_public = 2959251;
     let door_key_public = 4542595;
 

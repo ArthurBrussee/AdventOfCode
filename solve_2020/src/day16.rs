@@ -1,4 +1,4 @@
-use std::{fs, ops::Range};
+use std::ops::Range;
 
 struct Condition {
     name: String,
@@ -6,10 +6,8 @@ struct Condition {
     max: Range<u64>,
 }
 
-pub fn calc() -> (u64, u64) {
-    let file_str =
-        fs::read_to_string("./solve_2020/inputs/day16.txt").expect("Can't find input file.");
-    let lines = file_str.lines().collect::<Vec<_>>();
+pub fn calc(input: &str) -> (u64, u64) {
+    let lines = input.lines().collect::<Vec<_>>();
 
     let constraints = lines
         .iter()

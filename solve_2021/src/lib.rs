@@ -21,15 +21,15 @@ pub fn run() {
     let start_run = Instant::now();
 
     let funcs = [
-        || run_solution(1, day1::calc),
-        || run_solution(2, day2::calc),
-        || run_solution(3, day3::calc),
-        || run_solution(4, day4::calc),
-        || run_solution(5, day5::calc),
-        || run_solution(6, day6::calc),
-        || run_solution(7, day7::calc),
-        || run_solution(8, day8::calc),
-        || run_solution(9, day9::calc),
+        || run_solution(2021, 1, day1::calc),
+        || run_solution(2021, 2, day2::calc),
+        || run_solution(2021, 3, day3::calc),
+        || run_solution(2021, 4, day4::calc),
+        || run_solution(2021, 5, day5::calc),
+        || run_solution(2021, 6, day6::calc),
+        || run_solution(2021, 7, day7::calc),
+        || run_solution(2021, 8, day8::calc),
+        || run_solution(2021, 9, day9::calc),
     ];
 
     for f in aoc_lib::get_days_to_run().filter_map(|d| funcs.get(d)) {

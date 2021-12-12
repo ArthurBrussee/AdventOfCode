@@ -60,7 +60,7 @@ fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
     cur_cubes.values().filter(|&&x| x).count()
 }
 
-pub fn calc() -> (usize, usize) {
+pub fn calc(_: &str) -> (usize, usize) {
     let board = "###..#..
 .#######
 #####...

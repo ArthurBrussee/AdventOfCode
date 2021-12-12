@@ -1,5 +1,3 @@
-use std::fs;
-
 enum Instruction {
     North(f32),
     South(f32),
@@ -16,9 +14,8 @@ fn rotate(dir: (f32, f32), angle: f32) -> (f32, f32) {
     (dir.0 * c - dir.1 * s, dir.0 * s + dir.1 * c)
 }
 
-pub fn calc() -> (i32, i32) {
-    let instructions = fs::read_to_string("./solve_2020/inputs/day12.txt")
-        .expect("Can't find input file.")
+pub fn calc(input: &str) -> (i32, i32) {
+    let instructions = input
         .lines()
         .map(|l| {
             let mut ch = l.chars();

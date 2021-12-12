@@ -12,12 +12,8 @@ fn sum_to(n: i32) -> i32 {
     n * (n + 1) / 2
 }
 
-pub fn calc() -> (i32, i32) {
-    let nums: Vec<i32> = aoc_lib::read_file("./solve_2021/inputs/day7.txt")
-        .split(',')
-        .map(|x| x.parse().unwrap())
-        .collect();
-
+pub fn calc(input: &str) -> (i32, i32) {
+    let nums: Vec<i32> = input.split(',').map(|x| x.parse().unwrap()).collect();
     let p1 = min_fuel(&nums, |x| x.abs());
     let p2 = min_fuel(&nums, |x| sum_to(x.abs()));
     (p1, p2)

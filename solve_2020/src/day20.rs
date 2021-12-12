@@ -1,5 +1,5 @@
 use std::cmp::max;
-use std::{collections::HashMap, fs};
+use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
 enum Transform {
@@ -103,9 +103,8 @@ fn fits(tile: &Tile, (x, y): (i32, i32), grid: &HashMap<(i32, i32), Tile>) -> bo
     true
 }
 
-pub fn calc() -> (u64, usize) {
-    let tiles = fs::read_to_string("./solve_2020/inputs/day20.txt")
-        .unwrap()
+pub fn calc(input: &str) -> (u64, usize) {
+    let tiles = input
         .split("\n\n")
         .map(|tile| {
             let mut board_iter = tile.splitn(2, "\r\n");

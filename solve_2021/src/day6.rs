@@ -19,11 +19,8 @@ fn create_pop(day_counts: &[usize]) -> [usize; 9] {
     pop
 }
 
-pub fn calc() -> (usize, usize) {
-    let nums: Vec<usize> = aoc_lib::read_file("./solve_2021/inputs/day6.txt")
-        .split(',')
-        .map(|x| x.parse().unwrap())
-        .collect();
+pub fn calc(input: &str) -> (usize, usize) {
+    let nums: Vec<usize> = input.split(',').map(|x| x.parse().unwrap()).collect();
     let mut pop = create_pop(&nums);
     for _ in 0..80 {
         simulate_fish(&mut pop);

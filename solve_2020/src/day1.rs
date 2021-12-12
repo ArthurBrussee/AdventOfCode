@@ -1,12 +1,7 @@
 use std::collections::HashSet;
-use std::fs;
 
-pub fn calc() -> (i32, i32) {
-    let map: HashSet<i32> = fs::read_to_string("./solve_2020/inputs/day1.txt")
-        .unwrap()
-        .lines()
-        .map(|it| it.parse().unwrap())
-        .collect();
+pub fn calc(input: &str) -> (i32, i32) {
+    let map: HashSet<i32> = input.lines().map(|it| it.parse().unwrap()).collect();
     (part1(&map), part2(&map))
 }
 

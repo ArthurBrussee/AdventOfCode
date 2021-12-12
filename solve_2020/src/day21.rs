@@ -1,15 +1,10 @@
-use std::{
-    collections::{HashMap, HashSet},
-    fs,
-};
+use std::collections::{HashMap, HashSet};
 
-pub fn calc() -> (usize, String) {
-    let input_str = fs::read_to_string("./solve_2020/inputs/day21.txt").unwrap();
-
+pub fn calc(input: &str) -> (usize, String) {
     let mut all_ingredients: Vec<&str> = Vec::new();
     let mut allergy_potential: HashMap<&str, HashSet<&str>> = HashMap::new();
 
-    for line in input_str.lines() {
+    for line in input.lines() {
         let mut parts = line.split(" (contains ");
         let food_list: HashSet<&str> = parts.next().unwrap().split(' ').collect();
         let allergy_list = parts

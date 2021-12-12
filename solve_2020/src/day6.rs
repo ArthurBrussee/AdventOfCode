@@ -1,8 +1,5 @@
-use std::fs;
-
-pub fn calc() -> (u32, u32) {
-    fs::read_to_string("./solve_2020/inputs/day6.txt")
-        .expect("Can't find input file.")
+pub fn calc(input: &str) -> (u32, u32) {
+    input
         .split("\n\n")
         .map(|group| {
             group

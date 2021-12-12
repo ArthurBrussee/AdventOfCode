@@ -59,8 +59,8 @@ impl FromStr for Command {
 
 impl Submarine {}
 
-pub fn calc() -> (usize, usize) {
-    let commands: Vec<Command> = aoc_lib::parse_file_lines("./solve_2021/inputs/day2.txt");
+pub fn calc(input: &str) -> (usize, usize) {
+    let commands: Vec<Command> = aoc_lib::parse_lines(input);
     let mut sub = Submarine::default();
     sub.command(&commands);
     let p1 = sub.x * sub.y;

@@ -1,5 +1,3 @@
-use std::fs;
-
 fn crack(nums: &[i64], preamble: usize) -> Option<i64> {
     for i in preamble..nums.len() {
         let mut found = false;
@@ -19,9 +17,8 @@ fn crack(nums: &[i64], preamble: usize) -> Option<i64> {
     None
 }
 
-pub fn calc() -> (i64, i64) {
-    let nums = fs::read_to_string("./solve_2020/inputs/day9.txt")
-        .expect("Can't find input file.")
+pub fn calc(input: &str) -> (i64, i64) {
+    let nums = input
         .lines()
         .map(|x| x.parse().unwrap())
         .collect::<Vec<i64>>();

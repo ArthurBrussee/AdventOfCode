@@ -6,8 +6,8 @@ fn bit_set(num: u16, bit: u8) -> bool {
     num & (1 << bit) > 0
 }
 
-pub fn calc() -> (u32, u32) {
-    let input = aoc_lib::map_file_lines("./solve_2021/inputs/day3.txt", parse_bin);
+pub fn calc(input: &str) -> (u32, u32) {
+    let input = aoc_lib::map_lines(input, parse_bin);
     let p1 = calc_power(&input);
     let p2 = calc_diagnostic(&input);
     (p1, p2)

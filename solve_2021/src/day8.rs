@@ -100,8 +100,8 @@ fn resolve_mapping(strs: &[&str]) -> HashMap<String, usize> {
     ])
 }
 
-pub fn calc() -> (u32, u32) {
-    let lines = parse_input(&aoc_lib::read_file("./solve_2021/inputs/day8.txt"));
+pub fn calc(input: &str) -> (u32, u32) {
+    let lines = parse_input(input);
     let total_count: u32 = lines.iter().map(|(_, p2)| count_1478(p2)).sum();
 
     let p1 = total_count;

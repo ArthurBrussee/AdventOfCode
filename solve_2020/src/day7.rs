@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::fs;
 
 type RuleBook = HashMap<String, Vec<(String, usize)>>;
 type BagCache = HashMap<(String, String), bool>;
@@ -23,7 +22,7 @@ fn count_inner(rules: &RuleBook, root: &str) -> usize {
         .sum()
 }
 
-pub fn calc() -> (usize, usize) {
+pub fn calc(input: &str) -> (usize, usize) {
     fn parse_bagrule(format: &str) -> (String, Vec<(String, usize)>) {
         let bag_name = |name: &str| name[0..name.find("bag").unwrap() - 1].to_string();
         let parts = format.split(" contain ").collect::<Vec<_>>();
@@ -39,11 +38,7 @@ pub fn calc() -> (usize, usize) {
             .collect();
         (bag_name(parts[0]), bags)
     }
-    let rulebook: RuleBook = fs::read_to_string("./solve_2020/inputs/day7.txt")
-        .unwrap()
-        .lines()
-        .map(parse_bagrule)
-        .collect();
+    let rulebook: RuleBook = input.lines().map(parse_bagrule).collect();
 
     let mut memoize = HashMap::new();
     let p1 = rulebook

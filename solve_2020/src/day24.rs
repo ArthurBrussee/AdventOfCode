@@ -1,7 +1,4 @@
-use std::{
-    collections::{HashMap, HashSet},
-    fs,
-};
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, Clone, Copy)]
 enum Command {
@@ -24,9 +21,8 @@ fn offset(pos: (i32, i32), command: Command) -> (i32, i32) {
     }
 }
 
-pub fn calc() -> (usize, usize) {
-    let instructions = fs::read_to_string("./solve_2020/inputs/day24.txt")
-        .expect("Can't find input file.")
+pub fn calc(input: &str) -> (usize, usize) {
+    let instructions = input
         .lines()
         .map(|l| {
             let mut ret = Vec::new();

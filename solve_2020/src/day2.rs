@@ -1,5 +1,3 @@
-use std::fs;
-
 struct PasswordProto {
     lower: usize,
     upper: usize,
@@ -32,9 +30,8 @@ fn pass_p2(pass: &PasswordProto) -> bool {
     valid1 ^ valid2
 }
 
-pub fn calc() -> (usize, usize) {
-    let passwords = fs::read_to_string("./solve_2020/inputs/day2.txt")
-        .unwrap()
+pub fn calc(input: &str) -> (usize, usize) {
+    let passwords = input
         .lines()
         .map(PasswordProto::new)
         .collect::<Vec<PasswordProto>>();

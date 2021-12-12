@@ -52,7 +52,7 @@ fn crab_game(p1: &VecDeque<u8>, p2: &VecDeque<u8>, recurse: bool) -> (u32, u32) 
     (winner, score)
 }
 
-pub fn calc() -> (u32, u32) {
+pub fn calc(_: &str) -> (u32, u32) {
     let player1_deck: VecDeque<u8> = VecDeque::from(vec![
         1, 43, 24, 34, 13, 7, 10, 36, 14, 12, 47, 32, 11, 3, 9, 25, 37, 21, 2, 45, 26, 8, 23, 6, 49,
     ]);

@@ -1,5 +1,3 @@
-use std::fs;
-
 #[derive(Clone, PartialEq, Copy)]
 enum Tile {
     EmptySeat,
@@ -126,10 +124,8 @@ fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
     }
 }
 
-pub fn calc() -> (usize, usize) {
-    let board = Board::new(
-        &fs::read_to_string("./solve_2020/inputs/day11.txt").expect("Can't find input file."),
-    );
+pub fn calc(input: &str) -> (usize, usize) {
+    let board = Board::new(input);
     let p1 = simulate_to_equal(&board, 4, false);
     let p2 = simulate_to_equal(&board, 5, true);
     (p1, p2)
