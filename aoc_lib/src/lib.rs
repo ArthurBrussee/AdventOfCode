@@ -6,7 +6,8 @@ pub fn read_file(year: u32, day: u32, test: bool) -> String {
     } else {
         format!("./solve_{}/inputs/day{}.txt", year, day)
     };
-    fs::read_to_string(&path).expect("Please include input file!")
+    let file = fs::read_to_string(&path).expect("Please include input file!");
+    file.replace("\r\n", "\n")
 }
 
 pub fn run_solution<T, V>(year: u32, day: u32, calc: fn(&str) -> (T, V))
