@@ -1,74 +1,72 @@
 use std::collections::HashMap;
-use std::collections::LinkedList;
 
 struct Polymer {
-    state: LinkedList<u8>,
-    rules: HashMap<(u8, u8), u8>,
+    pair_counts: HashMap<[char; 2], usize>,
+    rules: HashMap<[char; 2], char>,
+    last_char: char,
 }
 
 impl Polymer {
     fn step(&mut self) {
-        let len = self.state.len();
-        let mut cursor = self.state.cursor_front_mut();
+        let mut new_counts = self.pair_counts.clone();
 
-        for _ in 0..len - 1 {
-            let cur = *cursor.current().unwrap();
-            let next = *cursor.peek_next().unwrap();
-            cursor.move_next();
-
-            if let Some(&replace) = self.rules.get(&(cur, next)) {
-                cursor.insert_before(replace);
+        for (&pair, &count) in &self.pair_counts {
+            if let Some(&insertion) = self.rules.get(&pair) {
+                *new_counts.get_mut(&pair).unwrap() -= count;
+                *new_counts.entry([pair[0], insertion]).or_default() += count;
+                *new_counts.entry([insertion, pair[1]]).or_default() += count;
             }
         }
+
+        self.pair_counts = new_counts;
     }
 
     fn score(&self) -> usize {
-        let mut counts = HashMap::new();
-        for c in &self.state {
-            *counts.entry(c).or_insert(0) += 1;
+        let mut char_counts: HashMap<char, usize> = HashMap::new();
+        *char_counts.entry(self.last_char).or_default() += 1;
+        for (&[c1, _], &n) in &self.pair_counts {
+            *char_counts.entry(c1).or_default() += n;
         }
-        counts.values().max().unwrap() - counts.values().min().unwrap()
+
+        char_counts.values().max().unwrap() - char_counts.values().min().unwrap()
     }
 }
 
 pub fn calc(input: &str) -> (usize, usize) {
     let mut lines = input.lines();
-
-    let state = lines.next().unwrap().chars().map(|c| c as u8).collect();
+    let start_templ: Vec<char> = lines.next().unwrap().chars().collect();
 
     lines.next();
 
     let mut rules = HashMap::new();
-
     for l in lines {
-        let (template, result) = l.split_once(" -> ").unwrap();
-        let mut chars = template.chars();
+        let (template, replace) = l.split_once(" -> ").unwrap();
+        let mut templ_chars = template.chars();
         rules.insert(
-            (chars.next().unwrap() as u8, chars.next().unwrap() as u8),
-            result.chars().next().unwrap() as u8,
+            [templ_chars.next().unwrap(), templ_chars.next().unwrap()],
+            replace.chars().next().unwrap(),
         );
     }
 
-    let mut poly = Polymer { state, rules };
+    let mut pair_counts = HashMap::new();
+    for &window in start_templ.array_windows() {
+        *pair_counts.entry(window).or_default() += 1;
+    }
+
+    let mut poly = Polymer {
+        pair_counts,
+        rules,
+        last_char: *start_templ.last().unwrap(),
+    };
 
     for _ in 0..10 {
         poly.step();
-
-        let mut counts = HashMap::new();
-        for c in &poly.state {
-            *counts.entry(c).or_insert(0) += 1;
-        }
-        let max = counts.values().max().unwrap();
-        let max_char = counts.iter().max_by_key(|(c, ct)| *ct).unwrap().0;
-
-        println!("{} {}", max, max_char);
     }
 
     let p1 = poly.score();
 
-    for i in 10..20 {
+    for _ in 10..40 {
         poly.step();
-        println!("Did step {}", i);
     }
 
     let p2 = poly.score();
