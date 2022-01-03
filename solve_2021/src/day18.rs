@@ -142,26 +142,6 @@ impl Tree {
         }
     }
 
-    fn to_string(&self, node: usize) -> String {
-        let mut result = String::new();
-
-        match self.nodes[node] {
-            Node::Pair { left, right } => {
-                result.push('[');
-                result.push_str(&self.to_string(left));
-                result.push(',');
-                result.push_str(&self.to_string(right));
-                result.push(']');
-            }
-
-            Node::Val(v) => {
-                result.push_str(&v.to_string());
-            }
-        }
-
-        result
-    }
-
     fn score(&self, node: usize) -> usize {
         match self.nodes[node] {
             Node::Pair { left, right } => 3 * self.score(left) + 2 * self.score(right),
