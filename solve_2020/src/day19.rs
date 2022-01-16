@@ -35,7 +35,7 @@ fn strip_prexix<'a>(
 }
 
 pub fn calc(input: &str) -> (usize, usize) {
-    let mut input_parts = input.split("\r\n\r\n");
+    let mut input_parts = input.split("\n\n");
     let mut char_rules = HashMap::<char, u32>::new();
     let rules = input_parts
         .next()

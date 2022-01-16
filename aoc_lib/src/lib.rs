@@ -1,5 +1,7 @@
 use std::{env, fmt::Display, fs, str::FromStr, time::Instant};
 
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+
 pub fn read_file(year: u32, day: u32, test: bool) -> String {
     let path = if test {
         format!("./inputs/day{}_test.txt", day)
@@ -10,7 +12,7 @@ pub fn read_file(year: u32, day: u32, test: bool) -> String {
     file.replace("\r\n", "\n")
 }
 
-pub fn run_solution<T, V>(year: u32, day: u32, calc: fn(&str) -> (T, V))
+pub fn run_solution<T, V>(year: u32, day: u32, calc: fn(&str) -> (T, V)) -> String
 where
     T: Display,
     V: Display,
@@ -19,7 +21,26 @@ where
 
     let (p1, p2) = calc(&read_file(year, day, false));
     let ms = now.elapsed().as_secs_f64() * 1000.0;
-    println!("Day {}, {:.2}ms: ({}, {})", day, ms, p1, p2);
+    format!("Day {}, {:.2}ms: ({}, {})", day, ms, p1, p2)
+}
+
+pub fn run_solutions(funcs: &[fn() -> String]) {
+    let start_run = Instant::now();
+
+    let funcs_to_run = get_days_to_run()
+        .filter_map(|d| funcs.get(d))
+        .collect::<Vec<_>>();
+
+    let strings: Vec<_> = funcs_to_run.par_iter().map(|f| f()).collect();
+
+    for s in strings {
+        println!("{}", s);
+    }
+
+    println!(
+        "Done with AOC! Took {:.2}ms",
+        start_run.elapsed().as_secs_f64() * 1000.0
+    );
 }
 
 pub fn get_days_to_run() -> impl Iterator<Item = usize> {

@@ -55,20 +55,21 @@ pub fn calc(input: &str) -> (usize, String) {
     let max_x = cur_points.iter().map(|p| p.0).max().unwrap();
     let max_y = cur_points.iter().map(|p| p.1).max().unwrap();
 
-    for y in 0..=max_y {
-        let print: String = (0..=max_x)
-            .map(|x| {
-                if cur_points.contains(&(x, y)) {
-                    '#'
-                } else {
-                    '.'
-                }
-            })
-            .collect();
-        println!("{}", print);
-    }
+    let output = (0..=max_y)
+        .map(|y| {
+            (0..=max_x)
+                .map(|x| {
+                    if cur_points.contains(&(x, y)) {
+                        '#'
+                    } else {
+                        '.'
+                    }
+                })
+                .collect::<String>()
+        })
+        .fold("\n".to_owned(), |a, b| a + &b + "\n");
 
-    (p1, "Magic output!".to_owned())
+    (p1, output)
 }
 
 #[test]
