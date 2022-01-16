@@ -8,126 +8,157 @@ enum PodType {
     Desert,
 }
 
-#[derive(Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash)]
-struct Pod {
-    typ: PodType,
-    pos: (u8, u8),
-}
+type Pos = (usize, usize);
 
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, Hash, PartialEq, Eq)]
 struct PodGame {
-    pods: Vec<Pod>,
-    rooms: u8,
+    pods: Vec<Option<PodType>>,
+    width: usize,
+    height: usize,
 }
 
-fn path_corners(src: (u8, u8), dst: (u8, u8)) -> Vec<(u8, u8)> {
-    let mut res = vec![src];
+fn get_distance(src: Pos, dst: Pos) -> u32 {
+    fn manhattan(src: Pos, dst: Pos) -> u32 {
+        (dst.0 as isize - src.0 as isize).abs() as u32
+            + (dst.1 as isize - src.1 as isize).abs() as u32
+    }
+
+    let mut distance = 0;
+    let mut last_pos = src;
+
     if src.0 != dst.0 {
         if src.1 > 1 {
-            res.push((src.0, 1));
+            last_pos = (src.0, 1);
+            distance += manhattan(src, (src.0, 1));
         }
         if dst.1 > 1 {
-            res.push((dst.0, 1));
+            distance += manhattan(last_pos, (dst.0, 1));
+            last_pos = (dst.0, 1);
         }
     }
-    res.push(dst);
-    res
-}
 
-fn get_distance(src: (u8, u8), dst: (u8, u8)) -> u32 {
-    fn manhattan(src: (u8, u8), dst: (u8, u8)) -> u32 {
-        (dst.0 as i8 - src.0 as i8).abs() as u32 + (dst.1 as i8 - src.1 as i8).abs() as u32
-    }
-
-    let corners = path_corners(src, dst);
-    corners.windows(2).map(|w| manhattan(w[0], w[1])).sum()
+    distance += manhattan(last_pos, dst);
+    distance
 }
 
 impl<'a> From<&str> for PodGame {
     fn from(src: &str) -> Self {
-        let mut pods: Vec<_> = src
-            .lines()
-            .enumerate()
-            .flat_map(|(y, line)| {
-                line.chars().enumerate().filter_map(move |(x, c)| match c {
-                    'A' => Some(Pod {
-                        typ: PodType::Amber,
-                        pos: (x as u8, y as u8),
-                    }),
-                    'B' => Some(Pod {
-                        typ: PodType::Bronze,
-                        pos: (x as u8, y as u8),
-                    }),
-                    'C' => Some(Pod {
-                        typ: PodType::Copper,
-                        pos: (x as u8, y as u8),
-                    }),
-                    'D' => Some(Pod {
-                        typ: PodType::Desert,
-                        pos: (x as u8, y as u8),
-                    }),
-                    _ => None,
-                })
-            })
-            .collect();
+        let width = src.lines().next().unwrap().len();
+        let height = src.lines().count();
 
-        pods.sort();
-        PodGame {
-            pods,
-            rooms: (src.lines().count() - 3) as u8,
+        let mut game = PodGame {
+            pods: vec![None; width * height],
+            width,
+            height,
+        };
+
+        for (pos, typ) in src.lines().enumerate().flat_map(|(y, line)| {
+            line.chars().enumerate().filter_map(move |(x, c)| match c {
+                'A' => Some(((x, y), PodType::Amber)),
+                'B' => Some(((x, y), PodType::Bronze)),
+                'C' => Some(((x, y), PodType::Copper)),
+                'D' => Some(((x, y), PodType::Desert)),
+                _ => None,
+            })
+        }) {
+            game.set(pos, Some(typ));
         }
+
+        game
     }
 }
 
 impl PodGame {
-    fn get(&self, pos: (u8, u8)) -> Option<&Pod> {
-        self.pods.iter().find(|p| p.pos == pos)
+    fn set(&mut self, pos: Pos, val: Option<PodType>) {
+        self.pods[pos.0 + pos.1 * self.width] = val;
     }
 
-    fn goal_pos(&self, pod: &Pod) -> (u8, u8) {
-        let x = pod.typ.room_x();
+    fn get(&self, pos: Pos) -> Option<PodType> {
+        self.pods[pos.0 + pos.1 * self.width]
+    }
 
-        for dst in (0u8..self.rooms as u8).rev().map(|y| (x, 2 + y)) {
-            if pod.pos == dst {
-                return dst;
-            }
+    fn rooms(&self) -> usize {
+        self.height - 3
+    }
 
-            match self.get(dst) {
-                None => return dst,
-                Some(other) => {
-                    if other.typ != pod.typ {
-                        return dst;
-                    }
-                }
+    fn has_straight_path(&self, start: Pos, dst: Pos) -> bool {
+        let mut pos = start;
+        let dir = (
+            (dst.0 as isize - start.0 as isize).signum(),
+            (dst.1 as isize - start.1 as isize).signum(),
+        );
+        while pos != dst {
+            pos.0 = (pos.0 as isize + dir.0) as usize;
+            pos.1 = (pos.1 as isize + dir.1) as usize;
+            if self.get(pos).is_some() {
+                return false;
             }
         }
-
-        unreachable!()
+        true
     }
 
-    fn has_valid_path(&self, src: (u8, u8), dst: (u8, u8)) -> bool {
-        let corners = path_corners(src, dst);
-        corners.windows(2).all(|wp| {
-            let mut pos = wp[0];
-            let dir = (
-                (wp[1].0 as i8 - wp[0].0 as i8).signum(),
-                (wp[1].1 as i8 - wp[0].1 as i8).signum(),
-            );
-            while pos != wp[1] {
-                pos.0 = (pos.0 as i8 + dir.0) as u8;
-                pos.1 = (pos.1 as i8 + dir.1) as u8;
-                if self.get(pos).is_some() {
+    fn has_valid_path(&self, src: Pos, dst: Pos) -> bool {
+        let mut last_pos = src;
+
+        if src.0 != dst.0 {
+            if src.1 > 1 {
+                if !self.has_straight_path(last_pos, (src.0, 1)) {
                     return false;
                 }
+                last_pos = (src.0, 1);
             }
-            true
-        })
+            if dst.1 > 1 {
+                if !self.has_straight_path(last_pos, (dst.0, 1)) {
+                    return false;
+                }
+                last_pos = (dst.0, 1);
+            }
+        }
+        if !self.has_straight_path(last_pos, dst) {
+            return false;
+        }
+        true
     }
 
     fn is_finished(&self) -> bool {
-        self.pods
-            .iter()
-            .all(|a| a.pos.0 == a.typ.room_x() && a.pos.1 > 1)
+        for y in (0..self.rooms()).rev().map(|y| 2 + y) {
+            if self.get((PodType::Amber.room_x(), y)) != Some(PodType::Amber)
+                || self.get((PodType::Bronze.room_x(), y)) != Some(PodType::Bronze)
+                || self.get((PodType::Copper.room_x(), y)) != Some(PodType::Copper)
+                || self.get((PodType::Desert.room_x(), y)) != Some(PodType::Desert)
+            {
+                return false;
+            }
+        }
+        true
+    }
+
+    fn try_move(
+        &self,
+        pos: Pos,
+        next_pos: Pos,
+        cost: u32,
+        cache: &mut HashMap<PodGame, u32>,
+    ) -> Option<u32> {
+        let typ = self.get(pos).unwrap();
+
+        let mut next_game = self.clone();
+        next_game.set(pos, None);
+        next_game.set(next_pos, Some(typ));
+        let new_cost = cost + get_distance(pos, next_pos) * typ.step_cost();
+
+        let entry = cache.get_mut(&next_game);
+
+        if let Some(prev_cost) = entry {
+            if *prev_cost <= new_cost {
+                return None;
+            }
+            *prev_cost = new_cost;
+        } else {
+            cache.insert(next_game.clone(), new_cost);
+        }
+
+        Some(next_game.best_cost(new_cost, cache))
     }
 
     fn best_cost(&self, cost: u32, cache: &mut HashMap<PodGame, u32>) -> u32 {
@@ -135,52 +166,55 @@ impl PodGame {
             return cost;
         }
 
-        let mut try_move = |id: usize, next_pos: (u8, u8)| -> Option<u32> {
-            let pod = self.pods[id];
-            let mut next_game = self.clone();
-            next_game.pods[id].pos = next_pos;
-            next_game.pods.sort();
-            let new_cost = cost + get_distance(pod.pos, next_pos) * pod.typ.step_cost();
-
-            if let Some(&prev_cost) = cache.get(&next_game) {
-                if prev_cost <= new_cost {
-                    return None;
-                }
-            }
-
-            cache.insert(next_game.clone(), new_cost);
-            Some(next_game.best_cost(new_cost, cache))
-        };
-
         let mut min_cost = u32::MAX;
 
-        for (i, pod) in self.pods.iter().enumerate() {
-            let goal_pos = self.goal_pos(pod);
-            if pod.pos == goal_pos {
-                continue;
-            }
+        'outer: for (i, typ) in self
+            .pods
+            .iter()
+            .enumerate()
+            .filter_map(|(i, typ)| typ.map(|t| (i, t)))
+        {
+            let pos = ((i % self.width), (i / self.width));
 
-            if self.has_valid_path(pod.pos, goal_pos) {
-                if let Some(cost) = try_move(i, goal_pos) {
-                    min_cost = min_cost.min(cost);
+            let mut goal_pos = (0, 0);
+            let x = typ.room_x();
+
+            for dst in (0..self.rooms()).rev().map(|y| (x, 2 + y)) {
+                if pos == dst {
+                    continue 'outer;
                 }
 
+                match self.get(dst) {
+                    None => {
+                        goal_pos = dst;
+                        break;
+                    }
+                    Some(new_type) => {
+                        if new_type != typ {
+                            goal_pos = dst;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if self.has_valid_path(pos, goal_pos) {
+                if let Some(cost) = self.try_move(pos, goal_pos, cost, cache) {
+                    min_cost = min_cost.min(cost);
+                }
                 continue;
             }
 
-            if pod.pos.1 == 1 && (1..=11).contains(&pod.pos.0) {
+            if pos.1 == 1 && pos.0 >= 1 && pos.0 <= 11 {
                 continue;
             }
 
             // Pod can only move into the hallway.
-            let chk_hallway_tiles = [1, 2, 4, 6, 8, 10, 11];
-
-            for dst in chk_hallway_tiles {
-                if !self.has_valid_path(pod.pos, (dst, 1)) {
-                    continue;
-                }
-                if let Some(cost) = try_move(i, (dst, 1)) {
-                    min_cost = min_cost.min(cost);
+            for dst in [1, 2, 4, 6, 8, 10, 11] {
+                if self.has_valid_path(pos, (dst, 1)) {
+                    if let Some(cost) = self.try_move(pos, (dst, 1), cost, cache) {
+                        min_cost = min_cost.min(cost);
+                    }
                 }
             }
         }
@@ -190,7 +224,7 @@ impl PodGame {
 }
 
 impl PodType {
-    fn room_x(&self) -> u8 {
+    fn room_x(&self) -> usize {
         match self {
             PodType::Amber => 3,
             PodType::Bronze => 5,
