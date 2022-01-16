@@ -47,7 +47,7 @@ pub fn calc(input: &str) -> (usize, usize) {
             let rule_parts = parts.next().unwrap();
 
             if rule_parts.contains('"') {
-                let ch = rule_parts.trim().replace("\"", "").chars().next().unwrap();
+                let ch = rule_parts.trim().replace('\"', "").chars().next().unwrap();
                 char_rules.insert(ch, num);
                 (num, Rule::Leaf(num))
             } else {

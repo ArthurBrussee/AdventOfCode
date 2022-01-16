@@ -17,7 +17,7 @@ pub fn calc(input: &str) -> (u64, u64) {
 }
 
 fn tokenize(s: &str) -> Vec<Token> {
-    s.replace(" ", "")
+    s.replace(' ', "")
         .chars()
         .map(|s| match s {
             '*' => Token::Times,

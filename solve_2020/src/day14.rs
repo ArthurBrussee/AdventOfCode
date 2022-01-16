@@ -4,7 +4,7 @@ fn parse_addr(left: &str, right: &str) -> (usize, u64) {
     let addr: usize = left
         .strip_prefix("mem[")
         .unwrap()
-        .replace("]", "")
+        .replace(']', "")
         .parse()
         .unwrap();
     let val: u64 = right.parse().unwrap();
@@ -20,8 +20,8 @@ pub fn calc(input: &str) -> (u64, u64) {
         let parts = line.split(" = ").collect::<Vec<_>>();
         match parts[0] {
             "mask" => {
-                let bin_str_or = &parts[1].replace("X", "0");
-                let bin_str_and = &parts[1].replace("X", "1");
+                let bin_str_or = &parts[1].replace('X', "0");
+                let bin_str_and = &parts[1].replace('X', "1");
                 mask_or = u64::from_str_radix(bin_str_or, 2).unwrap();
                 mask_and = u64::from_str_radix(bin_str_and, 2).unwrap();
             }
