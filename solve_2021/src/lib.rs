@@ -22,6 +22,7 @@ mod day20;
 mod day21;
 mod day22;
 mod day23;
+mod day24;
 mod day3;
 mod day4;
 mod day5;
@@ -59,6 +60,7 @@ pub fn run() {
         || run_solution(2021, 21, day21::calc),
         || run_solution(2021, 22, day22::calc),
         || run_solution(2021, 23, day23::calc),
+        || run_solution(2021, 24, day24::calc),
     ];
 
     for f in aoc_lib::get_days_to_run().filter_map(|d| funcs.get(d)) {
