@@ -35,7 +35,7 @@ impl<'a> Path<'a> {
         double_budget: &mut u32,
     ) -> Vec<Vec<u8>> {
         if start == end {
-            return vec![prev_path.iter().copied().collect()];
+            return vec![prev_path.to_vec()];
         }
 
         // Can't revisit the start of the path.

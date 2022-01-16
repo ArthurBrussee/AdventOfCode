@@ -126,7 +126,7 @@ impl BeaconMap {
             std::mem::transmute::<Point, [u32; 3]>(pt)
         };
 
-        (num[0] + (num[1] << 11) + (num[2] << 22)) % Self::LEN
+        (num[0].wrapping_add(num[1] << 11).wrapping_add(num[2] << 22)) % Self::LEN
     }
 
     fn insert(&mut self, pt: Point) {

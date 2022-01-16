@@ -42,7 +42,7 @@ impl FromStr for Command {
     type Err = Box<dyn std::error::Error>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (t, num) = s.split_once(" ").ok_or("no space in input.")?;
+        let (t, num) = s.split_once(' ').ok_or("no space in input.")?;
 
         let num = num.parse()?;
 
