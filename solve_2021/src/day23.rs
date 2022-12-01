@@ -19,8 +19,8 @@ struct PodGame {
 
 fn get_distance(src: Pos, dst: Pos) -> u32 {
     fn manhattan(src: Pos, dst: Pos) -> u32 {
-        (dst.0 as isize - src.0 as isize).abs() as u32
-            + (dst.1 as isize - src.1 as isize).abs() as u32
+        (dst.0 as isize - src.0 as isize).unsigned_abs() as u32
+            + (dst.1 as isize - src.1 as isize).unsigned_abs() as u32
     }
 
     let mut distance = 0;
@@ -41,7 +41,7 @@ fn get_distance(src: Pos, dst: Pos) -> u32 {
     distance
 }
 
-impl<'a> From<&str> for PodGame {
+impl From<&str> for PodGame {
     fn from(src: &str) -> Self {
         let width = src.lines().next().unwrap().len();
         let height = src.lines().count();

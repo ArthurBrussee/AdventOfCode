@@ -1,6 +1,8 @@
+use aoc_lib::DoubleLineSplit;
+
 pub fn calc(input: &str) -> (u32, u32) {
     input
-        .split("\n\n")
+        .split_at_doubleblank()
         .map(|group| {
             group
                 .split_whitespace()

@@ -88,3 +88,21 @@ where
 {
     map_lines(str, |it| it.parse().expect("Failed to parse!"))
 }
+
+pub trait DoubleLineSplit {
+    type Iterator;
+
+    fn split_at_doubleblank(&self) -> Self::Iterator;
+}
+
+impl<'a> DoubleLineSplit for &'a str {
+    type Iterator = std::str::Split<'a, &'a str>;
+
+    fn split_at_doubleblank(&self) -> std::str::Split<'a, &'a str> {
+        if self.contains("\r\n") {
+            self.split("\r\n\r\n")
+        } else {
+            self.split("\n\n")
+        }
+    }
+}

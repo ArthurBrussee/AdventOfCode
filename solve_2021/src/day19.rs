@@ -4,6 +4,8 @@ use std::{
     ops::{Add, Sub},
 };
 
+use aoc_lib::DoubleLineSplit;
+
 #[derive(PartialEq, Eq, Hash, Clone, Copy, Default, Debug)]
 struct Point {
     x: i32,
@@ -170,7 +172,7 @@ impl BeaconMap {
 }
 
 pub fn calc(input: &str) -> (usize, u32) {
-    let readings: Vec<_> = input.split("\n\n").map(Readings::from).collect();
+    let readings: Vec<_> = input.split_at_doubleblank().map(Readings::from).collect();
     let mut beacons = BeaconMap::new();
 
     for p in readings[0].points.iter().copied() {

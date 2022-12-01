@@ -33,7 +33,7 @@ fn quantum_die(player: usize, positions: [usize; 2], scores: [usize; 2]) -> [usi
         return [0, 1];
     }
 
-    let player = if player == 0 { 1 } else { 0 };
+    let player = usize::from(player == 0);
 
     let die_rolls = [3, 4, 5, 6, 7, 8, 9];
     let die_weights = [1, 3, 6, 7, 6, 3, 1];

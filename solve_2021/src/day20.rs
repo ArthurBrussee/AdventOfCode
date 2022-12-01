@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use aoc_lib::DoubleLineSplit;
+
 struct Image {
     pixels: HashMap<(i32, i32), bool>,
 }
@@ -44,7 +46,7 @@ impl Image {
 }
 
 pub fn calc(input: &str) -> (usize, usize) {
-    let mut parts = input.split("\n\n");
+    let mut parts = input.split_at_doubleblank();
 
     let remaps: Vec<bool> = parts.next().unwrap().chars().map(|c| c == '#').collect();
 

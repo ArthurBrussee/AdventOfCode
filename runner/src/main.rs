@@ -1,5 +1,3 @@
-#![feature(array_windows)]
-
 fn main() {
     let years: Vec<usize> = aoc_lib::get_years_to_run().collect();
 
@@ -9,5 +7,9 @@ fn main() {
 
     if years.contains(&2021) {
         solve_2021::run()
+    }
+
+    if years.contains(&2022) {
+        solve_2022::run()
     }
 }

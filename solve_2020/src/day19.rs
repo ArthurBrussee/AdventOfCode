@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use aoc_lib::DoubleLineSplit;
+
 #[derive(Clone)]
 enum Rule {
     Leaf(u32),
@@ -35,7 +37,7 @@ fn strip_prexix<'a>(
 }
 
 pub fn calc(input: &str) -> (usize, usize) {
-    let mut input_parts = input.split("\n\n");
+    let mut input_parts = input.split_at_doubleblank();
     let mut char_rules = HashMap::<char, u32>::new();
     let rules = input_parts
         .next()

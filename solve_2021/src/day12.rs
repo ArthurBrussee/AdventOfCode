@@ -68,7 +68,7 @@ impl<'a> Path<'a> {
     fn pathfind(&self, start: &'a str, end: &'a str, allow_double: bool) -> Vec<Vec<u8>> {
         let start_node = self.name_to_node[&start];
         let end_node = self.name_to_node[&end];
-        let mut budget = if allow_double { 1 } else { 0 };
+        let mut budget = u32::from(allow_double);
         self.add_path(start_node, end_node, &Vec::new(), &mut budget)
     }
 

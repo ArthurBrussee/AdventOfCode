@@ -1,6 +1,8 @@
 use std::cmp::max;
 use std::collections::HashMap;
 
+use aoc_lib::DoubleLineSplit;
+
 #[derive(Clone, Copy)]
 enum Transform {
     Identity,
@@ -105,7 +107,7 @@ fn fits(tile: &Tile, (x, y): (i32, i32), grid: &HashMap<(i32, i32), Tile>) -> bo
 
 pub fn calc(input: &str) -> (u64, usize) {
     let tiles = input
-        .split("\n\n")
+        .split_at_doubleblank()
         .map(|tile| {
             let mut board_iter = tile.splitn(2, '\n');
             let id = board_iter

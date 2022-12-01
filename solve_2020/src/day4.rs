@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use aoc_lib::DoubleLineSplit;
+
 struct Passport {
     byr: String,
     iyr: String,
@@ -68,8 +70,7 @@ impl Passport {
 
 pub fn calc(input: &str) -> (usize, usize) {
     let passports = input
-        .replace("\r\n", "\n")
-        .split("\n\n")
+        .split_at_doubleblank()
         .filter_map(Passport::parse)
         .collect::<Vec<_>>();
     (

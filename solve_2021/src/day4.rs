@@ -1,3 +1,5 @@
+use aoc_lib::DoubleLineSplit;
+
 #[derive(Debug, Clone, Copy)]
 struct Slot {
     num: u32,
@@ -53,7 +55,7 @@ impl Board {
 }
 
 fn load_input(input: &str) -> (Vec<Board>, Vec<u32>) {
-    let mut parts = input.split("\n\n");
+    let mut parts = input.split_at_doubleblank();
 
     let first_line = parts.next().unwrap();
     let nums: Vec<u32> = first_line.split(',').map(|x| x.parse().unwrap()).collect();
@@ -81,7 +83,7 @@ fn load_input(input: &str) -> (Vec<Board>, Vec<u32>) {
     (boards, nums)
 }
 
-fn solve_winning_score(boards: &mut Vec<Board>, numbers: &[u32]) -> u32 {
+fn solve_winning_score(boards: &mut [Board], numbers: &[u32]) -> u32 {
     for &num in numbers {
         for board in boards.iter_mut() {
             board.try_mark(num);

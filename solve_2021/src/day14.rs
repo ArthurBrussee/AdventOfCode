@@ -49,8 +49,9 @@ pub fn calc(input: &str) -> (usize, usize) {
     }
 
     let mut pair_counts = HashMap::new();
-    for &window in start_templ.array_windows() {
-        *pair_counts.entry(window).or_default() += 1;
+    for window in start_templ.windows(2) {
+        let window_arr = window.try_into().unwrap();
+        *pair_counts.entry(window_arr).or_default() += 1;
     }
 
     let mut poly = Polymer {

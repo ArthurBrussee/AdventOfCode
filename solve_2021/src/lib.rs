@@ -1,7 +1,3 @@
-#![feature(bool_to_option)]
-#![feature(array_windows)]
-#![feature(array_zip)]
-
 use aoc_lib::run_solution;
 
 mod day1;

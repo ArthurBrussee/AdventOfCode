@@ -33,7 +33,7 @@ where
     fn bit_to_num(self) -> usize {
         self.rev()
             .enumerate()
-            .fold(0usize, |acc, (i, x)| acc + (if x { 1 } else { 0 } << (i)))
+            .fold(0usize, |acc, (i, x)| acc + (usize::from(x) << (i)))
     }
 }
 
@@ -87,27 +87,9 @@ impl Packet {
                     Operator::Prod => sub_values.product(),
                     Operator::Min => sub_values.min().unwrap(),
                     Operator::Max => sub_values.max().unwrap(),
-                    Operator::Gt => {
-                        if sub_packets[0].value() > sub_packets[1].value() {
-                            1
-                        } else {
-                            0
-                        }
-                    }
-                    Operator::Lt => {
-                        if sub_packets[0].value() < sub_packets[1].value() {
-                            1
-                        } else {
-                            0
-                        }
-                    }
-                    Operator::Eq => {
-                        if sub_packets[0].value() == sub_packets[1].value() {
-                            1
-                        } else {
-                            0
-                        }
-                    }
+                    Operator::Gt => usize::from(sub_packets[0].value() > sub_packets[1].value()),
+                    Operator::Lt => usize::from(sub_packets[0].value() < sub_packets[1].value()),
+                    Operator::Eq => usize::from(sub_packets[0].value() == sub_packets[1].value()),
                 }
             }
             Packet::Literal {

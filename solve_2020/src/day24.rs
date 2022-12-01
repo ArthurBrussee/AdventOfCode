@@ -71,13 +71,8 @@ pub fn calc(input: &str) -> (usize, usize) {
     for _ in 0..100 {
         let cur_tiles = tiles.clone();
 
-        let count_black = |pos: (i32, i32)| {
-            if let Some(false) = cur_tiles.get(&(pos.0, pos.1)) {
-                1
-            } else {
-                0
-            }
-        };
+        let count_black =
+            |pos: (i32, i32)| i32::from(matches!(cur_tiles.get(&(pos.0, pos.1)), Some(false)));
 
         let check_keys = cur_tiles
             .keys()

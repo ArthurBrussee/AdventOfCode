@@ -1,18 +1,2 @@
-[package]
-name = "advent_of_code"
-version = "1.0.0"
-edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-solve_2020 = { path = "./solve_2020" }
-solve_2021 = { path = "./solve_2021" }
-aoc_lib = { path = "./aoc_lib" }
-
 [workspace]
-members = [
-    "solve_2020",
-    "solve_2021",
-    "aoc_lib",
-]
+members = ["runner", "solve_2020", "solve_2021", "solve_2022", "aoc_lib"]

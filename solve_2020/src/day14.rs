@@ -66,7 +66,7 @@ pub fn calc(input: &str) -> (u64, u64) {
                     .collect::<Vec<_>>();
 
                 let start_mask = write.iter().rev().enumerate().fold(0, |acc, (i, bit)| {
-                    let bit = if matches!(bit, Bit::One) { 1 } else { 0 };
+                    let bit = usize::from(matches!(bit, Bit::One));
                     acc | (bit << i)
                 });
 
