@@ -1,7 +1,13 @@
 use aoc_lib::run_solution;
 
 mod day1;
+mod day2;
 
 pub fn run() {
-    aoc_lib::run_solutions(&[|| run_solution(2022, 1, day1::calc)]);
+    let funcs = [
+        || run_solution(2022, 1, day1::calc),
+        || run_solution(2022, 2, day2::calc),
+    ];
+
+    aoc_lib::run_solutions(&funcs);
 }
