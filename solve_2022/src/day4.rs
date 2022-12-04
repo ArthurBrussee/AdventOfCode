@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use std::ops::RangeInclusive;
 
 pub fn calc(input: &str) -> (usize, usize) {
@@ -9,13 +10,7 @@ pub fn calc(input: &str) -> (usize, usize) {
                 min.parse().unwrap()..=max.parse().unwrap()
             }
 
-            let ranges: [_; 2] = line
-                .split(',')
-                .map(to_range)
-                .collect::<Vec<_>>()
-                .try_into()
-                .unwrap();
-            let (r1, r2) = (&ranges[0], &ranges[1]);
+            let (r1, r2) = line.split(',').map(to_range).collect_tuple().unwrap();
 
             let overlap_full = r1.contains(r2.start()) && r1.contains(r2.end())
                 || r2.contains(r1.start()) && r2.contains(r1.end());
