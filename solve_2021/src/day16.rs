@@ -191,8 +191,7 @@ fn version_sum(packet: &Packet) -> usize {
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 16;
+    const DATE: (u32, u32) = (2021, 16);
 
     fn calc(input: &str) -> (usize, usize) {
         let stream = BitStream::from(input);

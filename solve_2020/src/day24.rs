@@ -25,8 +25,7 @@ fn offset(pos: (i32, i32), command: Command) -> (i32, i32) {
 
 pub struct Solution;
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 24;
+    const DATE: (u32, u32) = (2020, 24);
 
     fn calc(input: &str) -> (usize, usize) {
         let instructions = input

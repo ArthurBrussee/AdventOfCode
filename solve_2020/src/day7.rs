@@ -27,8 +27,7 @@ fn count_inner(rules: &RuleBook, root: &str) -> usize {
 }
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 7;
+    const DATE: (u32, u32) = (2020, 7);
 
     fn calc(input: &str) -> (u32, u32) {
         fn parse_bagrule(format: &str) -> (String, Vec<(String, usize)>) {

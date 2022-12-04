@@ -64,8 +64,7 @@ impl Submarine {}
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 2;
+    const DATE: (u32, u32) = (2021, 2);
 
     fn calc(input: &str) -> (usize, usize) {
         let commands: Vec<Command> = aoc_lib::parse_lines(input);

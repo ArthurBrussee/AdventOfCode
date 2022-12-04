@@ -65,8 +65,7 @@ fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
 }
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 16;
+    const DATE: (u32, u32) = (2020, 16);
 
     fn calc(_: &str) -> (usize, usize) {
         let board = "###..#..

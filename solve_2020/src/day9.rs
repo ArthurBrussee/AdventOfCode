@@ -22,8 +22,7 @@ fn crack(nums: &[i64], preamble: usize) -> Option<i64> {
 }
 
 impl AocSolution<i64, i64> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 9;
+    const DATE: (u32, u32) = (2020, 9);
 
     fn calc(input: &str) -> (i64, i64) {
         let nums = input

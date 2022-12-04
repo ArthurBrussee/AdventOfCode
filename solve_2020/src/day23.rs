@@ -41,8 +41,7 @@ fn cup_game(start: &[u32], steps: u32) -> Vec<u32> {
 
 pub struct Solution;
 impl AocSolution<String, u64> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 23;
+    const DATE: (u32, u32) = (2020, 23);
 
     fn calc(_: &str) -> (String, u64) {
         let base_cups = vec![2, 5, 3, 1, 4, 9, 8, 6, 7];

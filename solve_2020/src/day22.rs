@@ -56,8 +56,7 @@ fn crab_game(p1: &VecDeque<u8>, p2: &VecDeque<u8>, recurse: bool) -> (u32, u32) 
 
 pub struct Solution;
 impl AocSolution<u32, u32> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 22;
+    const DATE: (u32, u32) = (2020, 22);
 
     fn calc(_: &str) -> (u32, u32) {
         let player1_deck: VecDeque<u8> = VecDeque::from(vec![

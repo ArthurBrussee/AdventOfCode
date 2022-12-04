@@ -14,8 +14,7 @@ fn char_to_priority(c: char) -> u8 {
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2022;
-    const DAY: u32 = 3;
+    const DATE: (u32, u32) = (2022, 3);
 
     fn calc(input: &str) -> (usize, usize) {
         let lines: Vec<_> = input.lines().collect();

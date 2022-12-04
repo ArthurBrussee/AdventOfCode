@@ -41,8 +41,7 @@ fn strip_prexix<'a>(
 }
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 19;
+    const DATE: (u32, u32) = (2020, 19);
 
     fn calc(input: &str) -> (usize, usize) {
         let mut input_parts = input.split_at_doubleblank();

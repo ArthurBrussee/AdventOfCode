@@ -5,8 +5,7 @@ use aoc_lib::AocSolution;
 pub struct Solution;
 
 impl AocSolution<i64, i64> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 24;
+    const DATE: (u32, u32) = (2021, 24);
 
     fn calc(_: &str) -> (i64, i64) {
         // div z 1     div z 1     div z 1     div z 1     div z 1    div z 26   div z 1    div z 26   div z 26  div z 26  div z 1    div z 26   div z 26  div z 26

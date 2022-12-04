@@ -15,8 +15,7 @@ fn transform(subject: usize, loop_size: usize) -> usize {
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 25;
+    const DATE: (u32, u32) = (2020, 25);
 
     fn calc(_: &str) -> (usize, usize) {
         let card_key_public = 2959251;

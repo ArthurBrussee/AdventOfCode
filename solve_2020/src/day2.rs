@@ -24,8 +24,7 @@ impl PasswordProto {
 pub struct Solution;
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 2;
+    const DATE: (u32, u32) = (2020, 2);
 
     fn calc(input: &str) -> (u32, u32) {
         fn pass_p1(pass: &PasswordProto) -> bool {

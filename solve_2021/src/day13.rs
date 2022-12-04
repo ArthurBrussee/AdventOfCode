@@ -27,8 +27,7 @@ fn fold(pts: &Grid, fold: Fold) -> Grid {
 pub struct Solution;
 
 impl AocSolution<usize, String> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 13;
+    const DATE: (u32, u32) = (2021, 13);
 
     fn calc(input: &str) -> (usize, String) {
         let (points_str, folds_str) = input.split_once("\n\n").unwrap();

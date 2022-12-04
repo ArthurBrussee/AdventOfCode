@@ -7,22 +7,29 @@ where
     P1: cmp::PartialEq + Debug + Display + Send + Sync,
     P2: cmp::PartialEq + Debug + Display + Send + Sync,
 {
-    const YEAR: u32;
-    const DAY: u32;
+    const DATE: (u32, u32);
+
+    fn year() -> u32 {
+        Self::DATE.0
+    }
+
+    fn day() -> u32 {
+        Self::DATE.1
+    }
 
     fn calc(input: &str) -> (P1, P2);
 
     fn read_file(test: bool) -> String {
         let path = if test {
-            format!("./inputs/day{}_test.txt", Self::DAY)
+            format!("./inputs/day{}_test.txt", Self::year())
         } else {
-            format!("./solve_{}/inputs/day{}.txt", Self::YEAR, Self::DAY)
+            format!("./solve_{}/inputs/day{}.txt", Self::year(), Self::day())
         };
         let file = fs::read_to_string(&path).unwrap_or_else(|_| {
             panic!(
                 "Please include input file for {}: {}!",
-                Self::YEAR,
-                Self::DAY
+                Self::year(),
+                Self::day()
             )
         });
         file.replace("\r\n", "\n")
@@ -59,8 +66,8 @@ where
 
         SolutionExec {
             f,
-            year: T::YEAR,
-            day: T::DAY,
+            year: T::year(),
+            day: T::day(),
         }
     }
 }

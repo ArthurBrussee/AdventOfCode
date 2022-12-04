@@ -36,8 +36,7 @@ fn seat_id(seat: (u32, u32)) -> u32 {
 }
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 5;
+    const DATE: (u32, u32) = (2020, 5);
 
     fn calc(input: &str) -> (u32, u32) {
         let seat_ids = input

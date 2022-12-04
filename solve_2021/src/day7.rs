@@ -17,8 +17,7 @@ fn sum_to(n: i32) -> i32 {
 pub struct Solution;
 
 impl AocSolution<i32, i32> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 7;
+    const DATE: (u32, u32) = (2021, 7);
 
     fn calc(input: &str) -> (i32, i32) {
         let nums: Vec<i32> = input.split(',').map(|x| x.parse().unwrap()).collect();

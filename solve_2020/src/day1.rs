@@ -4,8 +4,7 @@ use std::collections::HashSet;
 pub struct Solution;
 
 impl AocSolution<i32, i32> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 1;
+    const DATE: (u32, u32) = (2020, 1);
 
     fn calc(input: &str) -> (i32, i32) {
         let map: HashSet<i32> = input.lines().map(|it| it.parse().unwrap()).collect();

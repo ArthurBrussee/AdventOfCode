@@ -12,8 +12,7 @@ fn calc_window_sum(nums: &[usize]) -> usize {
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 1;
+    const DATE: (u32, u32) = (2021, 1);
 
     fn calc(input: &str) -> (usize, usize) {
         let inputs: Vec<usize> = aoc_lib::parse_lines(input);

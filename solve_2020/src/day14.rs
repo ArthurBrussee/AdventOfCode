@@ -16,8 +16,7 @@ fn parse_addr(left: &str, right: &str) -> (usize, u64) {
 }
 
 impl AocSolution<u64, u64> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 14;
+    const DATE: (u32, u32) = (2020, 14);
 
     fn calc(input: &str) -> (u64, u64) {
         let mut mems: HashMap<usize, u64> = HashMap::new();

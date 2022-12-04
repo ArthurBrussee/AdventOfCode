@@ -3,8 +3,7 @@ use aoc_lib::{AocSolution, DoubleLineSplit};
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2022;
-    const DAY: u32 = 1;
+    const DATE: (u32, u32) = (2022, 1);
 
     fn calc(input: &str) -> (usize, usize) {
         let mut cals = input

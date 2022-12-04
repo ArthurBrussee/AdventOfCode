@@ -174,8 +174,7 @@ impl BeaconMap {
 pub struct Solution;
 
 impl AocSolution<usize, u32> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 19;
+    const DATE: (u32, u32) = (2021, 19);
 
     fn calc(input: &str) -> (usize, u32) {
         let readings: Vec<_> = input.split_at_doubleblank().map(Readings::from).collect();

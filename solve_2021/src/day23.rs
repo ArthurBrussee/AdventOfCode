@@ -248,8 +248,7 @@ impl PodType {
 pub struct Solution;
 
 impl AocSolution<u32, u32> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 23;
+    const DATE: (u32, u32) = (2021, 23);
 
     fn calc(input: &str) -> (u32, u32) {
         let mut lines = input.lines().collect::<Vec<_>>();

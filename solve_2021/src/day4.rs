@@ -116,8 +116,7 @@ fn last_winning_score(boards: &mut Vec<Board>, numbers: &[u32]) -> u32 {
 pub struct Solution;
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 4;
+    const DATE: (u32, u32) = (2021, 4);
 
     fn calc(input: &str) -> (u32, u32) {
         let (boards, numbers) = load_input(input);

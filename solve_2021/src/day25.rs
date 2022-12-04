@@ -85,8 +85,7 @@ impl Map {
 pub struct Solution;
 
 impl AocSolution<usize, String> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 25;
+    const DATE: (u32, u32) = (2021, 25);
 
     fn calc(input: &str) -> (usize, String) {
         let mut map = Map::from(input);

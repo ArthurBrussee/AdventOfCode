@@ -3,8 +3,7 @@ use aoc_lib::AocSolution;
 pub struct Solution;
 
 impl AocSolution<i64, i64> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 10;
+    const DATE: (u32, u32) = (2020, 10);
 
     fn calc(input: &str) -> (i64, i64) {
         let mut nums = input

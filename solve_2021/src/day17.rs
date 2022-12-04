@@ -29,8 +29,7 @@ fn sim(vel: (i32, i32), xr: RangeInclusive<i32>, yr: RangeInclusive<i32>) -> Opt
 pub struct Solution;
 
 impl AocSolution<i32, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 17;
+    const DATE: (u32, u32) = (2021, 17);
 
     fn calc(input: &str) -> (i32, usize) {
         let (xr, yr) = input.split_once(' ').unwrap();

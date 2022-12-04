@@ -5,8 +5,7 @@ pub struct Solution;
 use aoc_lib::DoubleLineSplit;
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 6;
+    const DATE: (u32, u32) = (2020, 6);
 
     fn calc(input: &str) -> (u32, u32) {
         input

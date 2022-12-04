@@ -35,8 +35,7 @@ fn execute_program(instructions: &[Instruction]) -> (bool, i32) {
 }
 
 impl AocSolution<i32, i32> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 8;
+    const DATE: (u32, u32) = (2020, 8);
 
     fn calc(input: &str) -> (i32, i32) {
         let instructions = input

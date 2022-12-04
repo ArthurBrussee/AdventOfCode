@@ -48,8 +48,7 @@ impl Image {
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 20;
+    const DATE: (u32, u32) = (2021, 20);
 
     fn calc(input: &str) -> (usize, usize) {
         let mut parts = input.split_at_doubleblank();

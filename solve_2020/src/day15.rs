@@ -21,8 +21,7 @@ fn get_spoken_num(nums: &[u32], max_turn: u32) -> u32 {
 }
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 15;
+    const DATE: (u32, u32) = (2020, 15);
 
     fn calc(_: &str) -> (u32, u32) {
         let nums: Vec<u32> = vec![15, 5, 1, 4, 7, 0];

@@ -11,8 +11,7 @@ fn tree_count(slope_x: usize, slope_y: usize, map: &[&str]) -> u32 {
 }
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 3;
+    const DATE: (u32, u32) = (2020, 3);
 
     fn calc(input: &str) -> (u32, u32) {
         let map: Vec<_> = input.lines().collect();

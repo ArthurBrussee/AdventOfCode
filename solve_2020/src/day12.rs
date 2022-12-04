@@ -19,8 +19,7 @@ fn rotate(dir: (f32, f32), angle: f32) -> (f32, f32) {
 }
 
 impl AocSolution<i32, i32> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 12;
+    const DATE: (u32, u32) = (2020, 12);
 
     fn calc(input: &str) -> (i32, i32) {
         let instructions = input

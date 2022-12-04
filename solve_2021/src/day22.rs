@@ -64,8 +64,7 @@ fn count_active(cubes: &[Cube], region: &Cube) -> usize {
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 22;
+    const DATE: (u32, u32) = (2021, 22);
 
     fn calc(input: &str) -> (usize, usize) {
         let cubes = input

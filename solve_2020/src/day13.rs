@@ -7,8 +7,7 @@ fn modinv(time: u64, freq: u64) -> u64 {
 }
 
 impl AocSolution<u64, u64> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 13;
+    const DATE: (u32, u32) = (2020, 13);
 
     fn calc(input: &str) -> (u64, u64) {
         let mut lines = input.lines();

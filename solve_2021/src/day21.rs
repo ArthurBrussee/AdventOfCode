@@ -63,8 +63,7 @@ fn quantum_die(player: usize, positions: [usize; 2], scores: [usize; 2]) -> [usi
 pub struct Solution;
 
 impl AocSolution<usize, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 21;
+    const DATE: (u32, u32) = (2021, 21);
 
     fn calc(input: &str) -> (usize, usize) {
         let (p1_str, p2_str) = input.split_once(',').unwrap();

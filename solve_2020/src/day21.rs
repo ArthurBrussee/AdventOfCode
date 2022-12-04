@@ -5,8 +5,7 @@ pub struct Solution;
 use std::collections::{HashMap, HashSet};
 
 impl AocSolution<usize, String> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 21;
+    const DATE: (u32, u32) = (2020, 21);
 
     fn calc(input: &str) -> (usize, String) {
         let mut all_ingredients: Vec<&str> = Vec::new();

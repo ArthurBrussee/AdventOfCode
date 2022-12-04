@@ -73,8 +73,7 @@ impl Passport {
 }
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 4;
+    const DATE: (u32, u32) = (2020, 4);
 
     fn calc(input: &str) -> (u32, u32) {
         let passports = input

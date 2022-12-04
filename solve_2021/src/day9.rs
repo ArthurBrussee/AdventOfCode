@@ -76,8 +76,7 @@ fn parse_nums(input: &str) -> Grid {
 pub struct Solution;
 
 impl AocSolution<u32, usize> for Solution {
-    const YEAR: u32 = 2021;
-    const DAY: u32 = 9;
+    const DATE: (u32, u32) = (2021, 9);
 
     fn calc(input: &str) -> (u32, usize) {
         let grid = parse_nums(input);

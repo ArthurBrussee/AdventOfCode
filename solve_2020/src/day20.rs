@@ -110,8 +110,7 @@ fn fits(tile: &Tile, (x, y): (i32, i32), grid: &HashMap<(i32, i32), Tile>) -> bo
 }
 
 impl AocSolution<u64, usize> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 20;
+    const DATE: (u32, u32) = (2020, 20);
 
     fn calc(input: &str) -> (u64, usize) {
         let tiles = input

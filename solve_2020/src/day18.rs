@@ -76,8 +76,7 @@ fn evaluate(tokens: &[Token], prec_add: i32, prec_times: i32) -> u64 {
 }
 
 impl AocSolution<u64, u64> for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 18;
+    const DATE: (u32, u32) = (2020, 18);
 
     fn calc(input: &str) -> (u64, u64) {
         let tokens = input.lines().map(tokenize).collect::<Vec<_>>();

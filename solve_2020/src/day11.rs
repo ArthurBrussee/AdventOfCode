@@ -129,8 +129,7 @@ fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> u32 {
 }
 
 impl AocSolution for Solution {
-    const YEAR: u32 = 2020;
-    const DAY: u32 = 11;
+    const DATE: (u32, u32) = (2020, 11);
 
     fn calc(input: &str) -> (u32, u32) {
         let board = Board::new(input);
