@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 use std::collections::HashMap;
 
 use aoc_lib::DoubleLineSplit;
@@ -68,16 +72,21 @@ impl Passport {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let passports = input
-        .split_at_doubleblank()
-        .filter_map(Passport::parse)
-        .collect::<Vec<_>>();
-    (
-        passports.len(),
-        passports
-            .iter()
-            .filter(|p| Passport::is_valid_parsed(p))
-            .count(),
-    )
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 4;
+
+    fn calc(input: &str) -> (u32, u32) {
+        let passports = input
+            .split_at_doubleblank()
+            .filter_map(Passport::parse)
+            .collect::<Vec<_>>();
+        (
+            passports.len() as u32,
+            passports
+                .iter()
+                .filter(|p| Passport::is_valid_parsed(p))
+                .count() as u32,
+        )
+    }
 }

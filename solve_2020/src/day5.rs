@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 use std::collections::HashSet;
 
 fn seat(seat_str: &str) -> (u32, u32) {
@@ -31,20 +35,25 @@ fn seat_id(seat: (u32, u32)) -> u32 {
     seat.0 * 8 + seat.1
 }
 
-pub fn calc(input: &str) -> (u32, u32) {
-    let seat_ids = input
-        .lines()
-        .map(|s| seat_id(seat(s)))
-        .collect::<HashSet<_>>();
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 5;
 
-    let max_seat_id = *seat_ids.iter().max().unwrap();
+    fn calc(input: &str) -> (u32, u32) {
+        let seat_ids = input
+            .lines()
+            .map(|s| seat_id(seat(s)))
+            .collect::<HashSet<_>>();
 
-    let my_seat = (0..=max_seat_id)
-        .filter(|id| id > &0 && !seat_ids.contains(id))
-        .find(|id| [id - 1, id + 1].iter().all(|nid| seat_ids.contains(nid)))
-        .unwrap();
+        let max_seat_id = *seat_ids.iter().max().unwrap();
 
-    (max_seat_id, my_seat)
+        let my_seat = (0..=max_seat_id)
+            .filter(|id| id > &0 && !seat_ids.contains(id))
+            .find(|id| [id - 1, id + 1].iter().all(|nid| seat_ids.contains(nid)))
+            .unwrap();
+
+        (max_seat_id, my_seat)
+    }
 }
 
 #[test]

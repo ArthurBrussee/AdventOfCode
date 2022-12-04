@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 use std::{
     collections::{HashSet, VecDeque},
     iter::FromIterator,
@@ -52,16 +54,22 @@ fn crab_game(p1: &VecDeque<u8>, p2: &VecDeque<u8>, recurse: bool) -> (u32, u32) 
     (winner, score)
 }
 
-pub fn calc(_: &str) -> (u32, u32) {
-    let player1_deck: VecDeque<u8> = VecDeque::from(vec![
-        1, 43, 24, 34, 13, 7, 10, 36, 14, 12, 47, 32, 11, 3, 9, 25, 37, 21, 2, 45, 26, 8, 23, 6, 49,
-    ]);
-    let player2_deck: VecDeque<u8> = VecDeque::from(vec![
-        44, 5, 46, 18, 39, 50, 4, 41, 17, 28, 30, 42, 33, 38, 35, 22, 16, 27, 40, 48, 19, 29, 15,
-        31, 20,
-    ]);
+pub struct Solution;
+impl AocSolution<u32, u32> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 22;
 
-    let (_, score_p1) = crab_game(&player1_deck, &player2_deck, false);
-    let (_, score_p2) = crab_game(&player1_deck, &player2_deck, true);
-    (score_p1, score_p2)
+    fn calc(_: &str) -> (u32, u32) {
+        let player1_deck: VecDeque<u8> = VecDeque::from(vec![
+            1, 43, 24, 34, 13, 7, 10, 36, 14, 12, 47, 32, 11, 3, 9, 25, 37, 21, 2, 45, 26, 8, 23,
+            6, 49,
+        ]);
+        let player2_deck: VecDeque<u8> = VecDeque::from(vec![
+            44, 5, 46, 18, 39, 50, 4, 41, 17, 28, 30, 42, 33, 38, 35, 22, 16, 27, 40, 48, 19, 29,
+            15, 31, 20,
+        ]);
+        let (_, score_p1) = crab_game(&player1_deck, &player2_deck, false);
+        let (_, score_p2) = crab_game(&player1_deck, &player2_deck, true);
+        (score_p1, score_p2)
+    }
 }

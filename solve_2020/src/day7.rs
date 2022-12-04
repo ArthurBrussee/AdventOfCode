@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 use std::collections::HashMap;
 
 type RuleBook = HashMap<String, Vec<(String, usize)>>;
@@ -22,29 +26,35 @@ fn count_inner(rules: &RuleBook, root: &str) -> usize {
         .sum()
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    fn parse_bagrule(format: &str) -> (String, Vec<(String, usize)>) {
-        let bag_name = |name: &str| name[0..name.find("bag").unwrap() - 1].to_string();
-        let parts = format.split(" contain ").collect::<Vec<_>>();
-        let bags = parts[1]
-            .split(", ")
-            .filter_map(|l| {
-                if !l.starts_with("no other bags") {
-                    Some((bag_name(&l[2..]), l[0..1].parse().unwrap()))
-                } else {
-                    None
-                }
-            })
-            .collect();
-        (bag_name(parts[0]), bags)
-    }
-    let rulebook: RuleBook = input.lines().map(parse_bagrule).collect();
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 7;
 
-    let mut memoize = HashMap::new();
-    let p1 = rulebook
-        .keys()
-        .filter(|bag| contains(&rulebook, bag, "shiny gold", &mut memoize))
-        .count();
-    let p2 = count_inner(&rulebook, "shiny gold");
-    (p1, p2)
+    fn calc(input: &str) -> (u32, u32) {
+        fn parse_bagrule(format: &str) -> (String, Vec<(String, usize)>) {
+            let bag_name = |name: &str| name[0..name.find("bag").unwrap() - 1].to_string();
+            let parts = format.split(" contain ").collect::<Vec<_>>();
+            let bags = parts[1]
+                .split(", ")
+                .filter_map(|l| {
+                    if !l.starts_with("no other bags") {
+                        Some((bag_name(&l[2..]), l[0..1].parse().unwrap()))
+                    } else {
+                        None
+                    }
+                })
+                .collect();
+            (bag_name(parts[0]), bags)
+        }
+        let rulebook: RuleBook = input.lines().map(parse_bagrule).collect();
+
+        let mut memoize = HashMap::new();
+        let p1 = rulebook
+            .keys()
+            .filter(|bag| contains(&rulebook, bag, "shiny gold", &mut memoize))
+            .count() as u32;
+
+        let p2 = count_inner(&rulebook, "shiny gold") as u32;
+        (p1, p2)
+    }
 }

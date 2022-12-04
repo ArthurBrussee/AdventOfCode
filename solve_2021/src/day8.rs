@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 fn parse_input(input: &str) -> Vec<(Vec<String>, Vec<String>)> {
     input
         .lines()
@@ -44,43 +46,48 @@ fn solve_map(strs: &[String]) -> [&str; 10] {
     maps
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let lines = parse_input(input);
+pub struct Solution;
 
-    let total_count = lines
-        .iter()
-        .map(|(_, p2)| {
-            p2.iter()
-                .filter(|x| x.len() == 2 || x.len() == 3 || x.len() == 4 || x.len() == 7)
-                .count()
-        })
-        .sum();
-    let p1 = total_count;
-    let p2 = lines
-        .iter()
-        .map(|(p1, p2)| {
-            let mapping = solve_map(p1);
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 8;
 
-            p2.iter()
-                .map(|x| {
-                    mapping
-                        .iter()
-                        .position(|m| m.len() == x.len() && mutual_count(m, x) == x.len() as u8)
-                        .unwrap()
-                })
-                .rev()
-                .enumerate()
-                .map(|(pos, e)| 10usize.pow(pos as u32) * e)
-                .sum::<usize>()
-        })
-        .sum();
+    fn calc(input: &str) -> (usize, usize) {
+        let lines = parse_input(input);
 
-    (p1, p2)
+        let total_count = lines
+            .iter()
+            .map(|(_, p2)| {
+                p2.iter()
+                    .filter(|x| x.len() == 2 || x.len() == 3 || x.len() == 4 || x.len() == 7)
+                    .count()
+            })
+            .sum();
+        let p1 = total_count;
+        let p2 = lines
+            .iter()
+            .map(|(p1, p2)| {
+                let mapping = solve_map(p1);
+
+                p2.iter()
+                    .map(|x| {
+                        mapping
+                            .iter()
+                            .position(|m| m.len() == x.len() && mutual_count(m, x) == x.len() as u8)
+                            .unwrap()
+                    })
+                    .rev()
+                    .enumerate()
+                    .map(|(pos, e)| 10usize.pow(pos as u32) * e)
+                    .sum::<usize>()
+            })
+            .sum();
+
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 8, true));
-    assert_eq!(p1, 26);
-    assert_eq!(p2, 61229);
+    Solution::test(26, 61229);
 }

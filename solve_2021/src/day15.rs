@@ -3,6 +3,8 @@ use std::{
     collections::{BinaryHeap, HashMap},
 };
 
+use aoc_lib::AocSolution;
+
 struct Grid {
     values: Vec<u8>,
     width: i32,
@@ -83,52 +85,57 @@ impl Grid {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let width = input.lines().next().unwrap().len() as i32;
-    let height = input.lines().count() as i32;
-    let values = input
-        .lines()
-        .flat_map(|l| l.chars().map(|c| c.to_digit(10).unwrap() as u8))
-        .collect();
+pub struct Solution;
 
-    let grid = Grid {
-        values,
-        width,
-        height,
-    };
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 15;
 
-    let p1 = grid.calc_path((0, 0), (width - 1, height - 1)).unwrap();
+    fn calc(input: &str) -> (usize, usize) {
+        let width = input.lines().next().unwrap().len() as i32;
+        let height = input.lines().count() as i32;
+        let values = input
+            .lines()
+            .flat_map(|l| l.chars().map(|c| c.to_digit(10).unwrap() as u8))
+            .collect();
 
-    let big_values = (0..height * 5)
-        .flat_map(|y| (0..width * 5).map(move |x| (x, y)))
-        .map(|(x, y)| {
-            let base_val = grid.get(x % width, y % height).unwrap();
-            let xx = x / width;
-            let yy = y / height;
-            let mut val = base_val + xx as u8 + yy as u8;
-            if val > 9 {
-                val -= 9;
-            }
-            val
-        })
-        .collect();
+        let grid = Grid {
+            values,
+            width,
+            height,
+        };
 
-    let big_grid = Grid {
-        values: big_values,
-        width: width * 5,
-        height: height * 5,
-    };
+        let p1 = grid.calc_path((0, 0), (width - 1, height - 1)).unwrap();
 
-    let p2 = big_grid
-        .calc_path((0, 0), (width * 5 - 1, height * 5 - 1))
-        .unwrap();
+        let big_values = (0..height * 5)
+            .flat_map(|y| (0..width * 5).map(move |x| (x, y)))
+            .map(|(x, y)| {
+                let base_val = grid.get(x % width, y % height).unwrap();
+                let xx = x / width;
+                let yy = y / height;
+                let mut val = base_val + xx as u8 + yy as u8;
+                if val > 9 {
+                    val -= 9;
+                }
+                val
+            })
+            .collect();
 
-    (p1, p2)
+        let big_grid = Grid {
+            values: big_values,
+            width: width * 5,
+            height: height * 5,
+        };
+
+        let p2 = big_grid
+            .calc_path((0, 0), (width * 5 - 1, height * 5 - 1))
+            .unwrap();
+
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 15, true));
-    assert_eq!(p1, 40);
-    assert_eq!(p2, 315);
+    Solution::test(40, 315);
 }

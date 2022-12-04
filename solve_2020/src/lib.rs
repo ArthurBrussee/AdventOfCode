@@ -1,4 +1,4 @@
-use aoc_lib::run_solution;
+use aoc_lib::{Execute, SolutionExec};
 
 mod day1;
 mod day10;
@@ -26,33 +26,32 @@ mod day7;
 mod day8;
 mod day9;
 
-pub fn run() {
-    let funcs = [
-        || run_solution(2020, 1, day1::calc),
-        || run_solution(2020, 2, day2::calc),
-        || run_solution(2020, 3, day3::calc),
-        || run_solution(2020, 4, day4::calc),
-        || run_solution(2020, 5, day5::calc),
-        || run_solution(2020, 6, day6::calc),
-        || run_solution(2020, 7, day7::calc),
-        || run_solution(2020, 8, day8::calc),
-        || run_solution(2020, 9, day9::calc),
-        || run_solution(2020, 10, day10::calc),
-        || run_solution(2020, 11, day11::calc),
-        || run_solution(2020, 12, day12::calc),
-        || run_solution(2020, 13, day13::calc),
-        || run_solution(2020, 14, day14::calc),
-        || run_solution(2020, 15, day15::calc),
-        || run_solution(2020, 16, day16::calc),
-        || run_solution(2020, 17, day17::calc),
-        || run_solution(2020, 18, day18::calc),
-        || run_solution(2020, 19, day19::calc),
-        || run_solution(2020, 20, day20::calc),
-        || run_solution(2020, 21, day21::calc),
-        || run_solution(2020, 22, day22::calc),
-        || run_solution(2020, 23, day23::calc),
-        || run_solution(2020, 24, day24::calc),
-        || run_solution(2020, 25, day25::calc),
-    ];
-    aoc_lib::run_solutions(&funcs);
+pub fn get_executions() -> [SolutionExec; 25] {
+    [
+        day1::Solution::get_exec(),
+        day2::Solution::get_exec(),
+        day3::Solution::get_exec(),
+        day4::Solution::get_exec(),
+        day5::Solution::get_exec(),
+        day6::Solution::get_exec(),
+        day7::Solution::get_exec(),
+        day8::Solution::get_exec(),
+        day9::Solution::get_exec(),
+        day10::Solution::get_exec(),
+        day11::Solution::get_exec(),
+        day12::Solution::get_exec(),
+        day13::Solution::get_exec(),
+        day14::Solution::get_exec(),
+        day15::Solution::get_exec(),
+        day16::Solution::get_exec(),
+        day17::Solution::get_exec(),
+        day18::Solution::get_exec(),
+        day19::Solution::get_exec(),
+        day20::Solution::get_exec(),
+        day21::Solution::get_exec(),
+        day22::Solution::get_exec(),
+        day23::Solution::get_exec(),
+        day24::Solution::get_exec(),
+        day25::Solution::get_exec(),
+    ]
 }

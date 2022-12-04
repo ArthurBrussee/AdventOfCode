@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 fn mod_nat(num: usize, n: usize) -> usize {
     (num - 1) % n + 1
 }
@@ -58,18 +60,25 @@ fn quantum_die(player: usize, positions: [usize; 2], scores: [usize; 2]) -> [usi
     branches
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let (p1_str, p2_str) = input.split_once(',').unwrap();
-    let spaces = [p1_str.parse().unwrap(), p2_str.parse().unwrap()];
-    let p1 = normal_die(spaces);
-    let wins = quantum_die(1, spaces, [0, 0]);
-    let p2 = *wins.iter().max().unwrap();
-    (p1, p2)
+pub struct Solution;
+
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 21;
+
+    fn calc(input: &str) -> (usize, usize) {
+        let (p1_str, p2_str) = input.split_once(',').unwrap();
+        let spaces = [p1_str.parse().unwrap(), p2_str.parse().unwrap()];
+        let p1 = normal_die(spaces);
+        let wins = quantum_die(1, spaces, [0, 0]);
+        let p2 = *wins.iter().max().unwrap();
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc("4,8");
+    let (p1, p2) = Solution::calc("4,8");
     assert_eq!(p1, 739785);
     assert_eq!(p2, 444356092776315);
 }

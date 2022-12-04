@@ -1,5 +1,7 @@
 use std::{collections::HashMap, error::Error, ops::Sub, str::FromStr};
 
+use aoc_lib::AocSolution;
+
 #[derive(Eq, PartialEq, Hash, Debug, Copy, Clone)]
 struct Point {
     x: i32,
@@ -106,17 +108,22 @@ fn count_double_vents(lines: &[Line], ignore_diaganol: bool) -> usize {
     vent.count.values().filter(|&&x| x >= 2).count()
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let lines = aoc_lib::parse_lines(input);
-    (
-        count_double_vents(&lines, true),
-        count_double_vents(&lines, false),
-    )
+pub struct Solution;
+
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 5;
+
+    fn calc(input: &str) -> (usize, usize) {
+        let lines = aoc_lib::parse_lines(input);
+        (
+            count_double_vents(&lines, true),
+            count_double_vents(&lines, false),
+        )
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 5, true));
-    assert_eq!(p1, 5);
-    assert_eq!(p2, 12);
+    Solution::test(5, 12);
 }

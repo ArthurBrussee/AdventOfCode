@@ -1,4 +1,4 @@
-use aoc_lib::DoubleLineSplit;
+use aoc_lib::{AocSolution, DoubleLineSplit};
 
 #[derive(Debug, Clone, Copy)]
 struct Slot {
@@ -113,21 +113,26 @@ fn last_winning_score(boards: &mut Vec<Board>, numbers: &[u32]) -> u32 {
     panic!("Noone won...");
 }
 
-pub fn calc(input: &str) -> (u32, u32) {
-    let (boards, numbers) = load_input(input);
+pub struct Solution;
 
-    let mut boards1 = boards.to_vec();
-    let mut boards2 = boards.to_vec();
+impl AocSolution for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 4;
 
-    (
-        solve_winning_score(&mut boards1, &numbers),
-        last_winning_score(&mut boards2, &numbers),
-    )
+    fn calc(input: &str) -> (u32, u32) {
+        let (boards, numbers) = load_input(input);
+
+        let mut boards1 = boards.to_vec();
+        let mut boards2 = boards.to_vec();
+
+        (
+            solve_winning_score(&mut boards1, &numbers),
+            last_winning_score(&mut boards2, &numbers),
+        )
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 4, true));
-    assert_eq!(p1, 4512);
-    assert_eq!(p2, 1924);
+    Solution::test(4512, 1924);
 }

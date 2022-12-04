@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use aoc_lib::AocSolution;
+
 struct Grid {
     values: Vec<u32>,
     width: i32,
@@ -48,30 +50,35 @@ impl Grid {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let width = input.lines().next().unwrap().len();
-    let height = input.lines().count();
+pub struct Solution;
 
-    let values: Vec<u32> = input
-        .lines()
-        .flat_map(|l| l.chars().map(|c| c.to_digit(10).unwrap()))
-        .collect();
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 11;
 
-    let total = values.len();
-    let mut grid = Grid {
-        values,
-        width: width as i32,
-        height: height as i32,
-    };
+    fn calc(input: &str) -> (usize, usize) {
+        let width = input.lines().next().unwrap().len();
+        let height = input.lines().count();
 
-    let p1 = (0..100).map(|_| grid.step()).sum();
-    let p2 = (101..).find(|_| grid.step() == total).unwrap();
-    (p1, p2)
+        let values: Vec<u32> = input
+            .lines()
+            .flat_map(|l| l.chars().map(|c| c.to_digit(10).unwrap()))
+            .collect();
+
+        let total = values.len();
+        let mut grid = Grid {
+            values,
+            width: width as i32,
+            height: height as i32,
+        };
+
+        let p1 = (0..100).map(|_| grid.step()).sum();
+        let p2 = (101..).find(|_| grid.step() == total).unwrap();
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 11, true));
-    assert_eq!(p1, 1656);
-    assert_eq!(p2, 195);
+    Solution::test(1656, 195);
 }

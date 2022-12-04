@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 use std::collections::HashMap;
 
 #[derive(PartialEq, Eq, Hash, Clone, Copy, Debug)]
@@ -7,13 +11,6 @@ enum Token {
     Plus,
     OpenParen,
     CloseParen,
-}
-
-pub fn calc(input: &str) -> (u64, u64) {
-    let tokens = input.lines().map(tokenize).collect::<Vec<_>>();
-    let p1 = tokens.iter().map(|l| evaluate(l, 1, 1)).sum();
-    let p2 = tokens.iter().map(|l| evaluate(l, 2, 1)).sum();
-    (p1, p2)
 }
 
 fn tokenize(s: &str) -> Vec<Token> {
@@ -76,4 +73,16 @@ fn evaluate(tokens: &[Token], prec_add: i32, prec_times: i32) -> u64 {
         }
     }
     vm[0]
+}
+
+impl AocSolution<u64, u64> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 18;
+
+    fn calc(input: &str) -> (u64, u64) {
+        let tokens = input.lines().map(tokenize).collect::<Vec<_>>();
+        let p1 = tokens.iter().map(|l| evaluate(l, 1, 1)).sum();
+        let p2 = tokens.iter().map(|l| evaluate(l, 2, 1)).sum();
+        (p1, p2)
+    }
 }

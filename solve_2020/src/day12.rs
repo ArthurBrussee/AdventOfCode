@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 enum Instruction {
     North(f32),
     South(f32),
@@ -14,59 +18,66 @@ fn rotate(dir: (f32, f32), angle: f32) -> (f32, f32) {
     (dir.0 * c - dir.1 * s, dir.0 * s + dir.1 * c)
 }
 
-pub fn calc(input: &str) -> (i32, i32) {
-    let instructions = input
-        .lines()
-        .map(|l| {
-            let mut ch = l.chars();
-            let t = ch.next().unwrap();
-            let amount = ch.collect::<String>().parse().unwrap();
-            match t {
-                'N' => Instruction::North(amount),
-                'S' => Instruction::South(amount),
-                'E' => Instruction::East(amount),
-                'W' => Instruction::West(amount),
-                'L' => Instruction::Left(amount),
-                'R' => Instruction::Right(amount),
-                'F' => Instruction::Front(amount),
-                _ => unreachable!("Invalid instruction."),
-            }
-        })
-        .collect::<Vec<_>>();
+impl AocSolution<i32, i32> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 12;
 
-    let mut pos = (0.0, 0.0);
-    let mut dir = (1.0, 0.0);
+    fn calc(input: &str) -> (i32, i32) {
+        let instructions = input
+            .lines()
+            .map(|l| {
+                let mut ch = l.chars();
+                let t = ch.next().unwrap();
+                let amount = ch.collect::<String>().parse().unwrap();
+                match t {
+                    'N' => Instruction::North(amount),
+                    'S' => Instruction::South(amount),
+                    'E' => Instruction::East(amount),
+                    'W' => Instruction::West(amount),
+                    'L' => Instruction::Left(amount),
+                    'R' => Instruction::Right(amount),
+                    'F' => Instruction::Front(amount),
+                    _ => unreachable!("Invalid instruction."),
+                }
+            })
+            .collect::<Vec<_>>();
 
-    for instr in &instructions {
-        match instr {
-            Instruction::North(amount) => pos.1 += amount,
-            Instruction::South(amount) => pos.1 -= amount,
-            Instruction::East(amount) => pos.0 += amount,
-            Instruction::West(amount) => pos.0 -= amount,
-            Instruction::Left(amount) => dir = rotate(dir, *amount),
-            Instruction::Right(amount) => dir = rotate(dir, -amount),
-            Instruction::Front(amount) => pos = (pos.0 + dir.0 * amount, pos.1 + dir.1 * amount),
-        }
-    }
-    let p1 = (pos.0.abs() + pos.1.abs()) as i32;
+        let mut pos = (0.0, 0.0);
+        let mut dir = (1.0, 0.0);
 
-    let mut pos = (0.0, 0.0);
-    let mut waypoint = (10.0, 1.0);
-
-    for instr in &instructions {
-        match instr {
-            Instruction::North(amount) => waypoint.1 += amount,
-            Instruction::South(amount) => waypoint.1 -= amount,
-            Instruction::East(amount) => waypoint.0 += amount,
-            Instruction::West(amount) => waypoint.0 -= amount,
-            Instruction::Left(amount) => waypoint = rotate(waypoint, *amount),
-            Instruction::Right(amount) => waypoint = rotate(waypoint, -amount),
-            Instruction::Front(amount) => {
-                pos = (pos.0 + waypoint.0 * amount, pos.1 + waypoint.1 * amount)
+        for instr in &instructions {
+            match instr {
+                Instruction::North(amount) => pos.1 += amount,
+                Instruction::South(amount) => pos.1 -= amount,
+                Instruction::East(amount) => pos.0 += amount,
+                Instruction::West(amount) => pos.0 -= amount,
+                Instruction::Left(amount) => dir = rotate(dir, *amount),
+                Instruction::Right(amount) => dir = rotate(dir, -amount),
+                Instruction::Front(amount) => {
+                    pos = (pos.0 + dir.0 * amount, pos.1 + dir.1 * amount)
+                }
             }
         }
-    }
+        let p1 = (pos.0.abs() + pos.1.abs()) as i32;
 
-    let p2 = (pos.0.abs() + pos.1.abs()) as i32;
-    (p1, p2)
+        let mut pos = (0.0, 0.0);
+        let mut waypoint = (10.0, 1.0);
+
+        for instr in &instructions {
+            match instr {
+                Instruction::North(amount) => waypoint.1 += amount,
+                Instruction::South(amount) => waypoint.1 -= amount,
+                Instruction::East(amount) => waypoint.0 += amount,
+                Instruction::West(amount) => waypoint.0 -= amount,
+                Instruction::Left(amount) => waypoint = rotate(waypoint, *amount),
+                Instruction::Right(amount) => waypoint = rotate(waypoint, -amount),
+                Instruction::Front(amount) => {
+                    pos = (pos.0 + waypoint.0 * amount, pos.1 + waypoint.1 * amount)
+                }
+            }
+        }
+
+        let p2 = (pos.0.abs() + pos.1.abs()) as i32;
+        (p1, p2)
+    }
 }

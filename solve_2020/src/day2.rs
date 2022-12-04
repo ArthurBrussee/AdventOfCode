@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 struct PasswordProto {
     lower: usize,
     upper: usize,
@@ -19,25 +21,32 @@ impl PasswordProto {
     }
 }
 
-fn pass_p1(pass: &PasswordProto) -> bool {
-    let count = pass.password.chars().filter(|&x| x == pass.letter).count();
-    count >= pass.lower && count <= pass.upper
-}
+pub struct Solution;
 
-fn pass_p2(pass: &PasswordProto) -> bool {
-    let valid1 = pass.password.chars().nth(pass.lower - 1).unwrap() == pass.letter;
-    let valid2 = pass.password.chars().nth(pass.upper - 1).unwrap() == pass.letter;
-    valid1 ^ valid2
-}
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 2;
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let passwords = input
-        .lines()
-        .map(PasswordProto::new)
-        .collect::<Vec<PasswordProto>>();
+    fn calc(input: &str) -> (u32, u32) {
+        fn pass_p1(pass: &PasswordProto) -> bool {
+            let count = pass.password.chars().filter(|&x| x == pass.letter).count();
+            count >= pass.lower && count <= pass.upper
+        }
 
-    (
-        passwords.iter().filter(|p| pass_p1(p)).count(),
-        passwords.iter().filter(|p| pass_p2(p)).count(),
-    )
+        fn pass_p2(pass: &PasswordProto) -> bool {
+            let valid1 = pass.password.chars().nth(pass.lower - 1).unwrap() == pass.letter;
+            let valid2 = pass.password.chars().nth(pass.upper - 1).unwrap() == pass.letter;
+            valid1 ^ valid2
+        }
+
+        let passwords = input
+            .lines()
+            .map(PasswordProto::new)
+            .collect::<Vec<PasswordProto>>();
+
+        (
+            passwords.iter().filter(|p| pass_p1(p)).count() as u32,
+            passwords.iter().filter(|p| pass_p2(p)).count() as u32,
+        )
+    }
 }

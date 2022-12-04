@@ -1,73 +1,68 @@
-use std::{env, fmt::Display, fs, str::FromStr, time::Instant};
+use std::cmp;
+use std::fmt::{Debug, Display};
+use std::{fs, str::FromStr, time::Instant};
 
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-
-pub fn read_file(year: u32, day: u32, test: bool) -> String {
-    let path = if test {
-        format!("./inputs/day{}_test.txt", day)
-    } else {
-        format!("./solve_{}/inputs/day{}.txt", year, day)
-    };
-    let file = fs::read_to_string(&path).expect("Please include input file!");
-    file.replace("\r\n", "\n")
-}
-
-pub fn run_solution<T, V>(year: u32, day: u32, calc: fn(&str) -> (T, V)) -> String
+pub trait AocSolution<P1 = u32, P2 = u32>
 where
-    T: Display,
-    V: Display,
+    P1: cmp::PartialEq + Debug + Display + Send + Sync,
+    P2: cmp::PartialEq + Debug + Display + Send + Sync,
 {
-    let now = Instant::now();
+    const YEAR: u32;
+    const DAY: u32;
 
-    let (p1, p2) = calc(&read_file(year, day, false));
-    let ms = now.elapsed().as_secs_f64() * 1000.0;
-    format!("Day {}, {:.2}ms: ({}, {})", day, ms, p1, p2)
-}
+    fn calc(input: &str) -> (P1, P2);
 
-pub fn run_solutions(funcs: &[fn() -> String]) {
-    let start_run = Instant::now();
-
-    let funcs_to_run = get_days_to_run()
-        .filter_map(|d| funcs.get(d))
-        .collect::<Vec<_>>();
-
-    let strings: Vec<_> = funcs_to_run.par_iter().map(|f| f()).collect();
-
-    for s in strings {
-        println!("{}", s);
+    fn read_file(test: bool) -> String {
+        let path = if test {
+            format!("./inputs/day{}_test.txt", Self::DAY)
+        } else {
+            format!("./solve_{}/inputs/day{}.txt", Self::YEAR, Self::DAY)
+        };
+        let file = fs::read_to_string(&path).unwrap_or_else(|_| {
+            panic!(
+                "Please include input file for {}: {}!",
+                Self::YEAR,
+                Self::DAY
+            )
+        });
+        file.replace("\r\n", "\n")
     }
 
-    println!(
-        "Done with AOC! Took {:.2}ms",
-        start_run.elapsed().as_secs_f64() * 1000.0
-    );
+    fn test(solution1: P1, solution2: P2) {
+        let (p1, p2) = Self::calc(&Self::read_file(true));
+        assert_eq!(p1, solution1);
+        assert_eq!(p2, solution2);
+    }
 }
 
-pub fn get_days_to_run() -> impl Iterator<Item = usize> {
-    let mut days = env::args()
-        .filter_map(|arg| arg.strip_prefix("--day").map(|f| f.to_string()))
-        .map(|r| r.parse::<usize>().unwrap() - 1)
-        .collect::<Vec<_>>();
-
-    if days.is_empty() {
-        days.extend(0..25);
-    }
-
-    days.into_iter()
+pub struct SolutionExec {
+    pub f: fn() -> String,
+    pub year: u32,
+    pub day: u32,
 }
 
-pub fn get_years_to_run() -> impl Iterator<Item = usize> {
-    let mut years = env::args()
-        .filter_map(|arg| arg.strip_prefix("--year").map(|f| f.to_string()))
-        .map(|r| r.parse::<usize>().unwrap())
-        .collect::<Vec<_>>();
+pub trait Execute<P1, P2> {
+    fn get_exec() -> SolutionExec;
+}
 
-    // Let's see if I can do this for the next 10 years haha
-    if years.is_empty() {
-        years.extend(2020..=2030);
+impl<T, P1, P2> Execute<P1, P2> for T
+where
+    T: AocSolution<P1, P2>,
+    P1: cmp::PartialEq + Debug + Display + Send + Sync,
+    P2: cmp::PartialEq + Debug + Display + Send + Sync,
+{
+    fn get_exec() -> SolutionExec {
+        let f = || {
+            let (p1, p2) = T::calc(&T::read_file(false));
+            format!("{}, {}", p1, p2)
+        };
+
+        SolutionExec {
+            f,
+            year: T::YEAR,
+            day: T::DAY,
+        }
     }
-
-    years.into_iter()
 }
 
 pub fn map_file_lines<T>(path: &str, func: fn(&str) -> T) -> Vec<T> {

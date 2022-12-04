@@ -4,7 +4,7 @@ use std::{
     ops::{Add, Sub},
 };
 
-use aoc_lib::DoubleLineSplit;
+use aoc_lib::{AocSolution, DoubleLineSplit};
 
 #[derive(PartialEq, Eq, Hash, Clone, Copy, Default, Debug)]
 struct Point {
@@ -171,69 +171,74 @@ impl BeaconMap {
     }
 }
 
-pub fn calc(input: &str) -> (usize, u32) {
-    let readings: Vec<_> = input.split_at_doubleblank().map(Readings::from).collect();
-    let mut beacons = BeaconMap::new();
+pub struct Solution;
 
-    for p in readings[0].points.iter().copied() {
-        beacons.insert(p);
-    }
+impl AocSolution<usize, u32> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 19;
 
-    let mut remaining_templates: Vec<_> = readings.iter().skip(1).collect();
-    let mut offsets = vec![Point::default()];
+    fn calc(input: &str) -> (usize, u32) {
+        let readings: Vec<_> = input.split_at_doubleblank().map(Readings::from).collect();
+        let mut beacons = BeaconMap::new();
 
-    while !remaining_templates.is_empty() {
-        remaining_templates.retain(|t| {
-            for face in 0..6 {
-                for rot in [0, 90, 180, 270] {
-                    let (ax, ay, az) = match face {
-                        0 => (rot, 0, 0),   // +x
-                        1 => (rot, 180, 0), // -x
-                        2 => (rot, 0, 90),  // +y
-                        3 => (rot, 0, 270), // -y
-                        4 => (rot, 90, 0),  // +Z
-                        5 => (rot, 270, 0), // -Z
-                        _ => unreachable!(),
-                    };
+        for p in readings[0].points.iter().copied() {
+            beacons.insert(p);
+        }
 
-                    let rotated = t.rotated(ax, ay, az);
+        let mut remaining_templates: Vec<_> = readings.iter().skip(1).collect();
+        let mut offsets = vec![Point::default()];
 
-                    for &beacon_pos in &beacons.pts {
-                        for &base_point in rotated.points.iter() {
-                            let offset = beacon_pos - base_point;
+        while !remaining_templates.is_empty() {
+            remaining_templates.retain(|t| {
+                for face in 0..6 {
+                    for rot in [0, 90, 180, 270] {
+                        let (ax, ay, az) = match face {
+                            0 => (rot, 0, 0),   // +x
+                            1 => (rot, 180, 0), // -x
+                            2 => (rot, 0, 90),  // +y
+                            3 => (rot, 0, 270), // -y
+                            4 => (rot, 90, 0),  // +Z
+                            5 => (rot, 270, 0), // -Z
+                            _ => unreachable!(),
+                        };
 
-                            if beacons.matches(&rotated.points, offset) {
-                                offsets.push(offset);
+                        let rotated = t.rotated(ax, ay, az);
 
-                                for p in rotated.points.into_iter().map(|p| p + offset) {
-                                    beacons.insert(p);
+                        for &beacon_pos in &beacons.pts {
+                            for &base_point in rotated.points.iter() {
+                                let offset = beacon_pos - base_point;
+
+                                if beacons.matches(&rotated.points, offset) {
+                                    offsets.push(offset);
+
+                                    for p in rotated.points.into_iter().map(|p| p + offset) {
+                                        beacons.insert(p);
+                                    }
+
+                                    return false;
                                 }
-
-                                return false;
                             }
                         }
                     }
                 }
-            }
-            true
-        });
-    }
-
-    let mut max_dist = 0;
-
-    for &p1 in &offsets {
-        for &p2 in &offsets {
-            let mag = (p2 - p1).l1();
-            max_dist = max_dist.max(mag);
+                true
+            });
         }
-    }
 
-    (beacons.pts.len(), max_dist)
+        let mut max_dist = 0;
+
+        for &p1 in &offsets {
+            for &p2 in &offsets {
+                let mag = (p2 - p1).l1();
+                max_dist = max_dist.max(mag);
+            }
+        }
+
+        (beacons.pts.len(), max_dist)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 19, true));
-    assert_eq!(p1, 79);
-    assert_eq!(p2, 3621);
+    Solution::test(79, 3621);
 }

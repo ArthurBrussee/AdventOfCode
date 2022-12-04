@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use aoc_lib::DoubleLineSplit;
+use aoc_lib::{AocSolution, DoubleLineSplit};
 
 struct Image {
     pixels: HashMap<(i32, i32), bool>,
@@ -45,50 +45,55 @@ impl Image {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let mut parts = input.split_at_doubleblank();
+pub struct Solution;
 
-    let remaps: Vec<bool> = parts.next().unwrap().chars().map(|c| c == '#').collect();
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 20;
 
-    let image_str = parts.next().unwrap();
-    let width = image_str.lines().next().unwrap().len();
-    let pixels = image_str
-        .lines()
-        .flat_map(|l| l.chars())
-        .enumerate()
-        .map(|(i, c)| {
-            let pos = ((i % width) as i32, (i / width) as i32);
-            (pos, c == '#')
-        })
-        .collect();
+    fn calc(input: &str) -> (usize, usize) {
+        let mut parts = input.split_at_doubleblank();
 
-    let mut image = Image { pixels };
+        let remaps: Vec<bool> = parts.next().unwrap().chars().map(|c| c == '#').collect();
 
-    let mut bck = false;
+        let image_str = parts.next().unwrap();
+        let width = image_str.lines().next().unwrap().len();
+        let pixels = image_str
+            .lines()
+            .flat_map(|l| l.chars())
+            .enumerate()
+            .map(|(i, c)| {
+                let pos = ((i % width) as i32, (i / width) as i32);
+                (pos, c == '#')
+            })
+            .collect();
 
-    for _ in 0..2 {
-        image = image.convolve(&remaps, bck);
-        if remaps[0] {
-            bck = !bck;
+        let mut image = Image { pixels };
+
+        let mut bck = false;
+
+        for _ in 0..2 {
+            image = image.convolve(&remaps, bck);
+            if remaps[0] {
+                bck = !bck;
+            }
         }
-    }
 
-    let p1 = image.pixels.values().filter(|&&v| v).count();
+        let p1 = image.pixels.values().filter(|&&v| v).count();
 
-    for _ in 2..50 {
-        image = image.convolve(&remaps, bck);
-        if remaps[0] {
-            bck = !bck;
+        for _ in 2..50 {
+            image = image.convolve(&remaps, bck);
+            if remaps[0] {
+                bck = !bck;
+            }
         }
-    }
 
-    let p2 = image.pixels.values().filter(|&&v| v).count();
-    (p1, p2)
+        let p2 = image.pixels.values().filter(|&&v| v).count();
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 20, true));
-    assert_eq!(p1, 35);
-    assert_eq!(p2, 3351);
+    Solution::test(35, 3351);
 }

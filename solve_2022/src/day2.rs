@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 fn score(l: usize, r: usize) -> usize {
     if l == r {
         4 + r
@@ -8,41 +10,46 @@ fn score(l: usize, r: usize) -> usize {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    input
-        .lines()
-        .map(|x| {
-            let (l, r) = x.split_once(' ').unwrap();
+pub struct Solution;
 
-            let l = match l {
-                "A" => 0,
-                "B" => 1,
-                "C" => 2,
-                _ => unreachable!(),
-            };
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2022;
+    const DAY: u32 = 2;
 
-            let r1 = match r {
-                "X" => 0,
-                "Y" => 1,
-                "Z" => 2,
-                _ => unreachable!(),
-            };
+    fn calc(input: &str) -> (usize, usize) {
+        input
+            .lines()
+            .map(|x| {
+                let (l, r) = x.split_once(' ').unwrap();
 
-            let r2 = match r {
-                "X" => (l + 2) % 3,
-                "Y" => l,
-                "Z" => (l + 1) % 3,
-                _ => unreachable!(),
-            };
+                let l = match l {
+                    "A" => 0,
+                    "B" => 1,
+                    "C" => 2,
+                    _ => unreachable!(),
+                };
 
-            (score(l, r1), score(l, r2))
-        })
-        .fold((0, 0), |(c1, c2), (s1, s2)| (c1 + s1, c2 + s2))
+                let r1 = match r {
+                    "X" => 0,
+                    "Y" => 1,
+                    "Z" => 2,
+                    _ => unreachable!(),
+                };
+
+                let r2 = match r {
+                    "X" => (l + 2) % 3,
+                    "Y" => l,
+                    "Z" => (l + 1) % 3,
+                    _ => unreachable!(),
+                };
+
+                (score(l, r1), score(l, r2))
+            })
+            .fold((0, 0), |(c1, c2), (s1, s2)| (c1 + s1, c2 + s2))
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 2, true));
-    assert_eq!(p1, 15);
-    assert_eq!(p2, 12);
+    Solution::test(15, 12);
 }

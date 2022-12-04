@@ -1,19 +1,24 @@
-use aoc_lib::DoubleLineSplit;
+use aoc_lib::{AocSolution, DoubleLineSplit};
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let mut cals = input
-        .split_at_doubleblank()
-        .map(|food_list| food_list.lines().map(|x| x.parse::<usize>().unwrap()).sum())
-        .collect::<Vec<usize>>();
+pub struct Solution;
 
-    cals.sort_by(|a, b| b.cmp(a));
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2022;
+    const DAY: u32 = 1;
 
-    (cals[0], cals.iter().take(3).sum())
+    fn calc(input: &str) -> (usize, usize) {
+        let mut cals = input
+            .split_at_doubleblank()
+            .map(|food_list| food_list.lines().map(|x| x.parse::<usize>().unwrap()).sum())
+            .collect::<Vec<usize>>();
+
+        cals.sort_by(|a, b| b.cmp(a));
+
+        (cals[0], cals.iter().take(3).sum())
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 1, true));
-    assert_eq!(p1, 24000);
-    assert_eq!(p2, 45000);
+    Solution::test(24000, 45000);
 }

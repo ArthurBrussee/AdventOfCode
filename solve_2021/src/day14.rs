@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use aoc_lib::AocSolution;
+
 struct Polymer {
     pair_counts: HashMap<[char; 2], usize>,
     rules: HashMap<[char; 2], char>,
@@ -32,52 +34,57 @@ impl Polymer {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let mut lines = input.lines();
-    let start_templ: Vec<char> = lines.next().unwrap().chars().collect();
+pub struct Solution;
 
-    lines.next();
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 14;
 
-    let mut rules = HashMap::new();
-    for l in lines {
-        let (template, replace) = l.split_once(" -> ").unwrap();
-        let mut templ_chars = template.chars();
-        rules.insert(
-            [templ_chars.next().unwrap(), templ_chars.next().unwrap()],
-            replace.chars().next().unwrap(),
-        );
+    fn calc(input: &str) -> (usize, usize) {
+        let mut lines = input.lines();
+        let start_templ: Vec<char> = lines.next().unwrap().chars().collect();
+
+        lines.next();
+
+        let mut rules = HashMap::new();
+        for l in lines {
+            let (template, replace) = l.split_once(" -> ").unwrap();
+            let mut templ_chars = template.chars();
+            rules.insert(
+                [templ_chars.next().unwrap(), templ_chars.next().unwrap()],
+                replace.chars().next().unwrap(),
+            );
+        }
+
+        let mut pair_counts = HashMap::new();
+        for window in start_templ.windows(2) {
+            let window_arr = window.try_into().unwrap();
+            *pair_counts.entry(window_arr).or_default() += 1;
+        }
+
+        let mut poly = Polymer {
+            pair_counts,
+            rules,
+            last_char: *start_templ.last().unwrap(),
+        };
+
+        for _ in 0..10 {
+            poly.step();
+        }
+
+        let p1 = poly.score();
+
+        for _ in 10..40 {
+            poly.step();
+        }
+
+        let p2 = poly.score();
+
+        (p1, p2)
     }
-
-    let mut pair_counts = HashMap::new();
-    for window in start_templ.windows(2) {
-        let window_arr = window.try_into().unwrap();
-        *pair_counts.entry(window_arr).or_default() += 1;
-    }
-
-    let mut poly = Polymer {
-        pair_counts,
-        rules,
-        last_char: *start_templ.last().unwrap(),
-    };
-
-    for _ in 0..10 {
-        poly.step();
-    }
-
-    let p1 = poly.score();
-
-    for _ in 10..40 {
-        poly.step();
-    }
-
-    let p2 = poly.score();
-
-    (p1, p2)
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 14, true));
-    assert_eq!(p1, 1588);
-    assert_eq!(p2, 2188189693529);
+    Solution::test(1588, 2188189693529);
 }

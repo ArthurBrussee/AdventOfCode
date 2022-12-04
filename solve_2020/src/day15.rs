@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 fn get_spoken_num(nums: &[u32], max_turn: u32) -> u32 {
     let mut last = 0;
     let mut last_turn = vec![0u32; max_turn as usize];
@@ -16,7 +20,12 @@ fn get_spoken_num(nums: &[u32], max_turn: u32) -> u32 {
     last
 }
 
-pub fn calc(_: &str) -> (u32, u32) {
-    let nums: Vec<u32> = vec![15, 5, 1, 4, 7, 0];
-    (get_spoken_num(&nums, 2020), get_spoken_num(&nums, 30000000))
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 15;
+
+    fn calc(_: &str) -> (u32, u32) {
+        let nums: Vec<u32> = vec![15, 5, 1, 4, 7, 0];
+        (get_spoken_num(&nums, 2020), get_spoken_num(&nums, 30000000))
+    }
 }

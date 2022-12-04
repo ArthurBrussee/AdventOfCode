@@ -17,9 +17,6 @@ dependencies = [
 [[package]]
 name = "aoc_lib"
 version = "1.0.0"
-dependencies = [
- "rayon",
-]
 
 [[package]]
 name = "autocfg"
@@ -170,6 +167,7 @@ name = "runner"
 version = "1.0.0"
 dependencies = [
  "aoc_lib",
+ "rayon",
  "solve_2020",
  "solve_2021",
  "solve_2022",

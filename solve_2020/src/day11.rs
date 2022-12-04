@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 #[derive(Clone, PartialEq, Copy)]
 enum Tile {
     EmptySeat,
@@ -42,7 +46,7 @@ impl Board {
     }
 }
 
-fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
+fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> u32 {
     let mut seats = Vec::new();
 
     for (i, tile) in board.tiles.iter().enumerate() {
@@ -118,15 +122,20 @@ fn simulate_to_equal(board: &Board, overcrowd: usize, cast: bool) -> usize {
             }
         }
         if !change {
-            break board.tiles.iter().filter(|&x| x == &Tile::Occupied).count();
+            break board.tiles.iter().filter(|&x| x == &Tile::Occupied).count() as u32;
         }
         std::mem::swap(&mut board, &mut new_board);
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let board = Board::new(input);
-    let p1 = simulate_to_equal(&board, 4, false);
-    let p2 = simulate_to_equal(&board, 5, true);
-    (p1, p2)
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 11;
+
+    fn calc(input: &str) -> (u32, u32) {
+        let board = Board::new(input);
+        let p1 = simulate_to_equal(&board, 4, false);
+        let p2 = simulate_to_equal(&board, 5, true);
+        (p1, p2)
+    }
 }

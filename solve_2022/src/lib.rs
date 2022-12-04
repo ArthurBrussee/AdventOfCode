@@ -1,17 +1,15 @@
-use aoc_lib::run_solution;
+use aoc_lib::{Execute, SolutionExec};
 
 mod day1;
 mod day2;
 mod day3;
 mod day4;
 
-pub fn run() {
-    let funcs = [
-        || run_solution(2022, 1, day1::calc),
-        || run_solution(2022, 2, day2::calc),
-        || run_solution(2022, 3, day3::calc),
-        || run_solution(2022, 4, day4::calc),
-    ];
-
-    aoc_lib::run_solutions(&funcs);
+pub fn get_executions() -> [SolutionExec; 4] {
+    [
+        day1::Solution::get_exec(),
+        day2::Solution::get_exec(),
+        day3::Solution::get_exec(),
+        day4::Solution::get_exec(),
+    ]
 }

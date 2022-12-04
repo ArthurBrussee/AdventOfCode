@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 enum Weed {
     Empty,
@@ -80,20 +82,27 @@ impl Map {
     }
 }
 
-pub fn calc(input: &str) -> (usize, String) {
-    let mut map = Map::from(input);
+pub struct Solution;
 
-    let p1 = (1..)
-        .map(|i| (i, map.step()))
-        .find(|(_, change)| !change)
-        .unwrap()
-        .0;
+impl AocSolution<usize, String> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 25;
 
-    (p1, "Merry xmas".to_owned())
+    fn calc(input: &str) -> (usize, String) {
+        let mut map = Map::from(input);
+
+        let p1 = (1..)
+            .map(|i| (i, map.step()))
+            .find(|(_, change)| !change)
+            .unwrap()
+            .0;
+
+        (p1, "Merry xmas".to_owned())
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, _) = calc(&aoc_lib::read_file(2021, 25, true));
+    let (p1, _) = Solution::calc(&Solution::read_file(true));
     assert_eq!(p1, 58);
 }

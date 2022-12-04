@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 struct Tree {
     nodes: Vec<Node>,
     root: usize,
@@ -207,42 +209,47 @@ impl Tree {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let mut tree = Tree {
-        nodes: Vec::new(),
-        root: 0,
-    };
+pub struct Solution;
 
-    let all_lines: Vec<_> = input.lines().collect();
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 18;
 
-    for l in all_lines.iter() {
-        tree.add(l);
-    }
+    fn calc(input: &str) -> (usize, usize) {
+        let mut tree = Tree {
+            nodes: Vec::new(),
+            root: 0,
+        };
 
-    let p2 = all_lines
-        .clone()
-        .iter()
-        .flat_map(|l1| {
-            all_lines.iter().map(|l2| {
-                let mut tree = Tree {
-                    nodes: Vec::new(),
-                    root: 0,
-                };
+        let all_lines: Vec<_> = input.lines().collect();
 
-                tree.add(l1);
-                tree.add(l2);
-                tree.score(tree.root)
+        for l in all_lines.iter() {
+            tree.add(l);
+        }
+
+        let p2 = all_lines
+            .clone()
+            .iter()
+            .flat_map(|l1| {
+                all_lines.iter().map(|l2| {
+                    let mut tree = Tree {
+                        nodes: Vec::new(),
+                        root: 0,
+                    };
+
+                    tree.add(l1);
+                    tree.add(l2);
+                    tree.score(tree.root)
+                })
             })
-        })
-        .max()
-        .unwrap();
+            .max()
+            .unwrap();
 
-    (tree.score(tree.root), p2)
+        (tree.score(tree.root), p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 18, true));
-    assert_eq!(p1, 4140);
-    assert_eq!(p2, 3993);
+    Solution::test(4140, 3993);
 }

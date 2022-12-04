@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 fn calc_increasing(nums: &[usize]) -> usize {
     nums.windows(2).filter(|w| w[0] < w[1]).count()
 }
@@ -7,9 +9,16 @@ fn calc_window_sum(nums: &[usize]) -> usize {
     calc_increasing(&windowed)
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let inputs: Vec<usize> = aoc_lib::parse_lines(input);
-    (calc_increasing(&inputs), calc_window_sum(&inputs))
+pub struct Solution;
+
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 1;
+
+    fn calc(input: &str) -> (usize, usize) {
+        let inputs: Vec<usize> = aoc_lib::parse_lines(input);
+        (calc_increasing(&inputs), calc_window_sum(&inputs))
+    }
 }
 
 #[test]

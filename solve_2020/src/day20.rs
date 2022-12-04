@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 use std::cmp::max;
 use std::collections::HashMap;
 
@@ -105,129 +109,134 @@ fn fits(tile: &Tile, (x, y): (i32, i32), grid: &HashMap<(i32, i32), Tile>) -> bo
     true
 }
 
-pub fn calc(input: &str) -> (u64, usize) {
-    let tiles = input
-        .split_at_doubleblank()
-        .map(|tile| {
-            let mut board_iter = tile.splitn(2, '\n');
-            let id = board_iter
-                .next()
-                .and_then(|f| f.strip_prefix("Tile "))
-                .and_then(|f| f.strip_suffix(':'))
-                .and_then(|f| f.parse().ok())
-                .unwrap();
-            let rest_string = board_iter.next().unwrap();
-            (id, Tile::from_str(id, rest_string))
-        })
-        .collect::<HashMap<_, _>>();
+impl AocSolution<u64, usize> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 20;
 
-    let mut grid = HashMap::new();
+    fn calc(input: &str) -> (u64, usize) {
+        let tiles = input
+            .split_at_doubleblank()
+            .map(|tile| {
+                let mut board_iter = tile.splitn(2, '\n');
+                let id = board_iter
+                    .next()
+                    .and_then(|f| f.strip_prefix("Tile "))
+                    .and_then(|f| f.strip_suffix(':'))
+                    .and_then(|f| f.parse().ok())
+                    .unwrap();
+                let rest_string = board_iter.next().unwrap();
+                (id, Tile::from_str(id, rest_string))
+            })
+            .collect::<HashMap<_, _>>();
 
-    let mut remaining = tiles.keys().collect::<Vec<_>>();
-    remaining.sort();
+        let mut grid = HashMap::new();
 
-    grid.insert((0, 0), tiles[remaining[0]].clone());
-    remaining.remove(0);
+        let mut remaining = tiles.keys().collect::<Vec<_>>();
+        remaining.sort();
 
-    for _ in 0..tiles.len() {
-        'find_tile: for (i, id) in remaining.iter().enumerate() {
-            for &f in &FLIPS {
-                let tile_flipped = tiles[id].transform(f);
-                for &r in &ROTATIONS {
-                    let tilep = tile_flipped.transform(r);
+        grid.insert((0, 0), tiles[remaining[0]].clone());
+        remaining.remove(0);
 
-                    for (x, y) in grid.keys() {
-                        for &s in &SIDES {
-                            let dir = s.dir();
-                            let pos = (x + dir.0, y + dir.1);
+        for _ in 0..tiles.len() {
+            'find_tile: for (i, id) in remaining.iter().enumerate() {
+                for &f in &FLIPS {
+                    let tile_flipped = tiles[id].transform(f);
+                    for &r in &ROTATIONS {
+                        let tilep = tile_flipped.transform(r);
 
-                            if fits(&tilep, pos, &grid) {
-                                grid.insert(pos, tilep);
-                                remaining.remove(i);
-                                break 'find_tile;
+                        for (x, y) in grid.keys() {
+                            for &s in &SIDES {
+                                let dir = s.dir();
+                                let pos = (x + dir.0, y + dir.1);
+
+                                if fits(&tilep, pos, &grid) {
+                                    grid.insert(pos, tilep);
+                                    remaining.remove(i);
+                                    break 'find_tile;
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
 
-    let (min_x, min_y) = *grid.keys().min().unwrap();
-    let (max_x, max_y) = *grid.keys().max().unwrap();
+        let (min_x, min_y) = *grid.keys().min().unwrap();
+        let (max_x, max_y) = *grid.keys().max().unwrap();
 
-    let tile_size = tiles.values().next().unwrap().size - 2;
-    let full_pic_size = (tiles.len() as f64).sqrt() as i32 * tile_size;
+        let tile_size = tiles.values().next().unwrap().size - 2;
+        let full_pic_size = (tiles.len() as f64).sqrt() as i32 * tile_size;
 
-    let mut full_pixels = vec![false; (full_pic_size * full_pic_size) as usize];
+        let mut full_pixels = vec![false; (full_pic_size * full_pic_size) as usize];
 
-    for ((bx, by), tile) in grid.iter() {
-        for x in 0..tile_size {
-            for y in 0..tile_size {
-                let xx = x + (bx - min_x) * tile_size;
-                let yy = y + (by - min_y) * tile_size;
-                full_pixels[(xx + yy * full_pic_size) as usize] = tile.get(x + 1, y + 1);
+        for ((bx, by), tile) in grid.iter() {
+            for x in 0..tile_size {
+                for y in 0..tile_size {
+                    let xx = x + (bx - min_x) * tile_size;
+                    let yy = y + (by - min_y) * tile_size;
+                    full_pixels[(xx + yy * full_pic_size) as usize] = tile.get(x + 1, y + 1);
+                }
             }
         }
-    }
 
-    let full_pic = Tile {
-        id: 0,
-        size: full_pic_size,
-        pixels: full_pixels,
-    };
+        let full_pic = Tile {
+            id: 0,
+            size: full_pic_size,
+            pixels: full_pixels,
+        };
 
-    let monster_tile = Tile::from_str(
-        0,
-        "                  # 
+        let monster_tile = Tile::from_str(
+            0,
+            "                  # 
 #    ##    ##    ###
  #  #  #  #  #  #   ",
-    );
+        );
 
-    let mut monster_count = 0;
+        let mut monster_count = 0;
 
-    for &f in &FLIPS {
-        for &r in &ROTATIONS {
-            let pic = full_pic.transform(f).transform(r);
-            let mut monster_count_cur = 0;
+        for &f in &FLIPS {
+            for &r in &ROTATIONS {
+                let pic = full_pic.transform(f).transform(r);
+                let mut monster_count_cur = 0;
 
-            for x in 0..pic.size {
-                for y in 0..pic.size {
-                    let mut matches = true;
+                for x in 0..pic.size {
+                    for y in 0..pic.size {
+                        let mut matches = true;
 
-                    'monster_loop: for j in 0..3 {
-                        for i in 0..monster_tile.size {
-                            let xp = x + i;
-                            let yp = y + j;
+                        'monster_loop: for j in 0..3 {
+                            for i in 0..monster_tile.size {
+                                let xp = x + i;
+                                let yp = y + j;
 
-                            let monster_active = monster_tile.get(i, j);
-                            let pic_active = xp < pic.size && yp < pic.size && pic.get(xp, yp);
+                                let monster_active = monster_tile.get(i, j);
+                                let pic_active = xp < pic.size && yp < pic.size && pic.get(xp, yp);
 
-                            if monster_active && !pic_active {
-                                matches = false;
-                                break 'monster_loop;
+                                if monster_active && !pic_active {
+                                    matches = false;
+                                    break 'monster_loop;
+                                }
                             }
                         }
-                    }
 
-                    if matches {
-                        monster_count_cur += 1;
+                        if matches {
+                            monster_count_cur += 1;
+                        }
                     }
                 }
+
+                monster_count = max(monster_count, monster_count_cur);
             }
-
-            monster_count = max(monster_count, monster_count_cur);
         }
+
+        let total_count = full_pic.pixels.iter().filter(|b| **b).count()
+            - monster_count * monster_tile.pixels.iter().filter(|b| **b).count();
+
+        let corners = vec![
+            grid[&(min_x, min_y)].id,
+            grid[&(max_x, min_y)].id,
+            grid[&(min_x, max_y)].id,
+            grid[&(max_x, max_y)].id,
+        ];
+        (corners.iter().product(), total_count)
     }
-
-    let total_count = full_pic.pixels.iter().filter(|b| **b).count()
-        - monster_count * monster_tile.pixels.iter().filter(|b| **b).count();
-
-    let corners = vec![
-        grid[&(min_x, min_y)].id,
-        grid[&(max_x, min_y)].id,
-        grid[&(min_x, max_y)].id,
-        grid[&(max_x, max_y)].id,
-    ];
-    (corners.iter().product(), total_count)
 }

@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, Clone, Copy)]
@@ -21,92 +23,98 @@ fn offset(pos: (i32, i32), command: Command) -> (i32, i32) {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let instructions = input
-        .lines()
-        .map(|l| {
-            let mut ret = Vec::new();
-            let mut left = l;
-            while !left.is_empty() {
-                if let Some(pre) = left.strip_prefix('e') {
-                    ret.push(Command::East);
-                    left = pre;
-                }
-                if let Some(pre) = left.strip_prefix("se") {
-                    ret.push(Command::SouthEast);
-                    left = pre;
-                }
-                if let Some(pre) = left.strip_prefix("sw") {
-                    ret.push(Command::SouthWest);
-                    left = pre;
-                }
-                if let Some(pre) = left.strip_prefix('w') {
-                    ret.push(Command::West);
-                    left = pre;
-                }
-                if let Some(pre) = left.strip_prefix("nw") {
-                    ret.push(Command::NorthWest);
-                    left = pre;
-                }
-                if let Some(pre) = left.strip_prefix("ne") {
-                    ret.push(Command::NorthEast);
-                    left = pre;
-                }
-            }
-            ret
-        })
-        .collect::<Vec<Vec<_>>>();
+pub struct Solution;
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 24;
 
-    let mut tiles: HashMap<(i32, i32), bool> = HashMap::new();
-
-    for instruction in instructions {
-        let pos = instruction
-            .iter()
-            .fold((0, 0), |pos, &command| offset(pos, command));
-        tiles.insert(pos, !tiles.get(&pos).unwrap_or(&true));
-    }
-
-    let p1 = tiles.values().filter(|&&tile| !tile).count();
-
-    for _ in 0..100 {
-        let cur_tiles = tiles.clone();
-
-        let count_black =
-            |pos: (i32, i32)| i32::from(matches!(cur_tiles.get(&(pos.0, pos.1)), Some(false)));
-
-        let check_keys = cur_tiles
-            .keys()
-            .flat_map(|&pos| {
-                vec![
-                    offset(pos, Command::East),
-                    offset(pos, Command::SouthEast),
-                    offset(pos, Command::SouthWest),
-                    offset(pos, Command::West),
-                    offset(pos, Command::NorthWest),
-                    offset(pos, Command::NorthEast),
-                    pos,
-                ]
+    fn calc(input: &str) -> (usize, usize) {
+        let instructions = input
+            .lines()
+            .map(|l| {
+                let mut ret = Vec::new();
+                let mut left = l;
+                while !left.is_empty() {
+                    if let Some(pre) = left.strip_prefix('e') {
+                        ret.push(Command::East);
+                        left = pre;
+                    }
+                    if let Some(pre) = left.strip_prefix("se") {
+                        ret.push(Command::SouthEast);
+                        left = pre;
+                    }
+                    if let Some(pre) = left.strip_prefix("sw") {
+                        ret.push(Command::SouthWest);
+                        left = pre;
+                    }
+                    if let Some(pre) = left.strip_prefix('w') {
+                        ret.push(Command::West);
+                        left = pre;
+                    }
+                    if let Some(pre) = left.strip_prefix("nw") {
+                        ret.push(Command::NorthWest);
+                        left = pre;
+                    }
+                    if let Some(pre) = left.strip_prefix("ne") {
+                        ret.push(Command::NorthEast);
+                        left = pre;
+                    }
+                }
+                ret
             })
-            .collect::<HashSet<_>>();
+            .collect::<Vec<Vec<_>>>();
 
-        for pos in check_keys {
-            let neighbours = count_black(offset(pos, Command::East))
-                + count_black(offset(pos, Command::SouthEast))
-                + count_black(offset(pos, Command::SouthWest))
-                + count_black(offset(pos, Command::West))
-                + count_black(offset(pos, Command::NorthWest))
-                + count_black(offset(pos, Command::NorthEast));
+        let mut tiles: HashMap<(i32, i32), bool> = HashMap::new();
 
-            if *cur_tiles.get(&pos).unwrap_or(&true) {
-                if neighbours == 2 {
-                    tiles.insert(pos, false);
+        for instruction in instructions {
+            let pos = instruction
+                .iter()
+                .fold((0, 0), |pos, &command| offset(pos, command));
+            tiles.insert(pos, !tiles.get(&pos).unwrap_or(&true));
+        }
+
+        let p1 = tiles.values().filter(|&&tile| !tile).count();
+
+        for _ in 0..100 {
+            let cur_tiles = tiles.clone();
+
+            let count_black =
+                |pos: (i32, i32)| i32::from(matches!(cur_tiles.get(&(pos.0, pos.1)), Some(false)));
+
+            let check_keys = cur_tiles
+                .keys()
+                .flat_map(|&pos| {
+                    vec![
+                        offset(pos, Command::East),
+                        offset(pos, Command::SouthEast),
+                        offset(pos, Command::SouthWest),
+                        offset(pos, Command::West),
+                        offset(pos, Command::NorthWest),
+                        offset(pos, Command::NorthEast),
+                        pos,
+                    ]
+                })
+                .collect::<HashSet<_>>();
+
+            for pos in check_keys {
+                let neighbours = count_black(offset(pos, Command::East))
+                    + count_black(offset(pos, Command::SouthEast))
+                    + count_black(offset(pos, Command::SouthWest))
+                    + count_black(offset(pos, Command::West))
+                    + count_black(offset(pos, Command::NorthWest))
+                    + count_black(offset(pos, Command::NorthEast));
+
+                if *cur_tiles.get(&pos).unwrap_or(&true) {
+                    if neighbours == 2 {
+                        tiles.insert(pos, false);
+                    }
+                } else if neighbours == 0 || neighbours > 2 {
+                    tiles.insert(pos, true);
                 }
-            } else if neighbours == 0 || neighbours > 2 {
-                tiles.insert(pos, true);
             }
         }
-    }
 
-    let p2 = tiles.values().filter(|&&tile| !tile).count();
-    (p1, p2)
+        let p2 = tiles.values().filter(|&&tile| !tile).count();
+        (p1, p2)
+    }
 }

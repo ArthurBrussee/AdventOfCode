@@ -1,5 +1,7 @@
 use std::str::FromStr;
 
+use aoc_lib::AocSolution;
+
 #[derive(Default)]
 struct Submarine {
     x: i32,
@@ -59,49 +61,27 @@ impl FromStr for Command {
 
 impl Submarine {}
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let commands: Vec<Command> = aoc_lib::parse_lines(input);
-    let mut sub = Submarine::default();
-    sub.command(&commands);
-    let p1 = sub.x * sub.y;
+pub struct Solution;
 
-    let mut sub = Submarine::default();
-    sub.command_alt(&commands);
-    let p2 = sub.x * sub.y;
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 2;
 
-    (p1 as usize, p2 as usize)
+    fn calc(input: &str) -> (usize, usize) {
+        let commands: Vec<Command> = aoc_lib::parse_lines(input);
+        let mut sub = Submarine::default();
+        sub.command(&commands);
+        let p1 = sub.x * sub.y;
+
+        let mut sub = Submarine::default();
+        sub.command_alt(&commands);
+        let p2 = sub.x * sub.y;
+
+        (p1 as usize, p2 as usize)
+    }
 }
 
 #[test]
-fn test_p1() {
-    let inputs = r#"forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2"#;
-
-    let commands: Vec<Command> = aoc_lib::parse_lines::<Command>(inputs);
-    let mut sub = Submarine::default();
-    sub.command(&commands);
-
-    assert_eq!(sub.x, 15);
-    assert_eq!(sub.y, 10);
-}
-
-#[test]
-fn test_p2() {
-    let inputs = r#"forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2"#;
-
-    let commands: Vec<Command> = aoc_lib::parse_lines::<Command>(inputs);
-    let mut sub = Submarine::default();
-    sub.command_alt(&commands);
-
-    assert_eq!(sub.x, 15);
-    assert_eq!(sub.y, 60);
+fn test() {
+    Solution::test(15 * 10, 15 * 60);
 }

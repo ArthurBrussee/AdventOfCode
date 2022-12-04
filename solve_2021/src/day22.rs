@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 #[derive(Debug)]
 struct Cube {
     on: bool,
@@ -59,60 +61,63 @@ fn count_active(cubes: &[Cube], region: &Cube) -> usize {
     count
 }
 
-// active == +10
+pub struct Solution;
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let cubes = input
-        .lines()
-        .map(|l| {
-            let (on, coords) = l.split_once(' ').unwrap();
-            let ranges = coords
-                .split(',')
-                .map(|e| {
-                    let min_max = e[2..].split_once("..").unwrap();
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 22;
 
-                    let min_max: (i32, i32) =
-                        (min_max.0.parse().unwrap(), min_max.1.parse().unwrap());
-                    (min_max.0.min(min_max.1), min_max.0.max(min_max.1))
-                })
-                .collect::<Vec<_>>();
+    fn calc(input: &str) -> (usize, usize) {
+        let cubes = input
+            .lines()
+            .map(|l| {
+                let (on, coords) = l.split_once(' ').unwrap();
+                let ranges = coords
+                    .split(',')
+                    .map(|e| {
+                        let min_max = e[2..].split_once("..").unwrap();
 
-            Cube {
-                on: on == "on",
-                x: ranges[0],
-                y: ranges[1],
-                z: ranges[2],
-            }
-        })
-        .collect::<Vec<_>>();
+                        let min_max: (i32, i32) =
+                            (min_max.0.parse().unwrap(), min_max.1.parse().unwrap());
+                        (min_max.0.min(min_max.1), min_max.0.max(min_max.1))
+                    })
+                    .collect::<Vec<_>>();
 
-    let p1 = count_active(
-        &cubes,
-        &Cube {
-            on: false,
-            x: (-50, 50),
-            y: (-50, 50),
-            z: (-50, 50),
-        },
-    );
+                Cube {
+                    on: on == "on",
+                    x: ranges[0],
+                    y: ranges[1],
+                    z: ranges[2],
+                }
+            })
+            .collect::<Vec<_>>();
 
-    let range = 500_000;
-    let p2 = count_active(
-        &cubes,
-        &Cube {
-            on: false,
-            x: (-range, range),
-            y: (-range, range),
-            z: (-range, range),
-        },
-    );
+        let p1 = count_active(
+            &cubes,
+            &Cube {
+                on: false,
+                x: (-50, 50),
+                y: (-50, 50),
+                z: (-50, 50),
+            },
+        );
 
-    (p1, p2)
+        let range = 500_000;
+        let p2 = count_active(
+            &cubes,
+            &Cube {
+                on: false,
+                x: (-range, range),
+                y: (-range, range),
+                z: (-range, range),
+            },
+        );
+
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 22, true));
-    assert_eq!(p1, 474140);
-    assert_eq!(p2, 2758514936282235);
+    Solution::test(474140, 2758514936282235);
 }

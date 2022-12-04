@@ -1,21 +1,30 @@
-fn tree_count(slope_x: usize, slope_y: usize, map: &[&str]) -> usize {
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
+fn tree_count(slope_x: usize, slope_y: usize, map: &[&str]) -> u32 {
     map.iter()
         .step_by(slope_y)
         .enumerate()
         .filter(|(y, row)| row.chars().nth(y * slope_x % row.len()).unwrap() == '#')
-        .count()
+        .count() as u32
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let map: Vec<_> = input.lines().collect();
+impl AocSolution for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 3;
 
-    let p1 = tree_count(3, 1, &map);
+    fn calc(input: &str) -> (u32, u32) {
+        let map: Vec<_> = input.lines().collect();
 
-    let p2 = tree_count(1, 1, &map)
-        * tree_count(3, 1, &map)
-        * tree_count(5, 1, &map)
-        * tree_count(7, 1, &map)
-        * tree_count(1, 2, &map);
+        let p1 = tree_count(3, 1, &map);
 
-    (p1, p2)
+        let p2 = tree_count(1, 1, &map)
+            * tree_count(3, 1, &map)
+            * tree_count(5, 1, &map)
+            * tree_count(7, 1, &map)
+            * tree_count(1, 2, &map);
+
+        (p1, p2)
+    }
 }

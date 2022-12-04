@@ -1,3 +1,7 @@
+use aoc_lib::AocSolution;
+
+pub struct Solution;
+
 use std::collections::{HashMap, HashSet};
 
 type EnergyGrid = HashMap<(i32, i32, i32, i32), bool>;
@@ -60,8 +64,12 @@ fn simulate(cubes: &EnergyGrid, w_range: i32) -> usize {
     cur_cubes.values().filter(|&&x| x).count()
 }
 
-pub fn calc(_: &str) -> (usize, usize) {
-    let board = "###..#..
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 16;
+
+    fn calc(_: &str) -> (usize, usize) {
+        let board = "###..#..
 .#######
 #####...
 #..##.#.
@@ -70,23 +78,24 @@ pub fn calc(_: &str) -> (usize, usize) {
 ..#...#.
 .#....##";
 
-    let cubes: EnergyGrid = board
-        .lines()
-        .enumerate()
-        .flat_map(|(y, line)| {
-            line.bytes().enumerate().map(move |(x, c)| {
-                let cube = match c {
-                    b'.' => false,
-                    b'#' => true,
-                    _ => unreachable!(),
-                };
-                ((x as i32 - 1, y as i32 - 1, 0, 0), cube)
+        let cubes: EnergyGrid = board
+            .lines()
+            .enumerate()
+            .flat_map(|(y, line)| {
+                line.bytes().enumerate().map(move |(x, c)| {
+                    let cube = match c {
+                        b'.' => false,
+                        b'#' => true,
+                        _ => unreachable!(),
+                    };
+                    ((x as i32 - 1, y as i32 - 1, 0, 0), cube)
+                })
             })
-        })
-        .collect();
+            .collect();
 
-    let p1 = simulate(&cubes, 0);
-    let p2 = simulate(&cubes, 1);
+        let p1 = simulate(&cubes, 0);
+        let p2 = simulate(&cubes, 1);
 
-    (p1, p2)
+        (p1, p2)
+    }
 }

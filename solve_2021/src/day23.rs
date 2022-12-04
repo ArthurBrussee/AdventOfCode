@@ -1,5 +1,7 @@
 use std::{collections::HashMap, hash::Hash};
 
+use aoc_lib::AocSolution;
+
 #[derive(Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash)]
 enum PodType {
     Amber,
@@ -243,25 +245,30 @@ impl PodType {
     }
 }
 
-pub fn calc(input: &str) -> (u32, u32) {
-    let mut lines = input.lines().collect::<Vec<_>>();
-    lines.insert(3, "  #D#C#B#A#  ");
-    lines.insert(4, "  #D#B#A#C#  ");
+pub struct Solution;
 
-    let input_p2 = lines.join("\n");
+impl AocSolution<u32, u32> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 23;
 
-    let game1 = PodGame::from(input);
-    let game2 = PodGame::from(input_p2.as_str());
+    fn calc(input: &str) -> (u32, u32) {
+        let mut lines = input.lines().collect::<Vec<_>>();
+        lines.insert(3, "  #D#C#B#A#  ");
+        lines.insert(4, "  #D#B#A#C#  ");
 
-    let p1 = game1.best_cost(0, &mut HashMap::new());
-    let p2 = game2.best_cost(0, &mut HashMap::new());
+        let input_p2 = lines.join("\n");
 
-    (p1, p2)
+        let game1 = PodGame::from(input);
+        let game2 = PodGame::from(input_p2.as_str());
+
+        let p1 = game1.best_cost(0, &mut HashMap::new());
+        let p2 = game2.best_cost(0, &mut HashMap::new());
+
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 23, true));
-    assert_eq!(p2, 44169);
-    assert_eq!(p1, 12521);
+    Solution::test(12521, 44169);
 }

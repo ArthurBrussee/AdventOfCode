@@ -1,16 +1,11 @@
+use aoc_lib::AocSolution;
+
 fn parse_bin(str: &str) -> u16 {
     u16::from_str_radix(str, 2).expect("Failed to parse binary.")
 }
 
 fn bit_set(num: u16, bit: u8) -> bool {
     num & (1 << bit) > 0
-}
-
-pub fn calc(input: &str) -> (u32, u32) {
-    let input = aoc_lib::map_lines(input, parse_bin);
-    let p1 = calc_power(&input);
-    let p2 = calc_diagnostic(&input);
-    (p1, p2)
 }
 
 fn calc_gamma_epsilon(nums: &[u16]) -> (u16, u16) {
@@ -67,23 +62,21 @@ fn calc_diagnostic(nums: &[u16]) -> u32 {
     let o2_rating = find(nums, true).expect("Couldn't find 02 rating.");
     co2_rating as u32 * o2_rating as u32
 }
+pub struct Solution;
+
+impl AocSolution for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 3;
+
+    fn calc(input: &str) -> (u32, u32) {
+        let input = aoc_lib::map_lines(input, parse_bin);
+        let p1 = calc_power(&input);
+        let p2 = calc_diagnostic(&input);
+        (p1, p2)
+    }
+}
 
 #[test]
 fn test() {
-    let inputs = r#"00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010"#;
-
-    let (p1, p2) = calc(inputs);
-    assert_eq!(p1, 198);
-    assert_eq!(p2, 230);
+    Solution::test(198, 230);
 }

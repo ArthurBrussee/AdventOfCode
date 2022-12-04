@@ -4,6 +4,8 @@ version = "1.0.0"
 edition = "2021"
 
 [dependencies]
+rayon = "1.6.0"
+
 solve_2020 = { path = "../solve_2020" }
 solve_2021 = { path = "../solve_2021" }
 solve_2022 = { path = "../solve_2022" }

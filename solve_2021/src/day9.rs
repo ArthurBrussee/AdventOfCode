@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use aoc_lib::AocSolution;
+
 struct Grid {
     values: Vec<u8>,
     width: i32,
@@ -71,30 +73,35 @@ fn parse_nums(input: &str) -> Grid {
     }
 }
 
-pub fn calc(input: &str) -> (u32, usize) {
-    let grid = parse_nums(input);
+pub struct Solution;
 
-    let low_points = get_low_points(&grid);
-    let p1 = low_points
-        .iter()
-        .map(|(x, y)| grid.get(*x, *y).unwrap() as u32 + 1)
-        .sum();
+impl AocSolution<u32, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 9;
 
-    let mut basin_sizes: Vec<usize> = low_points
-        .iter()
-        .map(|(x, y)| basin_size(&grid, *x, *y))
-        .collect();
+    fn calc(input: &str) -> (u32, usize) {
+        let grid = parse_nums(input);
 
-    basin_sizes.sort_unstable();
+        let low_points = get_low_points(&grid);
+        let p1 = low_points
+            .iter()
+            .map(|(x, y)| grid.get(*x, *y).unwrap() as u32 + 1)
+            .sum();
 
-    let p2 = basin_sizes.iter().rev().take(3).product();
+        let mut basin_sizes: Vec<usize> = low_points
+            .iter()
+            .map(|(x, y)| basin_size(&grid, *x, *y))
+            .collect();
 
-    (p1, p2)
+        basin_sizes.sort_unstable();
+
+        let p2 = basin_sizes.iter().rev().take(3).product();
+
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, p2) = calc(&aoc_lib::read_file(2021, 9, true));
-    assert_eq!(p1, 15);
-    assert_eq!(p2, 1134);
+    Solution::test(15, 1134);
 }

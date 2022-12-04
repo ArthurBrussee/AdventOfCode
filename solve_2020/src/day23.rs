@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 fn cup_game(start: &[u32], steps: u32) -> Vec<u32> {
     let len = start.len();
 
@@ -37,22 +39,28 @@ fn cup_game(start: &[u32], steps: u32) -> Vec<u32> {
     cups
 }
 
-pub fn calc(_: &str) -> (String, u64) {
-    let base_cups = vec![2, 5, 3, 1, 4, 9, 8, 6, 7];
-    let cups = cup_game(&base_cups, 100);
+pub struct Solution;
+impl AocSolution<String, u64> for Solution {
+    const YEAR: u32 = 2020;
+    const DAY: u32 = 23;
 
-    let mut p1 = "".to_owned();
-    let mut cur = 1;
-    for _ in 0..base_cups.len() - 1 {
-        cur = cups[cur] as usize;
-        p1 += &cur.to_string()
+    fn calc(_: &str) -> (String, u64) {
+        let base_cups = vec![2, 5, 3, 1, 4, 9, 8, 6, 7];
+        let cups = cup_game(&base_cups, 100);
+
+        let mut p1 = "".to_owned();
+        let mut cur = 1;
+        for _ in 0..base_cups.len() - 1 {
+            cur = cups[cur] as usize;
+            p1 += &cur.to_string()
+        }
+
+        let mut large_cups = base_cups;
+        large_cups.extend(10u32..=1_000_000);
+
+        let cups_big = cup_game(&large_cups, 10_000_000);
+        let next1 = cups_big[1];
+        let next2 = cups_big[next1 as usize];
+        (p1, next1 as u64 * next2 as u64)
     }
-
-    let mut large_cups = base_cups;
-    large_cups.extend(10u32..=1_000_000);
-
-    let cups_big = cup_game(&large_cups, 10_000_000);
-    let next1 = cups_big[1];
-    let next2 = cups_big[next1 as usize];
-    (p1, next1 as u64 * next2 as u64)
 }

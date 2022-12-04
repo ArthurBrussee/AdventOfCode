@@ -1,3 +1,5 @@
+use aoc_lib::AocSolution;
+
 struct BitStream {
     bits: Vec<bool>,
 }
@@ -186,27 +188,33 @@ fn version_sum(packet: &Packet) -> usize {
     }
 }
 
-pub fn calc(input: &str) -> (usize, usize) {
-    let stream = BitStream::from(input);
-    let parent_packet = Packet::from(&stream);
+pub struct Solution;
 
-    let p1 = version_sum(&parent_packet);
-    let p2 = parent_packet.value();
+impl AocSolution<usize, usize> for Solution {
+    const YEAR: u32 = 2021;
+    const DAY: u32 = 16;
 
-    (p1, p2)
+    fn calc(input: &str) -> (usize, usize) {
+        let stream = BitStream::from(input);
+        let parent_packet = Packet::from(&stream);
+
+        let p1 = version_sum(&parent_packet);
+        let p2 = parent_packet.value();
+
+        (p1, p2)
+    }
 }
 
 #[test]
 fn test() {
-    let (p1, _) = calc("8A004A801A8002F478");
+    let (p1, _) = Solution::calc("8A004A801A8002F478");
     assert_eq!(p1, 16);
-
-    assert_eq!(calc("C200B40A82").1, 3);
-    assert_eq!(calc("04005AC33890").1, 54);
-    assert_eq!(calc("880086C3E88112").1, 7);
-    assert_eq!(calc("CE00C43D881120").1, 9);
-    assert_eq!(calc("D8005AC2A8F0").1, 1);
-    assert_eq!(calc("F600BC2D8F").1, 0);
-    assert_eq!(calc("9C005AC2F8F0").1, 0);
-    assert_eq!(calc("9C0141080250320F1802104A08").1, 1);
+    assert_eq!(Solution::calc("C200B40A82").1, 3);
+    assert_eq!(Solution::calc("04005AC33890").1, 54);
+    assert_eq!(Solution::calc("880086C3E88112").1, 7);
+    assert_eq!(Solution::calc("CE00C43D881120").1, 9);
+    assert_eq!(Solution::calc("D8005AC2A8F0").1, 1);
+    assert_eq!(Solution::calc("F600BC2D8F").1, 0);
+    assert_eq!(Solution::calc("9C005AC2F8F0").1, 0);
+    assert_eq!(Solution::calc("9C0141080250320F1802104A08").1, 1);
 }
