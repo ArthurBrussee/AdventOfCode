@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use itertools::Itertools;
+
 fn char_to_priority(c: char) -> u8 {
     if c.is_lowercase() {
         c as u8 - b'a' + 1
@@ -25,13 +27,14 @@ pub fn calc(input: &str) -> (usize, usize) {
     let elves_overlap = lines
         .chunks(3)
         .map(|elves| {
-            let hashes = elves
+            let (h1, h2, h3) = elves
                 .iter()
                 .map(|s| s.chars().collect::<HashSet<_>>())
-                .collect::<Vec<_>>();
+                .collect_tuple()
+                .unwrap();
 
-            let hash1: HashSet<_> = hashes[0].intersection(&hashes[1]).copied().collect();
-            let common = *hash1.intersection(&hashes[2]).next().unwrap();
+            let hash1: HashSet<_> = h1.intersection(&h2).copied().collect();
+            let common = *hash1.intersection(&h3).next().unwrap();
             char_to_priority(common) as usize
         })
         .sum();
