@@ -1,6 +1,6 @@
 use std::cmp;
 use std::fmt::{Debug, Display};
-use std::{fs, str::FromStr, time::Instant};
+use std::{fs, str::FromStr};
 
 pub trait AocSolution<P1 = u32, P2 = u32>
 where
