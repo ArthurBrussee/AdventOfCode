@@ -77,7 +77,7 @@ impl AocSolution for Solution {
 
     fn calc(input: &str) -> (u32, u32) {
         let passports = input
-            .split_at_doubleblank()
+            .split_at_empty_line()
             .filter_map(Passport::parse)
             .collect::<Vec<_>>();
         (

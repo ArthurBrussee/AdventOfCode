@@ -21,17 +21,12 @@ where
 
     fn read_file(test: bool) -> String {
         let path = if test {
-            format!("./inputs/day{}_test.txt", Self::year())
+            format!("./inputs/day{}_test.txt", Self::day())
         } else {
             format!("./solve_{}/inputs/day{}.txt", Self::year(), Self::day())
         };
-        let file = fs::read_to_string(&path).unwrap_or_else(|_| {
-            panic!(
-                "Please include input file for {}: {}!",
-                Self::year(),
-                Self::day()
-            )
-        });
+        let file = fs::read_to_string(&path)
+            .unwrap_or_else(|_| panic!("Please include input file for {}!", path));
         file.replace("\r\n", "\n")
     }
 
@@ -94,13 +89,13 @@ where
 pub trait DoubleLineSplit {
     type Iterator;
 
-    fn split_at_doubleblank(&self) -> Self::Iterator;
+    fn split_at_empty_line(&self) -> Self::Iterator;
 }
 
 impl<'a> DoubleLineSplit for &'a str {
     type Iterator = std::str::Split<'a, &'a str>;
 
-    fn split_at_doubleblank(&self) -> std::str::Split<'a, &'a str> {
+    fn split_at_empty_line(&self) -> std::str::Split<'a, &'a str> {
         if self.contains("\r\n") {
             self.split("\r\n\r\n")
         } else {

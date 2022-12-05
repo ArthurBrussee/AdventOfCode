@@ -7,7 +7,7 @@ impl AocSolution<usize, usize> for Solution {
 
     fn calc(input: &str) -> (usize, usize) {
         let mut cals = input
-            .split_at_doubleblank()
+            .split_at_empty_line()
             .map(|food_list| food_list.lines().map(|x| x.parse::<usize>().unwrap()).sum())
             .collect::<Vec<usize>>();
 

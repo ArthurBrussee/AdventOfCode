@@ -9,7 +9,7 @@ impl AocSolution for Solution {
 
     fn calc(input: &str) -> (u32, u32) {
         input
-            .split_at_doubleblank()
+            .split_at_empty_line()
             .map(|group| {
                 group
                     .split_whitespace()

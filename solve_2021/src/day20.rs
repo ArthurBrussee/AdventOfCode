@@ -51,7 +51,7 @@ impl AocSolution<usize, usize> for Solution {
     const DATE: (u32, u32) = (2021, 20);
 
     fn calc(input: &str) -> (usize, usize) {
-        let mut parts = input.split_at_doubleblank();
+        let mut parts = input.split_at_empty_line();
 
         let remaps: Vec<bool> = parts.next().unwrap().chars().map(|c| c == '#').collect();
 

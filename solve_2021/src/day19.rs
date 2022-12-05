@@ -177,7 +177,7 @@ impl AocSolution<usize, u32> for Solution {
     const DATE: (u32, u32) = (2021, 19);
 
     fn calc(input: &str) -> (usize, u32) {
-        let readings: Vec<_> = input.split_at_doubleblank().map(Readings::from).collect();
+        let readings: Vec<_> = input.split_at_empty_line().map(Readings::from).collect();
         let mut beacons = BeaconMap::new();
 
         for p in readings[0].points.iter().copied() {

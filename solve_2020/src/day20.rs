@@ -114,7 +114,7 @@ impl AocSolution<u64, usize> for Solution {
 
     fn calc(input: &str) -> (u64, usize) {
         let tiles = input
-            .split_at_doubleblank()
+            .split_at_empty_line()
             .map(|tile| {
                 let mut board_iter = tile.splitn(2, '\n');
                 let id = board_iter

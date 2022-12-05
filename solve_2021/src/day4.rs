@@ -55,7 +55,7 @@ impl Board {
 }
 
 fn load_input(input: &str) -> (Vec<Board>, Vec<u32>) {
-    let mut parts = input.split_at_doubleblank();
+    let mut parts = input.split_at_empty_line();
 
     let first_line = parts.next().unwrap();
     let nums: Vec<u32> = first_line.split(',').map(|x| x.parse().unwrap()).collect();

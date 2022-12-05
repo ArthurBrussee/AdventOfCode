@@ -44,7 +44,7 @@ impl AocSolution<usize, usize> for Solution {
     const DATE: (u32, u32) = (2020, 19);
 
     fn calc(input: &str) -> (usize, usize) {
-        let mut input_parts = input.split_at_doubleblank();
+        let mut input_parts = input.split_at_empty_line();
         let mut char_rules = HashMap::<char, u32>::new();
         let rules = input_parts
             .next()
