@@ -8,12 +8,12 @@ impl AocSolution<usize, usize> for Solution {
 
     fn calc(input: &str) -> (usize, usize) {
         let chars: Vec<_> = input.chars().collect();
-        let find_unique = |n: usize| {
-            let (first, _) = chars
+        let find_unique = |n| {
+            chars
                 .windows(n)
-                .find_position(|window| window.iter().unique().count() == n)
-                .unwrap();
-            first + n
+                .position(|window| window.iter().unique().count() == n)
+                .unwrap()
+                + n
         };
         (find_unique(4), find_unique(14))
     }
