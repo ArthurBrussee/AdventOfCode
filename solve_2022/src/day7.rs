@@ -6,7 +6,7 @@ pub struct Solution;
 #[derive(Debug)]
 enum FS {
     Dir { name: String, children: Vec<usize> },
-    File { _name: String, size: u32 },
+    File { size: u32 },
 }
 
 fn calculate_directory_size(tree: &[FS], dir: usize) -> u32 {
@@ -70,9 +70,8 @@ impl AocSolution for Solution {
                     let (_, folder_name) = line.split_once(' ').unwrap();
                     get_or_insert_dir(&cur_path, &mut tree, folder_name);
                 } else {
-                    let (size, name) = line.split_once(' ').unwrap();
+                    let (size, _) = line.split_once(' ').unwrap();
                     tree.push(FS::File {
-                        _name: name.to_string(),
                         size: size.parse().unwrap(),
                     });
                 }
