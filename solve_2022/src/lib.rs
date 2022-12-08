@@ -7,8 +7,9 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
-pub fn get_executions() -> [SolutionExec; 7] {
+pub fn get_executions() -> [SolutionExec; 8] {
     [
         day1::Solution::get_exec(),
         day2::Solution::get_exec(),
@@ -17,5 +18,6 @@ pub fn get_executions() -> [SolutionExec; 7] {
         day5::Solution::get_exec(),
         day6::Solution::get_exec(),
         day7::Solution::get_exec(),
+        day8::Solution::get_exec(),
     ]
 }
