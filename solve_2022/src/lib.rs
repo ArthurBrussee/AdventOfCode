@@ -9,8 +9,9 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
-pub fn get_executions() -> [SolutionExec; 9] {
+pub fn get_executions() -> [SolutionExec; 10] {
     [
         day1::Solution::get_exec(),
         day2::Solution::get_exec(),
@@ -21,5 +22,6 @@ pub fn get_executions() -> [SolutionExec; 9] {
         day7::Solution::get_exec(),
         day8::Solution::get_exec(),
         day9::Solution::get_exec(),
+        day10::Solution::get_exec(),
     ]
 }
