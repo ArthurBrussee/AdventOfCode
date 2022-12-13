@@ -5,5 +5,4 @@ edition = "2021"
 
 [dependencies]
 aoc_lib = { path = "../aoc_lib" }
-ahash = "*"
 itertools = "0.10.5"
