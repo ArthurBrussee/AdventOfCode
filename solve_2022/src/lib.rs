@@ -3,6 +3,7 @@ use aoc_lib::{Execute, SolutionExec};
 mod day1;
 mod day10;
 mod day11;
+mod day12;
 mod day13;
 mod day14;
 mod day2;
@@ -27,6 +28,7 @@ pub fn get_executions() -> Vec<SolutionExec> {
         day9::Solution::get_exec(),
         day10::Solution::get_exec(),
         day11::Solution::get_exec(),
+        day12::Solution::get_exec(),
         day13::Solution::get_exec(),
         day14::Solution::get_exec(),
     ]
