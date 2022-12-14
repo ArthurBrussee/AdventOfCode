@@ -29,7 +29,7 @@ fn main() {
     let start_run = Instant::now();
 
     let strings: Vec<String> = solutions
-        .par_iter()
+        .iter()
         .map(|&exec| {
             let now = Instant::now();
             let result = (exec.f)();

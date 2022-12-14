@@ -1,2 +1,5 @@
 [workspace]
 members = ["runner", "solve_2020", "solve_2021", "solve_2022", "aoc_lib"]
+
+[profile.release]
+debug = true

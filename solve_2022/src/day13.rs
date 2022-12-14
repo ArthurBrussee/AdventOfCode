@@ -70,7 +70,6 @@ impl AocSolution<usize, usize> for Solution {
                 let (p1, p2) = l.lines().map(parse_package).collect_tuple().unwrap();
 
                 if compare(&p1, &p2) == std::cmp::Ordering::Less {
-                    println!("Pair {} works!", i + 1);
                     Some(i + 1)
                 } else {
                     None
