@@ -58,7 +58,7 @@ fn count_unique(sensors: &[Sensor], y: i32, start: i32, end: i32) -> usize {
                 None
             }
         })
-        .sorted_by_key(|r| *r.start());
+        .sorted_unstable_by_key(|r| *r.start());
 
     for r in ranges {
         if i < *r.start() {
