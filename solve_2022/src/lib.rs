@@ -6,6 +6,7 @@ mod day11;
 mod day12;
 mod day13;
 mod day14;
+mod day15;
 mod day2;
 mod day3;
 mod day4;
@@ -31,5 +32,6 @@ pub fn get_executions() -> Vec<SolutionExec> {
         day12::Solution::get_exec(),
         day13::Solution::get_exec(),
         day14::Solution::get_exec(),
+        day15::Solution::get_exec(),
     ]
 }

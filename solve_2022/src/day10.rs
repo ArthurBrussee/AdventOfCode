@@ -17,7 +17,7 @@ impl AocSolution<i32, String> for Solution {
             })
             .collect();
 
-        let mut sprite_pos = 1;
+        let mut sprite_pos: i32 = 1;
         let mut ic = 0;
 
         let mut check_strengths = Vec::new();
@@ -29,7 +29,7 @@ impl AocSolution<i32, String> for Solution {
                 check_strengths.push(ic * sprite_pos);
             }
             let crt_loc = (ic - 1) % 40;
-            let pixel = if (crt_loc - sprite_pos as i32).abs() <= 1 {
+            let pixel = if (crt_loc - sprite_pos).abs() <= 1 {
                 '#'
             } else {
                 '.'

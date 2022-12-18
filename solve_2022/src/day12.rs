@@ -13,7 +13,7 @@ struct HeightMap {
 
 impl HeightMap {
     fn get(&self, pos: (u32, u32)) -> u8 {
-        self.vals[(pos.0 + pos.1 * self.width as u32) as usize]
+        self.vals[(pos.0 + pos.1 * self.width) as usize]
     }
 
     fn shortest_path(&self, start: (u32, u32), goal: (u32, u32)) -> Option<Vec<(u32, u32)>> {

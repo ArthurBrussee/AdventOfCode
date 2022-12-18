@@ -106,7 +106,7 @@ fn monkey_business(monkeys: &[Monkey], div: usize, rounds: usize) -> usize {
                 .collect();
 
             for (t, item) in targets {
-                monkeys[t as usize].items.push(item);
+                monkeys[t].items.push(item);
             }
         }
     }

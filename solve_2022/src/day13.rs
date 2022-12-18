@@ -10,7 +10,7 @@ enum Expr {
     Number(usize),
 }
 
-fn parse_package_recurse<I: Iterator<Item = char>>(chars: &mut Peekable<I>) -> Expr {
+fn parse_package_peekable<I: Iterator<Item = char>>(chars: &mut Peekable<I>) -> Expr {
     match chars.peek().unwrap() {
         '[' => {
             chars.next();
@@ -24,7 +24,7 @@ fn parse_package_recurse<I: Iterator<Item = char>>(chars: &mut Peekable<I>) -> E
                 } else if next == ',' {
                     chars.next();
                 }
-                let expr = parse_package_recurse(chars);
+                let expr = parse_package_peekable(chars);
                 exprs.push(expr);
             }
         }
@@ -39,7 +39,7 @@ fn parse_package_recurse<I: Iterator<Item = char>>(chars: &mut Peekable<I>) -> E
 }
 
 fn parse_package(input: &str) -> Expr {
-    parse_package_recurse(&mut input.chars().peekable())
+    parse_package_peekable(&mut input.chars().peekable())
 }
 
 fn compare(left: &Expr, right: &Expr) -> std::cmp::Ordering {

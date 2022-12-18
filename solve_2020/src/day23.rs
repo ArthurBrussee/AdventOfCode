@@ -28,7 +28,7 @@ fn cup_game(start: &[u32], steps: u32) -> Vec<u32> {
         let destination_cup = loop {
             cur_val = if cur_val <= cmin { cmax } else { cur_val - 1 };
             if cur_val != pick1 && cur_val != pick2 && cur_val != pick3 {
-                break cur_val as u32;
+                break cur_val;
             }
         };
 
