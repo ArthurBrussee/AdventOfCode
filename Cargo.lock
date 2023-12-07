@@ -219,6 +219,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "solve_2023"
+version = "1.0.0"
+dependencies = [
+ "aoc_lib",
+ "fxhash",
+ "itertools",
+]
+
+[[package]]
 name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"

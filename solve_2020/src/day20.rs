@@ -230,7 +230,7 @@ impl AocSolution<u64, usize> for Solution {
         let total_count = full_pic.pixels.iter().filter(|b| **b).count()
             - monster_count * monster_tile.pixels.iter().filter(|b| **b).count();
 
-        let corners = vec![
+        let corners = [
             grid[&(min_x, min_y)].id,
             grid[&(max_x, min_y)].id,
             grid[&(min_x, max_y)].id,

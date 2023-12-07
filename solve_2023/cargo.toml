@@ -1,0 +1,9 @@
+[package]
+name = "solve_2023"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+aoc_lib = { path = "../aoc_lib" }
+fxhash = "0.2.1"
+itertools = "0.10.5"

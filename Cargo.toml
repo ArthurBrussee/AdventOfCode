@@ -1,5 +1,13 @@
 [workspace]
-members = ["runner", "solve_2020", "solve_2021", "solve_2022", "aoc_lib"]
+members = [
+    "runner",
+    "solve_2020",
+    "solve_2021",
+    "solve_2022",
+    "solve_2023",
+    "aoc_lib",
+]
+resolver = "2"
 
 [profile.release]
 debug = true
