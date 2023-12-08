@@ -9,4 +9,5 @@ rayon = "1.6.0"
 solve_2020 = { path = "../solve_2020" }
 solve_2021 = { path = "../solve_2021" }
 solve_2022 = { path = "../solve_2022" }
+solve_2023 = { path = "../solve_2023" }
 aoc_lib = { path = "../aoc_lib" }

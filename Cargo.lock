@@ -186,6 +186,7 @@ dependencies = [
  "solve_2020",
  "solve_2021",
  "solve_2022",
+ "solve_2023",
 ]
 
 [[package]]

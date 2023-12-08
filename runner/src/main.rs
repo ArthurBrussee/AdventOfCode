@@ -17,6 +17,7 @@ fn main() {
     solutions.extend(solve_2020::get_executions());
     solutions.extend(solve_2021::get_executions());
     solutions.extend(solve_2022::get_executions());
+    solutions.extend(solve_2023::get_executions());
 
     let solutions: Vec<&SolutionExec> = solutions
         .iter()
